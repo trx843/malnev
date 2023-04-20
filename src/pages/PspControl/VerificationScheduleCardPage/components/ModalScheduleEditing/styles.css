@@ -1,0 +1,44 @@
+.verification-schedule-card-page-modal__form .ant-form-item,
+.verification-schedule-card-page-modal__field-wrapper:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.verification-schedule-card-page-modal__field-wrapper {
+  align-items: center;
+}
+
+.verification-schedule-card-page-modal__field.ant-select,
+.verification-schedule-card-page-modal__field {
+  width: 295px;
+}
+
+.verification-schedule-card-page-modal__range-picker-dropdown .ant-picker-time-panel {
+  display: none;
+}
+
+.verification-schedule-card-page-modal__field-wrapper .ant-form-item {
+  margin-bottom: 0;
+}
+
+.verification-schedule-card-page-modal__field-array {
+  max-height: 490px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+
+.verification-schedule-card-page-modal__field-array-item {
+  margin-bottom: 20px;
+}
+
+.verification-schedule-card-page-modal__divider {
+  margin: 20px 0;
+}
+
+.verification-schedule-card-page-modal__add-button {
+  color: #1890ff;
+}
+
+.verification-schedule-card-page-modal__delete-button {
+  color: #ff4d4f;
+}

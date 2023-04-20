@@ -1,0 +1,12 @@
+.wrapper {
+  margin-bottom: 5px;
+}
+
+.label {
+  margin: 0;
+
+  font-weight: 400;
+  font-size: 15px;
+
+  color: #667985;
+}

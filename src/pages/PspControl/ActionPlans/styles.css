@@ -1,0 +1,81 @@
+.action-plans-spin,
+.action-plans-spin .ant-spin-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+.action-plans {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.action-plans__content {
+  display: flex;
+  background-color: white;
+  flex-grow: 1;
+}
+
+.action-plans__filter {
+  display: flex;
+  flex-direction: column;
+
+  width: 280px;
+  padding: 16px;
+
+  border-right: 1px solid #f0f0f0;
+}
+
+.action-plans__searchTree {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.action-plans__searchTree .ant-tree {
+  flex-grow: 1;
+  height: 1px; /* чтобы работал overflow */
+  overflow: auto;
+}
+
+.action-plans__right-bar {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.action-plans__filter-button {
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+.action-plans__table {
+  border-top: 1px solid #DDE8F0;
+  flex-grow: 1;
+}
+
+.action-plans__pagination {
+  margin: 10px 0;
+}
+
+
+.action-plans__action-text-wrapper {
+  display: block !important;
+  padding: 0 !important;
+  white-space: normal;
+}
+
+.action-plans__action-text-wrapper > .ag-react-container {
+  height: 100%;
+}
+
+
+.action-plans__action-text {
+  height: 100%;
+
+  padding: 5px 10px;
+
+  line-height: 24px;
+  overflow-wrap: break-word;
+  overflow-y: auto !important;
+}

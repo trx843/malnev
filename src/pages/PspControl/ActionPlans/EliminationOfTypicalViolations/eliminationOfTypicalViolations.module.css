@@ -1,0 +1,44 @@
+.spin,
+.spin :global(.ant-spin-container) {
+  display: flex;
+  flex-grow: 1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.title {
+  margin: 0;
+  font-weight: bold;
+}
+
+.tab {
+  display: flex;
+  flex-grow: 1;
+}
+
+.tab {
+  display: flex;
+  flex-grow: 1;
+}
+
+.tab :global(.ant-tabs-content) {
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.tab :global(.ant-tabs-tabpane) {
+  flex-grow: 1;
+  width: auto;
+}

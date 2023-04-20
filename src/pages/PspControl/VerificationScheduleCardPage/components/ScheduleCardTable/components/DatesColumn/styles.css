@@ -1,0 +1,7 @@
+.verification-schedule-card-page-objects-dates-column__date {
+  margin: 0;
+}
+
+.verification-schedule-card-page-objects-dates-column__date:not(:last-child) {
+  margin-bottom: 5px;
+}

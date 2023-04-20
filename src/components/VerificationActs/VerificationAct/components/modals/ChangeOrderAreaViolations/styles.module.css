@@ -1,0 +1,40 @@
+.cell_text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  max-width: 400px;
+}
+.body__violation {
+  height: 600px;
+}
+.table__container {
+  width: 100%;
+  height: 100%;
+}
+.table {
+  width: 100%;
+  height: 100%;
+}
+.row-span-cell {
+  background-color: white;
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+
+.violation-text__wrapper :global(.ag-react-container) {
+  height: 100%;
+}
+
+.violation-text__container {
+  height: 100%;
+}
+
+.violation-text {
+  height: 100%;
+
+  padding: 5px 10px;
+
+  line-height: 24px;
+
+  overflow-wrap: break-word;
+  overflow-y: auto;
+}

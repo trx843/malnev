@@ -1,0 +1,18 @@
+.switch {
+  background-color: #1890ff;
+  display: inline;
+  margin: 20px 20px;
+}
+
+.select {
+  margin-top: 20px;
+}
+
+.selectText {
+  display: block
+}
+
+.optionSpan {
+  margin-left: 10px;
+}
+

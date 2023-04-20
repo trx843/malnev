@@ -1,0 +1,15 @@
+.algorithm-table_good > div {
+  color: #219653;
+}
+
+.algorithm-table_danger > div {
+  color: #ff4d4f;
+}
+
+.algorithm-table_warning > div {
+  color: #f2994a;
+}
+
+.algorithm-table_failed > div {
+  color: #ae1c1d;
+}

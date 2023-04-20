@@ -1,0 +1,15 @@
+.plan-card-page-full-width-cell {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  height: 100%;
+  padding: 10px;
+}
+
+.plan-card-page-full-width-cell__title {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: #424242;
+}

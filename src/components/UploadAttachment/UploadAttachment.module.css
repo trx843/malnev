@@ -1,0 +1,68 @@
+.spin-wrapper,
+.spin-wrapper :global(.ant-spin-container) {
+  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.wrapper :global(.ant-upload.ant-upload-select) {
+  margin-bottom: 15px;
+}
+
+.wrapper :global(.ant-upload-list) {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.file-container {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 16px;
+  padding: 5px;
+  border: 1px solid #DDE8F0;
+}
+
+.file__favorite-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.file-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #424242;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 440px;
+}
+
+.download-button {
+  color: #1890FF;
+}
+
+.delete-button {
+  color: #FF4D4F;
+}
+
+.button-upload {
+  color: #667985;
+}
+
+.url-title {
+  margin: 0;
+}
+
+.url-link {
+  margin: 0;
+  margin-bottom: 5px;
+}

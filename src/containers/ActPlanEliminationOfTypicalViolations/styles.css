@@ -1,0 +1,27 @@
+.typical-violation-top-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.typical-violation__table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.typical-violation__table-pagination {
+    padding: 12px 14px;
+}
+
+.action-plan-typical-violation-page__title {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+}
+
+
+.action-plan-typical-violation-page__title-sign { 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

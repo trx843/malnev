@@ -1,0 +1,9 @@
+enum CoefConstants {
+    COEF_FETCHED = 'COEF_FETCHED',
+    NODE_CHANGED = 'NODE_CHANGED',
+    DATE_CHANGED = 'DATE_CHANGED',
+    TREE_CHANGED = 'TREE_CHANGED',
+    COEF_OWNED_TYPE_FILTER = 'OWNED_TYPE_FILTER',
+}
+
+export default CoefConstants;

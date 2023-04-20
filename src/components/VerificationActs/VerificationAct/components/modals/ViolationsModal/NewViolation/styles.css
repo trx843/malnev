@@ -1,0 +1,21 @@
+.violations-act-form__table {
+    height: 160px;
+}
+
+.violations-act-form__switch {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 480px;
+    margin-bottom: 12px;
+}
+
+.violations-act-form__delete {
+    display: flex;
+    align-items: center;
+}
+
+.violation-form__bottom {
+    width: 100%;
+    background-color: white;
+}

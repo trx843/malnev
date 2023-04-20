@@ -1,0 +1,109 @@
+.psp-custom-filter-modal__modal-body > .ant-modal-content > .ant-modal-header {
+    border-bottom: 1px solid transparent;
+}
+
+.psp-custom-filter-modal__modal-body > .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    min-width: 740px;
+    height: 480px;
+}
+
+.psp-custom-filter-modal__modal-body > .ant-modal-content > .ant-modal-body {
+    display: flex;
+    flex: 1;
+    padding-bottom: 0;
+    padding-top: 0;
+    overflow: hidden;
+}
+
+.psp-custom-filter-modal__content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.psp-custom-filter-modal__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border-right: 1px solid #f0f0f0;
+    width: 220px;
+}
+
+.psp-custom-filter-modal__title {
+    flex-basis: 60px;
+    align-items: center;
+    display: flex;
+}
+
+.psp-custom-filter-modal__filter {
+    display: flex;
+    flex: 2;
+    padding: 40px 12px 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+.psp-custom-filter-modal__menu {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0 12px;
+    flex: 1 auto;
+    overflow-y: auto;
+}
+
+.psp-custom-filter-modal__menu-field {
+    margin-bottom: 24px;
+}
+
+.psp-custom-filter-modal__field {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.psp-custom-filter-modal__menu-field > .ant-form-item-control > .ant-form-item-control-input > .ant-select > .ant-select-selector {
+    width: 100%;
+}
+
+.psp-custom-filter-modal__menu-field > .ant-btn {
+    width: 100%;
+    text-align: left;
+}
+
+.psp-custom-filter-modal__menu-field .ant-row {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.psp-custom-filter-modal__group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-columns: auto;
+    width: 100%;
+    height: auto;
+    grid-gap: 1rem;
+    padding-right: 1rem;
+    overflow-y: auto;
+}
+
+.psp-custom-filter-modal__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+
+.psp-custom-filter-label-field {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 280px;
+}
+

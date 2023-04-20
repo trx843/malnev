@@ -1,0 +1,24 @@
+.plan-card-page-modal-event__form .ant-form-item,
+.plan-card-page-modal-event__radio-wrapper {
+  margin-bottom: 15px;
+}
+
+.plan-card-page-modal-event__form .ant-form-item:last-child {
+  margin-bottom: 0;
+}
+
+.plan-card-page-modal-event__event-field {
+  resize: none
+}
+
+.plan-card-page-modal-event__elimination-term-field {
+  width: 280px;
+}
+
+.plan-card-page-modal-event__marked-title {
+  margin: 0 0 15px;
+  padding: 8px 12px;
+
+  color: #667985;
+  background-color: #E8F4FF;
+}

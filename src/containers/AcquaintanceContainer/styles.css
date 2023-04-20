@@ -1,0 +1,85 @@
+.acquaintance__sider {
+  width: 280px !important;
+  max-width: 280px !important;
+  flex: 0 0 280px !important;
+  background-color: #ffff !important;
+}
+
+.spinnerStyled {
+  max-height: 93%;
+}
+
+.filter-search-tree {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  padding: 16px;
+  border-right: 1px solid #f0f0f0;
+  height: 100%;
+}
+
+.filter-search-tree__search-tree {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.filter-search-tree__search-tree>.ant-tree.ant-tree-icon-hide {
+  overflow-y: auto;
+}
+
+.acquaintance__table-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 auto;
+}
+
+.acquaintance__table {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 100%;
+  flex: 1;
+}
+
+.acquaintance__table-content {
+  display: flex;
+  flex: 1;
+}
+
+.acquaintance__table>.ant-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.acquaintance__pagination {
+  padding: 12px 0;
+  background-color: white;
+}
+
+.acquaintance__top-export-card {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.acquaintance-sider__field-container {
+  display: flex;
+  flex-direction: column;
+  margin: 6px 0;
+}
+
+.acquaintance-sider__field {
+  width: 100%;
+}
+
+.acquaintance-form__field {
+  margin: 0 !important;
+}
+
+.acquaintance-modal-info__body {
+  display: flex;
+  height: 100%;
+  min-height: 240px;
+}

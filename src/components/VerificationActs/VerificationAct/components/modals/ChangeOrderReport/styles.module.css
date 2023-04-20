@@ -1,0 +1,9 @@
+.cell_text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 400px;
+}
+.table {
+    height: 400px;
+}

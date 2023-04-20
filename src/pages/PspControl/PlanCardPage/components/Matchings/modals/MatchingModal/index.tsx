@@ -1,0 +1,1 @@
+export { CommissionModal } from "./Modal";

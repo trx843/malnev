@@ -1,0 +1,30 @@
+.agGridTable {
+  width: 100%;
+  height: 100%;
+}
+
+.agGridTable:global(.ag-theme-material) :global(.ag-header) {
+  border-top: 1px solid #e2e2e2;
+}
+
+.agGridTable:global(.ag-theme-material .ag-ltr .ag-cell) {
+  border-right: 1px solid #e2e2e2;
+}
+
+.agGridTable:global(.ag-theme-material .ag-header-cell),
+:global(.ag-theme-material .ag-header-group-cell) {
+  border-right: 1px solid #e2e2e2;
+}
+
+.agGridTable:global(.ag-theme-material .ag-row-odd),
+:global(.ag-theme-material .ag-row-odd) {
+  background-color: #f1f1f1;
+}
+
+.agGridTable:global(.ag-theme-material .ag-header-cell-text) {
+  white-space: normal;
+}
+
+.no-background-color:global(.ag-theme-material .ag-row-odd) {
+  background-color: #ffffff; 
+}

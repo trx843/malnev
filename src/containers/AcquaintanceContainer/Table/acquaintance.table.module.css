@@ -1,0 +1,8 @@
+.row-span-cell {
+  background-color: white;
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+
+.expired {
+  background-color: #fff1f0 !important;
+}

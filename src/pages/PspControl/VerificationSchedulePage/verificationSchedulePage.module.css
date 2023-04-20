@@ -1,0 +1,73 @@
+.spin,
+.spin :global(.ant-spin-container) {
+  display: flex;
+  flex-grow: 1;
+}
+
+.spin :global(.ant-spin-container) {
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  background-color: white;
+  flex-grow: 1;
+}
+
+.sider {
+  padding: 16px;
+
+  border-right: 1px solid #f0f0f0;
+  background-color: transparent;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.filter-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-title-sider-collapsed {
+  justify-content: center;
+}
+
+.search-tree {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.search-tree-hidden {
+  display: none;
+}
+
+.search-tree :global(.ant-tree) {
+  flex-grow: 1;
+  height: 1px; /* чтобы работал overflow */
+  overflow: auto;
+}
+
+.right-bar {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.modal-filters-control {
+  display: flex;
+  padding: 10px;
+}
+
+.table {
+  flex-grow: 1;
+}
+
+.pagination {
+  margin: 10px 0;
+}

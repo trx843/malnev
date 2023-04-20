@@ -1,0 +1,13 @@
+.delete-link-button {
+  color: #FF4D4F;
+}
+
+.link-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-area:global(.ant-input) {
+  min-height: 88px;
+  resize: none;
+}

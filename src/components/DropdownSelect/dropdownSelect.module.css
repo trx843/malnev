@@ -1,0 +1,15 @@
+.option-label {
+  margin: 0;
+  width: 450px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.dropdown {
+  display: flex;
+  padding: 0 10px;
+}
+
+.divider {
+  margin: 5px 0;
+}

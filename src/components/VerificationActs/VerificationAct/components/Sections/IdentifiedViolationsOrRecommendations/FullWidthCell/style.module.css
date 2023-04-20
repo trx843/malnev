@@ -1,0 +1,16 @@
+.full-width-cell {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+}
+
+.full-width-cell__title {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: #424242;
+}

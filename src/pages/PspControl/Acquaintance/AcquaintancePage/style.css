@@ -1,0 +1,21 @@
+.acquaintance__container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.acquaintance__content {
+  background-color: #ffff;
+  display: flex;
+  flex: 1 auto;
+}
+
+.acquaintance__page-header {
+  padding: 0 0 8px;
+}
+
+.acquaintance__page__inner {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

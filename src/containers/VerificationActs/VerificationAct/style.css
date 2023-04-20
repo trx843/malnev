@@ -1,0 +1,48 @@
+.verification-act-page__breadcrumb {
+  margin-bottom: 10px;
+}
+
+.verification-act-page__container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.verification-act-page__menu {
+  background-color: transparent;
+}
+
+.verification-act-page__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.verification-act-page__header {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) 460px;;
+  align-items: center;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.verification-act-page__inner-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.verification-act-page__inner-content > .ant-card-body {
+  display: flex;
+  flex: 1;
+  padding: 0;
+}
+
+.verification-act-page__actions {
+  display: flex;
+  justify-content: flex-end;
+}

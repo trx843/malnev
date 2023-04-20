@@ -1,0 +1,17 @@
+.elimination-default,
+.elimination-default:global(.ant-btn-link:focus),
+.elimination-default:global(.ant-btn-link:hover) {
+  color: #32CD32;
+}
+
+.elimination-approaching,
+.elimination-approaching:global(.ant-btn-link:focus),
+.elimination-approaching:global(.ant-btn-link:hover) {
+  color: #FFBF00;
+}
+
+.elimination-expire,
+.elimination-expire:global(.ant-btn-link:focus),
+.elimination-expire:global(.ant-btn-link:hover) {
+  color: #FF0000;
+}

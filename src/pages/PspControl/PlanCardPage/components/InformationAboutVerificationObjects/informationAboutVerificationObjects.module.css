@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  width: 280px;
+  border-right: 1px solid #DDE8F0;
+}
+
+:global(h3.ant-typography).title{
+  margin-bottom: 24px;
+  padding: 18px 18px 0;
+}
+
+.list {
+  padding-left: 18px;
+  flex-grow: 1;
+  height: 0; /* чтобы появлялся скролл */
+  overflow: auto;
+}

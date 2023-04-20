@@ -1,0 +1,24 @@
+.modal-title {
+  margin: 0;
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+
+  width: 760px;
+}
+
+.form-item {
+  width: 300px;
+  margin-right: 80px;
+}
+
+.program-type-field {
+  width: 680px;
+}
+
+.upload-button {
+  width: 188px;
+}

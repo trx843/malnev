@@ -1,0 +1,12 @@
+.schedule-form__space {
+    width: 100%;
+}
+
+.schedule-form__field .ant-form-item {
+    margin: 0 !important;
+}
+
+
+.schedule-form__field, * > .ant-picker {
+    width: 100%;
+}

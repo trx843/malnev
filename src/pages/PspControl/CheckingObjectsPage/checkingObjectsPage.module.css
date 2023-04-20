@@ -1,0 +1,8 @@
+.header {
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.header :global(.ant-page-header-heading-title) {
+  font-size: 30px;
+}

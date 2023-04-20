@@ -1,0 +1,107 @@
+.psp-page__content {
+  display: flex;
+  flex-direction: column !important;
+}
+
+.psp-page__menu {
+  background-color: transparent;
+  margin-bottom: 12px;
+}
+
+.psp-page__title>h2 {
+  margin-bottom: 0 !important;
+}
+
+.psp-content.ant-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.psp-page__content>.ant-tabs {
+  display: flex;
+  flex: 1;
+}
+
+.psp-page__inner {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.psp-page-slider__container {
+  background-color: var(--white);
+  width: 280px !important;
+  max-width: 280px !important;
+  flex: 0 0 280px !important;
+  padding: 18px 12px;
+}
+
+.psp-page__tabs {
+  height: 100%;
+}
+
+.psp-page__tabpane {
+  display: flex;
+}
+
+.psp-page__tabs>.ant-tabs-content-holder {
+  display: flex;
+}
+
+.psp-page__tabs>.ant-tabs-content {
+  width: 100%;
+  flex: 1;
+  align-items: stretch;
+}
+
+.psp-page-slider__header {
+  margin-bottom: 24px;
+}
+
+.psp-page-slider__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.psp-page-slider__field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.psp-page__table {
+  display: flex;
+  width: 100%;
+}
+
+.psp-page__table>.ant-card-body {
+  flex: 1;
+}
+
+.psp-page__table>.ant-card-body>div {
+  height: 100% !important;
+}
+
+.psp-page__cell-link,
+.psp-page__cell-link:hover,
+.psp-page__cell-link:focus,
+.psp-page__cell-link:active {
+  color: #000;
+  text-decoration: underline;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  /* max-width: 68%; */
+}
+
+.psp-page__cell-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  /* max-width: 90%; */
+}
+
+.psp-page__render-field {
+  display: flex;
+  align-items: center;
+}

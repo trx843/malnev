@@ -1,0 +1,223 @@
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/Ibmplexsans.woff") format("woff"),
+    url("../fonts/Ibmplexsans.woff2") format("woff2"),
+    url("../fonts/Ibmplexsans.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Medium";
+  src: url("../fonts/Ibmplexsansmedium.woff") format("woff"),
+    url("../fonts/Ibmplexsansmedium.woff2") format("woff2"),
+    url("../fonts/Ibmplexsansmedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/Ibmplexsansbold.woff") format("woff"),
+    url("../fonts/Ibmplexsansbold.woff2") format("woff2"),
+    url("../fonts/Ibmplexsansbold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Golos";
+  src: url("../fonts/Golostextmedium.woff") format("woff"),
+    url("../fonts/Golostextmedium.woff2") format("woff2"),
+    url("../fonts/Golostextmedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  font-family: "IBM Plex Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+#squaredLogo {
+  height: 50px;
+  width: 50px;
+}
+
+.anticon>svg {
+  vertical-align: baseline !important;
+}
+
+.ant-tooltip-disabled-compatible-wrapper {
+  display: unset !important;
+}
+
+.ant-menu-submenu-arrow,
+.ant-menu-submenu-expand-icon {
+  -webkit-transform: none !important;
+  transform: none !important;
+}
+
+.ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow {
+  -webkit-transform: none !important;
+  transform: none !important;
+}
+
+.modal-90w {
+  width: 90%;
+  max-width: none !important;
+}
+
+.site-tree-search-value {
+  color: red;
+}
+
+.commissionChairmanSpace .ant-space-item {
+  width: 100%;
+}
+
+.membersSpace .ant-space-item {
+  width: 100%;
+}
+
+.membersSpace .ant-space-item:last-child {
+  width: auto;
+}
+
+.ant-layout-sider-trigger {
+  background: rgba(31, 70, 100, 0.8);
+}
+
+.sideSubMenu>div {
+  white-space: normal;
+  height: auto !important;
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+  border-radius: 9px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 14px;
+  border-radius: 9px;
+}
+
+::-webkit-scrollbar:vertical {
+  width: 14px;
+  border-radius: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.ant-form-item-label {
+  white-space: normal;
+}
+
+.ag-header-cell-menu-button:not(.ag-header-menu-always-show) {
+  opacity: 1;
+  color: #dde8f0;
+}
+
+.ag-header-cell-text {
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-size: 14px;
+  color: #424242;
+}
+
+.ag-cell-value {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-size: 14px;
+  color: #424242;
+}
+
+.ag-row .ag-cell {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.ag-theme-material .ag-checkbox-input-wrapper.ag-checked::after {
+  color: #1890ff !important;
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+.ag-theme-material .ag-checkbox-input-wrapper {
+  background-color: #dde8f0;
+}
+
+.ais-container {
+  display: flex;
+  flex: 1;
+}
+
+.ais-table-actions {
+  display: flex;
+  align-items: center;
+}
+
+.ais-table-actions__item:not(:last-child) {
+  margin-right: 12px;
+}
+
+.ais__center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cell-span-bg {
+  background-color: white;
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+
+.cell-span-bg:not(:last-child) {
+  background-color: white;
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+
+.agGridTable-border>.ag-theme-material .ag-ltr .ag-cell {
+  border-right: 1px solid #e2e2e2;
+}
+
+.agGridTable-border>.ag-theme-material .ag-header-cell,
+.ag-theme-material .ag-header-group-cell {
+  border-right: 1px solid #e2e2e2;
+}
+
+.spinnerStyled.ant-spin-nested-loading {
+  height: 100%;
+
+}
+
+
+.spinnerStyled.ant-spin-nested-loading>.ant-spin-container {
+  height: 100%;
+}
+
+.ag-unselectable {
+  user-select: auto;
+}

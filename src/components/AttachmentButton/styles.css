@@ -1,0 +1,6 @@
+
+.ais-attachment-button, .ais-attachment-button:active,
+.ais-attachment-button:focus, .ais-attachment-button:hover {
+    background-color: #1F4664;
+    color: #ffff;
+}

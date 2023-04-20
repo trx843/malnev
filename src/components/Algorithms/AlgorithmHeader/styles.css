@@ -1,0 +1,13 @@
+.algorithm-header__header-item {
+  display: flex;
+}
+
+.algorithm-header__header-item__title {
+  line-height: 1.9rem;
+  width: 5.5rem;
+}
+
+.algorithm-header__header-item__value {
+  font-weight: 700;
+  font-size: 20px;
+}

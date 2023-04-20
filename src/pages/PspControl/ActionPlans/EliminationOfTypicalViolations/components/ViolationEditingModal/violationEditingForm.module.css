@@ -1,0 +1,15 @@
+.marked-title {
+  margin: 0 0 15px;
+  padding: 8px 12px;
+
+  color: #667985;
+  background-color: #E8F4FF;
+}
+
+.typical-violations-wrapper {
+  height: 200px;
+
+  /* padding-right: 50px; */
+
+  overflow-y: auto;
+}

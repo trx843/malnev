@@ -1,0 +1,59 @@
+.spin-wrapper,
+.spin-wrapper :global(.ant-spin-container) {
+  display: flex;
+  flex-grow: 1;
+}
+
+.spin-wrapper :global(.ant-spin-container) {
+  flex-direction: column;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  background-color: #ffffff;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+
+  width: 280px;
+  padding: 16px;
+
+  border-right: 1px solid #dde8f0;
+}
+
+.search-tree {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.search-tree :global(.ant-tree) {
+  flex-grow: 1;
+  height: 1px; /* чтобы работал overflow */
+  overflow: auto;
+}
+
+.right-bar {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-filter {
+  padding: 10px 0;
+}
+
+.filter-button {
+  color: #1890ff;
+}
+
+.select-statuses {
+  width: 100%;
+}
+
+.field-search {
+  margin-bottom: 0.5rem;
+}

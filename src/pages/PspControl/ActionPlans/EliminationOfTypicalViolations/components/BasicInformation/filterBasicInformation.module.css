@@ -1,0 +1,17 @@
+.wrapper {
+  width: 280px;
+  padding: 12px;
+
+  border-right: 1px solid #DDE8F0;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-text {
+  font-size: 16px;
+  color: #667985;
+}

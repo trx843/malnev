@@ -1,0 +1,24 @@
+.field-wrapper {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 50px;
+}
+
+.field-wrapper :global(.ant-form-item) {
+  margin: 0;
+}
+
+.input-search {
+  width: 200px;
+  margin-right: 50px;
+}
+
+.table {
+  height: 400px;
+}
+
+.table :global(.ag-row .ag-cell) {
+  display: block;
+  justify-content: initial;
+  align-items: initial;
+}

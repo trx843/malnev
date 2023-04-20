@@ -1,0 +1,16 @@
+.verification-acts__container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.verification-acts__content {
+    background-color: #ffff;
+    display: flex;
+    flex: 1 auto;
+}
+
+
+.verification-acts__page-header {
+    padding: 0 0 8px;
+}

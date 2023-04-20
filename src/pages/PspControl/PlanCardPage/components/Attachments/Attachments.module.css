@@ -1,0 +1,3 @@
+.attachmentsDrawer :global(.ant-drawer-body) {
+  display: flex;
+}

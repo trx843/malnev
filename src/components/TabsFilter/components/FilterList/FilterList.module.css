@@ -1,0 +1,22 @@
+.filterList {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.control {
+  flex-grow: 1;
+  margin-right: 15px;
+}
+
+.control_field {
+  width: 250px;
+}
+
+.control_textarea {
+  width: 515px;
+}
+
+.field {
+  width: 100%;
+}

@@ -1,0 +1,8 @@
+.modal :global(.ant-modal) {
+  max-width: 1000px;
+}
+
+:global(textarea).textArea:global(.ant-input) {
+  height: 86px;
+  resize: none;
+}

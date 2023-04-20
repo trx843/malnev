@@ -1,0 +1,12 @@
+.filters-tag__container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.filters-tag {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    cursor: pointer;
+}

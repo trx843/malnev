@@ -1,0 +1,55 @@
+.spin,
+.spin :global(.ant-spin-container) {
+  display: flex;
+  flex-grow: 1;
+}
+
+.spin :global(.ant-spin-container) {
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  background-color: white;
+  flex-grow: 1;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 280px;
+  padding: 16px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.searchTree {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.searchTree :global(.ant-tree) {
+  flex-grow: 1;
+  height: 1px; /* чтобы работал overflow */
+  overflow: auto;
+}
+
+.right-bar {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.modal-filters-control {
+  display: flex;
+  padding: 10px;
+}
+
+.table {
+  flex-grow: 1;
+}
+
+.pagination {
+  margin: 10px 0;
+}

@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f1f1;
+  height: 100%;
+  padding: 10px;
+}
+
+.title {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: #424242;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blue-button {
+  color: #1890FF;
+}

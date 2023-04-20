@@ -1,0 +1,29 @@
+.row-span-cell {
+  background-color: white;
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+
+:global(.ag-theme-material .ag-row-selected).row {
+  background-color: #FFFFFF;
+}
+
+.action-text-wrapper {
+  display: block !important;
+  padding: 0 !important;
+  white-space: normal;
+}
+
+.action-text-wrapper :global(.ag-react-container) {
+  height: 100%;
+}
+
+.action-text {
+  height: 100%;
+
+  padding: 5px 10px;
+
+  line-height: 24px;
+
+  overflow-wrap: break-word;
+  overflow-y: auto;
+}

@@ -1,0 +1,10 @@
+.psp-page__container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1;
+}
+
+.psp-page__breadcrumb {
+    margin-bottom: 10px;
+}

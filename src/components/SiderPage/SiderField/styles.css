@@ -1,0 +1,13 @@
+.side-info-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.side-info-field__container {
+    display: flex;
+}
+
+.side-info-field__container > [class*=ant-] {
+    width: 100%;
+}

@@ -1,0 +1,11 @@
+.ais-page-table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.ais-page-table__table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

@@ -1,0 +1,9 @@
+.table {
+  height: 300px;
+}
+
+:global(.ag-row) .cell {
+  align-items: flex-start;
+  word-break: break-word;
+  line-height: 27px
+}

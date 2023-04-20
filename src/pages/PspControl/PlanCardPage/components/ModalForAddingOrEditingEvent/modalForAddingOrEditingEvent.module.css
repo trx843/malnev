@@ -1,0 +1,29 @@
+.modal-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.form :global(.ant-form-item),
+.radio-wrapper {
+  margin-bottom: 15px;
+}
+
+.form :global(.ant-form-item:last-child) {
+  margin-bottom: 0;
+}
+
+.event-field {
+  resize: none
+}
+
+.elimination-term-field {
+  width: 280px;
+}
+
+.marked-title {
+  margin: 0 0 15px;
+  padding: 8px 12px;
+
+  color: #667985;
+  background-color: #E8F4FF;
+}
