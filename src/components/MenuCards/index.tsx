@@ -117,7 +117,7 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
           {userReportsList.length !== 0 && 
             <MenuCard key={"nav-userReportsList"}>
               <MenuCardTitle>
-                <MainTitleWrapper>
+                <MainTitleWrapper isTitle={true}>
                   <BoxIcon>
                     <PushpinFilled />
                   </BoxIcon>
