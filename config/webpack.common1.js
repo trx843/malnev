@@ -13,7 +13,8 @@ const getClientEnvironment = require("./env");
 const paths = require("./paths");
 
 //const DIST = resolve(__dirname, "..", "dist");
-const DIST = 'C:/TKO_Web/TkoWebApp';
+//const DIST = 'C:/TKO_Web/TkoWebApp';
+const DIST = '\\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp';
 
 const ENTRY_PATH = resolve(__dirname, "..", "src/index.tsx");
 const ENTRY_HTML_FILE = resolve(__dirname, "..", "public/index.html");

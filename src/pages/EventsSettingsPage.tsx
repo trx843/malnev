@@ -349,7 +349,7 @@ export const EventsSettingsPage: FunctionComponent = () => {
             <Col>
               <Row gutter={8}>
                 <Col>
-                  <LabelStyled isActive={!isCtrlEvents}>АИСМСС</LabelStyled>
+                  <LabelStyled isActive={!isCtrlEvents}>МКО ТКО</LabelStyled>
                 </Col>
                 <Col>
                   <Switch

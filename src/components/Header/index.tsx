@@ -81,7 +81,7 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
       })}
     </Menu>
   );
-
+  
   return (
     <>
       <HeaderStyled
@@ -155,11 +155,21 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
           <Col>
             <Row gutter={24} align={"middle"}>
               <Col>
-                <Dropdown overlay={menuList}>
-                  <div style={{ color: "white", float: "right" }}>
-                    {currentUser.domain}\{currentUser.login} <DownOutlined />
-                  </div>
-                </Dropdown>
+                {menuList.props.children.length === 0
+                  ? <div style={{
+                      color: "white",
+                      float: "right",
+                      fontWeight: 500,
+                      fontFamily: "Golos"
+                    }}>
+                      {currentUser.domain}\{currentUser.login}
+                    </div>
+                  : <Dropdown overlay={menuList}>
+                      <div style={{ color: "white", float: "right" }}>
+                        {currentUser.domain}\{currentUser.login} <DownOutlined />
+                      </div>
+                    </Dropdown>
+                }
               </Col>
               <Col>
                 {currentUser.hostNode != null ? (

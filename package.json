@@ -3,11 +3,39 @@
   "version": "1.0.0",
   "description": "tko web portal",
   "scripts": {
-    "build-prod": "rimraf -rf dist && node scripts/build.js && @powershell copy './public/configProd.js' './dist/config.js'",
-    "build-predprod": "rimraf -rf dist && node scripts/build.js && @powershell copy './public/configPredProd.js' './dist/config.js'",
-    "build": "rimraf -rf dist && node scripts/build.js",
+    "clean": "rimraf -rf C:/TKO_Web/TkoWebApp/",
+    "script-build": "node scripts/build.js",
+
+    "build-test": "npm run clean && npm run script-build && copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configTest.js\" \"C:\\TKO_Web\\TkoWebApp\\config.js\"",
+    "build-prod": "npm run clean && npm run script-build && copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configProd.js\" \"C:\\TKO_Web\\TkoWebApp\\config.js\"",
+
+    "clean-test1": "rimraf -rf \\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp\\",
+    "clean-test2": "rimraf -rf \\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp\\",
+
+    "script-build1": "node scripts/build1.js",
+    "script-build2": "node scripts/build2.js",
+
+    "copy-config-test1": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configTest.js\" \\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp\\config.js",
+    "copy-config-test2": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configTest.js\" \\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp\\config.js",
+
+    "copy-webconfig-test1": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\web.config\" \\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp\\web.config",
+    "copy-webconfig-test2": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\web.config\" \\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp\\web.config",
+
+    "build-test1" : "npm run clean-test1 && npm run script-build1 && npm run copy-config-test1 && npm run copy-webconfig-test1",
+    "build-test2" : "npm run clean-test2 && npm run script-build2 && npm run copy-config-test2 && npm run copy-webconfig-test2",
+
+    "build-test-all": "npm run build-test1 && npm run build-test2",
+
     "dev": "cross-env NODE_ENV=development webpack serve --mode development --open --config ./config/webpack.dev.js",
-    "start": "npm run dev",
+    "start": "npm run dev"
+  },
+  "scriptsTN": {
+    "build": "npm run clean && npm run script-build && copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\config.js\" \"C:\\TKO_Web\\TkoWebApp\\config.js\""
+  },
+  "scriptsOld": {    
+    "build": "rimraf -rf dist && node scripts/build.js",
+    "build-predprod": "rimraf -rf dist && node scripts/build.js && @powershell copy './public/configPredProd.js' './dist/config.js'",
+    "build-prod": "rimraf -rf dist && node scripts/build.js && @powershell copy './public/configProd.js' './dist/config.js'",
     "serve": "webpack-dev-server --mode development --open --hot --watch",
     "prod": "pm2 start server.js --name react-prod",
     "down": "pm2 stop react-prod"

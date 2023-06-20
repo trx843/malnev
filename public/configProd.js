@@ -3,48 +3,52 @@ let config = {
   / Настройки API 
   */
   api: {
-    url: "http://localhost/TkoRestApi",
+    url: "https://ndc01-pebkekp01.dc-prod.tn.corp/TkoRestApi",
   },
   /*
   / Конфигурация для кнопокв боковой панели действий
   */
-   buttons: {
+  buttons: {
     // Результаты КМХ и поверки
     report:
-      "http://localhost:8081/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Изменение%20коэффициентов%20СИ?EventFrameID=",
+      //"https://ndc01-pebkekt01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Изменение%20коэффициентов%20СИ?EventFrameID=",
+      "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Изменение%20коэффициентов%20СИ?EventFrameID=",
     // Изменение коэффициентов СИ
     protocolReport:
-      "http://localhost:8081/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Результаты%20КМХ%20и%20поверки?ControlMaintEventID=",
+      //"https://ndc01-pebkekt01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Результаты%20КМХ%20и%20поверки?ControlMaintEventID=",
+      "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Результаты%20КМХ%20и%20поверки?ControlMaintEventID=",
   },
   /*
     Префикс ссылок для разных систем в iframe
   */
   frame: {
-	// Для отчетов
-    report: "http://localhost:8081/",
-	// Для ГИС
-	gis: "https://gis.tn.corp/",
-	// Для PiVision
-	piVision: "http://localhost:8443/PIVision/#/Displays/",
+	  // Для отчетов
+    //report: "http://ndc01-pebkekt01.dc-prod.tn.corp:59448/",
+  	report: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/",
+	  // Для ГИС
+	  gis: "https://gis.tn.corp/",
+	  // Для PiVision
+	  //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
+    piVision: "https://ndc01-pebkekp01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
   },
    /*
   / Соответствие внешнийх ссылок с БД (внешние- котрые открываются в новой вкадке)
   */
   urlMapping: {
-	// Для PiVision
-    piVision: "http://localhost:8443/PIVision/#/",
-	// Надзор
-    supervision: "http://vdc01-pebpmkp01:7777/",
-	// Для grafana
-	grafana: "http://10.10.2.116",
-	// Для zabbix
+	  // Для PiVision
+    //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/",
+    piVision: "https://ndc01-pebkekp01.dc-prod.tn.corp:8443/PIVision/#/",
+    // Для grafana
+    grafana: "http://10.10.2.116",
+    // Для zabbix
     zabbix: "https://10.10.2.116/zabbix",
-	// Для ГИС
-	gis: "https://gis.tn.corp",
-  // Управление отчетами
-  reportedit: "http://localhost:8081/Reports/browse/%D0%90%D0%98%D0%A1%20%D0%9C%D0%A1%D0%A12"
+    // Для ГИС
+    gis: "https://gis.tn.corp",
+    // Управление отчетами
+    //reportedit: "https://ndc01-pebkekt01.dc-prod.tn.corp:59448/Reports/browse/TKO"
+    reportedit: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/Reports/browse/TKO"
   },
-   /*
+  /*
   / Использовать русский формат дат
   */
   isRussianDateFormat: true,

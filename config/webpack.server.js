@@ -12,10 +12,11 @@ const config = {
   },
   port: 8080,
   headers: {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'localhost:8081'
   },
   allowedHosts: [
-    'vdc01-deintkd01.com',
+    'localhost'
+    // 'vdc01-deintkd01.com' // дев стенд КРОКа    
   ],
 }
 

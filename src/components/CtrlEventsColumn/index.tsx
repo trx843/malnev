@@ -106,7 +106,7 @@ export const CtrlEventsColumn: FunctionComponent<EventsColumnProps> = (
             <Col>
               <Row gutter={8}>
                 <Col>
-                  <LabelStyled isActive={!props.isCtrl}>АИСМСС</LabelStyled>
+                  <LabelStyled isActive={!props.isCtrl}>МКО ТКО</LabelStyled>
                 </Col>
                 <Col>
                   <Switch

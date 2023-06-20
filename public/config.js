@@ -3,8 +3,8 @@ const config = {
   / Настройки API 
   */
   api: {
-    //url: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443"
-    url: "http://localhost:12345",
+    url: "http://localhost:8081/TkoRestApi",
+    // url: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443"    
     // Main DEV 'http://localhost:8080/TkoRestApi',
     // Second DEV API 'http://localhost:8081' Local DEV API 'http://localhost:8081'
   },
@@ -12,30 +12,35 @@ const config = {
   / Конфигурация для кнопок боковой панели действий
   */
   buttons: {
-    // Ссылка на отчет "Результаты КМХ и поверки"
+    // Результаты КМХ и поверки
     report:
-      "http://localhost:8081/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Изменение%20коэффициентов%20СИ?EventFrameID=",
+      //"https://ndc01-pebkekt01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Изменение%20коэффициентов%20СИ?EventFrameID=",
+      "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Изменение%20коэффициентов%20СИ?EventFrameID=",
     // Изменение коэффициентов СИ
     protocolReport:
-      "http://localhost:8081/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Результаты%20КМХ%20и%20поверки?ControlMaintEventID=",
+      //"https://ndc01-pebkekt01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Результаты%20КМХ%20и%20поверки?ControlMaintEventID=",
+      "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/Reports/report/АИС%20МСС2/ТО%20КМХ%20Поверка/Результаты%20КМХ%20и%20поверки?ControlMaintEventID=",
   },
   /*
     Префикс ссылок для разных систем в iframe
   */
   frame: {
     // Для отчетов
-    report: "http://localhost:8081/",
+    //report: "http://ndc01-pebkekt01.dc-prod.tn.corp:59448/",
+    report: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/",
     // Для ГИС
     gis: "https://gis.tn.corp/",
     // Для PiVision
-    piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
+    //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
+    piVision: "https://ndc01-pebkekp01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
   },
   /*
   / Соответствие внешнийх ссылок с БД (внешние - которые открываются в новой вкладке)
   */
   urlMapping: {
     // Для PiVision
-    piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/",
+    //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/",
+    piVision: "https://ndc01-pebkekp01.dc-prod.tn.corp:8443/PIVision/#/",
     // Для grafana
     grafana: "http://10.10.2.116",
     // Для zabbix
@@ -43,7 +48,8 @@ const config = {
     // Для ГИС
     gis: "https://gis.tn.corp",
     // Управление отчетами
-    reportedit: "http://localhost:8081/Reports/browse/%D0%90%D0%98%D0%A1%20%D0%9C%D0%A1%D0%A12"
+    //reportedit: "https://ndc01-pebkekt01.dc-prod.tn.corp:59448/Reports/browse/TKO"
+    reportedit: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/Reports/browse/TKO"
   },
   /*
   / Использовать русский формат дат

@@ -301,7 +301,7 @@ export const CreateVerificationActModal: FC<CreateActModalProps> = ({
     else
     {
       formik.setFieldValue("preparedOn", verificatedOnDate);
-      openNotification("Уведомление", "В АИСМСС не заполнен производственный календарь. Обратитесь к администратору либо проставьте Дату подготовки плана самостоятельно");
+      openNotification("Уведомление", "В МКО ТКО не заполнен производственный календарь. Обратитесь к администратору либо проставьте Дату подготовки плана самостоятельно");
     }
   };
 
