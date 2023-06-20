@@ -1,4 +1,5 @@
 import { Modal, Tooltip, Menu, Row, Col, Spin } from "antd";
+import { PushpinFilled } from "@ant-design/icons";
 import { FunctionComponent, useState } from "react";
 import { history } from "../../history/history";
 import {
@@ -92,12 +93,61 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
         </MenuStyled.Item>
       );
     }
-  };
+  };  
+
+  // массив личных отчетов
+  const userReportsList = [
+    {
+      id: 1,
+      name: 'Отчет 1',
+      link: 'report_1'
+    },
+    {
+      id: 2,
+      name: 'Отчет 2',
+      link: 'report_2'
+    },
+  ];
 
   return (
     <>
       <CardColumnsWrapper>
         <MenuCardColumns>
+          {/* вывод личных отчетов */}
+          {userReportsList.length !== 0 && 
+            <MenuCard key={"nav-userReportsList"}>
+              <MenuCardTitle>
+                <MainTitleWrapper>
+                  <BoxIcon>
+                    <PushpinFilled />
+                  </BoxIcon>
+                  <Title isTitle={true}>Мои отчеты</Title>
+                </MainTitleWrapper>
+              </MenuCardTitle>
+              <MenuCard.Body>
+                <ReportsMenuStyled mode="inline">
+                  <MenuStyled.SubMenu
+                    key="subUserReportsList"
+                    title="Построить отчет"
+                  >
+                    {userReportsList.map((report) =>
+                      <MenuStyled.Item key={`user-report-${report.id}`}>
+                        <TitleWrapper>
+                          <LinkStyled
+                            target="_blank"
+                            to={report.link}
+                            rel="noopener noreferrer"
+                          >
+                            {report.name}
+                          </LinkStyled>
+                        </TitleWrapper>
+                      </MenuStyled.Item>)}
+                  </MenuStyled.SubMenu>
+                </ReportsMenuStyled>
+              </MenuCard.Body>
+            </MenuCard>}
+
+          {/* вывод вебфичей из БД */}
           {navs.map((nav) => (
             <MenuCard key={`nav${nav.id}`}>
               <MenuCardTitle>

@@ -1,4 +1,4 @@
-import { HomeFilled } from "@ant-design/icons";
+import { HomeFilled, PushpinFilled } from "@ant-design/icons";
 import { Menu, Modal } from "antd";
 import { useState } from "react";
 import { FC } from "react";
@@ -97,6 +97,20 @@ export const MenuSider: FC<MenuSiderProps> = ({
       }
     }
   }
+
+  // массив личных отчетов
+  const userReportsList = [
+    {
+      id: 1,
+      name: 'Отчет 1',
+      link: 'report_1'
+    },
+    {
+      id: 2,
+      name: 'Отчет 2',
+      link: 'report_2'
+    },
+  ];
   
   return (
     <>
@@ -127,11 +141,37 @@ export const MenuSider: FC<MenuSiderProps> = ({
           >
             Главная
           </Menu.Item>
+          
+          {/* вывод личных отчетов */}
+          {userReportsList.length !== 0 &&
+            <SubMenu
+              key="userReportsList"
+              icon={<PushpinFilled />}
+              title="Мои отчеты"
+            >
+              <SubMenu
+                key="subUserReportsList"
+                title="Построить отчет"
+              >
+                {userReportsList.map((report) =>
+                  <Menu.Item key={`user-report-${report.id}`}>
+                    <AStyled
+                      target="_blank"
+                      href={report.link}
+                      rel="noopener noreferrer"
+                    >
+                      {report.name}
+                    </AStyled>
+                  </Menu.Item>)}
+              </SubMenu>
+            </SubMenu>}
+
           {navs.map((nav) => {
             return drawNav(nav, nav.isTitle);
           })}
         </Menu>
       </SiderStyled>
+
       <Modal
         visible={orgStructureModalVisible}
         title={`Обзор объектов`}
