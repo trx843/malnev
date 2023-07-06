@@ -20,6 +20,7 @@ interface MenuSiderProps {
   currentUser: User;
   currentSelectedMenuKey: string;
 }
+
 export const MenuSider: FC<MenuSiderProps> = ({
   currentUser,
   currentSelectedMenuKey,
@@ -29,7 +30,14 @@ export const MenuSider: FC<MenuSiderProps> = ({
 
   const map = new Map(Object.entries(config.urlMapping));
 
+  // личные отчеты
+  const userReportsList = currentUser.webFeaturesTypes.userReportsList.map((report) => ({
+    ...report,
+    link: `/frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
+  }));
+
   const navs = currentUser.webFeaturesTypes.cards;
+
   const [collapsed, collapse] = useState(true);
   const [orgStructureModalVisible, setOrgStructureModalVisible] =
     useState(false);
@@ -97,20 +105,6 @@ export const MenuSider: FC<MenuSiderProps> = ({
       }
     }
   }
-
-  // массив личных отчетов
-  const userReportsList = [
-    {
-      id: 1,
-      name: 'Отчет 1',
-      link: 'report_1'
-    },
-    {
-      id: 2,
-      name: 'Отчет 2',
-      link: 'report_2'
-    },
-  ];
   
   return (
     <>

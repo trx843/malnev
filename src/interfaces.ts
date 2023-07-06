@@ -709,10 +709,17 @@ export interface IFeatureElements {
 }
 
 export interface WebFeaturesTypes {
+  userReportsList: IMenuUserReports[];
   cards: IMenuNav[];
   underUserNameList: IMenuNav[];
   special: IMenuNav[];
 }
+
+export interface IMenuUserReports {
+  id: string;
+  name: string;
+}
+
 export interface IMenuNav {
   id: string;
   name: string;

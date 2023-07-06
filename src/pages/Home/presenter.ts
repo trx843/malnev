@@ -90,9 +90,15 @@ const usePresenter = () => {
   const isCtrl = isCtrlEvents;
 
   const urlMapping = new Map(Object.entries(config.urlMapping));
+
   const currentUser = user;
+
+  // личные отчеты
+  const userReportsList = currentUser.webFeaturesTypes.userReportsList;
+
   // Навигационное меню
   const navs = cards;
+
   // Идентификатор пользователя
   const userId = currentUser.id;
 
@@ -127,6 +133,7 @@ const usePresenter = () => {
       })
     );
   };
+
   const onSwitch = () => {
     dispatch(setIsCtrlEvents(!isCtrl));
   };
@@ -210,12 +217,14 @@ const usePresenter = () => {
       })
     );
   }, [ctrlEventsState.ctrlFilterValues]);
+
   useEffect(() => {
     if (isCtrl) {
       // Первая инициализация филтров и данных по карточке
       dispatch(getCtrlCardEventsFiltersTC({ userId: userId }));
     }
   }, [isCtrl]);
+
   useEffect(() => {
     if (isCtrl) {
       // Загрузка данных по фильтрам
@@ -266,6 +275,7 @@ const usePresenter = () => {
       message.error("Отсутсвует ссылка на объект события");
       return;
     }
+
     if (!event.isAcquaintance)
       dispatch(
         сtrlCardsEventHandleTC({
@@ -289,6 +299,7 @@ const usePresenter = () => {
 
   return {
     urlMapping,
+    userReportsList,
     navs,
     filtersLoading,
     isLoading,

@@ -12,6 +12,7 @@ import { CtrlEventsColumn } from "components/CtrlEventsColumn";
 export const Home: FunctionComponent = () => {
   const {
     urlMapping,
+    userReportsList,
     navs,
     filtersLoading,
     isLoading,
@@ -54,6 +55,7 @@ export const Home: FunctionComponent = () => {
           {/* карточки на главной странице */}
           <MenuCards
             isEventsCountLoading={isEventsCountLoading}
+            userReportsList={userReportsList}
             navs={navs}
             onWidgetClick={onWidgetClick}
             urlMapping={urlMapping}

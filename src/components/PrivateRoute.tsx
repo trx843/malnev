@@ -8,13 +8,15 @@ export const PrivateRoute: FunctionComponent<RouteProps> = (
   props: RouteProps
 ) => {
   const userJsonStr = localStorage.getItem("userContext");
-  // защита закрытого роута
 
+  // защита закрытого роута
   if (userJsonStr === null) {
     history.push("/"); // если нет прав, то редирект на главную страницу
   } else {
     const user = JSON.parse(userJsonStr) as User;
+
     const pathname = props.location?.pathname as string;
+
     const cannotByStartWith = (): boolean =>
       user.featuresList
         .map((x) => x.route)
@@ -23,10 +25,17 @@ export const PrivateRoute: FunctionComponent<RouteProps> = (
         }, pathname) == -1;
 
     const ability = useContext(AbilityContext);
+
     const cannot = ability.cannot(ActionsEnum.Go, pathname);
-    if (pathname && (cannot ? cannotByStartWith() : cannot)) {
+
+    if (
+      pathname
+      && pathname.indexOf('myreport') === -1 // условие для личных отчетов
+      && (cannot ? cannotByStartWith() : cannot)
+    ) {
       history.push("/");
     }
+
     return (
       <Route
         exact={props.exact}

@@ -22,7 +22,7 @@ import {
 } from "./styledComp";
 import DynamicIcon from "../DynamicIcon";
 import { OrgStructureTree } from "../OrgStructureTree";
-import { IMenuNav } from "../../interfaces";
+import { IMenuNav, IMenuUserReports } from "../../interfaces";
 import { TitleWrapper } from "../../pages/Home/styledComp";
 import { AStyled, LinkStyled } from "../../styles/commonStyledComponents";
 import { useDispatch } from "react-redux";
@@ -30,6 +30,7 @@ import { setCurrentSelectedMenuKey } from "slices/home";
 import { WebFeatureLinkTypes } from "enums";
 
 interface MenuCardsProps {
+  userReportsList: IMenuUserReports[];
   navs: IMenuNav[];
   urlMapping: Map<string, string>;
   onWidgetClick: (nav: IMenuNav, critical: boolean) => Promise<void>;
@@ -37,6 +38,7 @@ interface MenuCardsProps {
 }
 
 export const MenuCards: FunctionComponent<MenuCardsProps> = ({
+  userReportsList,
   navs,
   urlMapping,
   onWidgetClick,
@@ -50,6 +52,14 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
   const onChangeCallback = (e: any) => {
     dispatch(setCurrentSelectedMenuKey(e.key));
   };
+
+  // личные отчеты
+  const userReports = userReportsList.map((report) => ({
+    ...report,
+    link: `/frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
+  }));
+
+  console.log(userReports);  
 
   const drawNav = (nav: IMenuNav, isTitle: boolean) => {
     const anotherSystemUrl = urlMapping.get(nav.linkType);
@@ -93,29 +103,15 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
         </MenuStyled.Item>
       );
     }
-  };  
-
-  // массив личных отчетов
-  const userReportsList = [
-    {
-      id: 1,
-      name: 'Отчет 1',
-      link: 'report_1'
-    },
-    {
-      id: 2,
-      name: 'Отчет 2',
-      link: 'report_2'
-    },
-  ];
+  };
 
   return (
     <>
       <CardColumnsWrapper>
         <MenuCardColumns>
           {/* вывод личных отчетов */}
-          {userReportsList.length !== 0 && 
-            <MenuCard key={"nav-userReportsList"}>
+          {userReports.length !== 0 && 
+            <MenuCard key={"nav-userReports"}>
               <MenuCardTitle>
                 <MainTitleWrapper isTitle={true}>
                   <BoxIcon>
@@ -127,10 +123,10 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
               <MenuCard.Body>
                 <ReportsMenuStyled mode="inline">
                   <MenuStyled.SubMenu
-                    key="subUserReportsList"
+                    key="subUserReports"
                     title="Построить отчет"
                   >
-                    {userReportsList.map((report) =>
+                    {userReports.map((report) =>
                       <MenuStyled.Item key={`user-report-${report.id}`}>
                         <TitleWrapper>
                           <LinkStyled

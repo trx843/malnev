@@ -23,6 +23,7 @@ export class User {
   featuresList: IFeature[] = [];
   featureElementsList: IFeatureElements[] = [];
   webFeaturesTypes: WebFeaturesTypes = {
+    userReportsList: [],
     cards: [],
     underUserNameList: [],
     special: [],
