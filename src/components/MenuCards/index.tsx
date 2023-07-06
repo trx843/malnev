@@ -59,8 +59,6 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
     link: `/frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
   }));
 
-  console.log(userReports);  
-
   const drawNav = (nav: IMenuNav, isTitle: boolean) => {
     const anotherSystemUrl = urlMapping.get(nav.linkType);
     if (isTitle) {
