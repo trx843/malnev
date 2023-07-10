@@ -12,19 +12,37 @@
     "clean-test1": "rimraf -rf \\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp\\",
     "clean-test2": "rimraf -rf \\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp\\",
 
-    "script-build1": "node scripts/build1.js",
-    "script-build2": "node scripts/build2.js",
+    "clean-prod1": "rimraf -rf \\\\VDC01-PEBKEKPN1\\c$\\TKO_Web\\TkoWebApp\\",
+    "clean-prod2": "rimraf -rf \\\\VDC01-PEBKEKPN2\\c$\\TKO_Web\\TkoWebApp\\",
+
+    "script-build-test1": "node scripts/build-test1.js",
+    "script-build-test2": "node scripts/build-test2.js",
+
+    "script-build-prod1": "node scripts/build-prod1.js",
+    "script-build-prod2": "node scripts/build-prod2.js",
 
     "copy-config-test1": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configTest.js\" \\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp\\config.js",
     "copy-config-test2": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configTest.js\" \\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp\\config.js",
 
+    "copy-config-prod1": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configProd.js\" \\\\VDC01-PEBKEKPN1\\c$\\TKO_Web\\TkoWebApp\\config.js",
+    "copy-config-prod2": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\configProd.js\" \\\\VDC01-PEBKEKPN2\\c$\\TKO_Web\\TkoWebApp\\config.js",
+
     "copy-webconfig-test1": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\web.config\" \\\\VDC01-PEBKEKTN1\\c$\\TKO_Web\\TkoWebApp\\web.config",
     "copy-webconfig-test2": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\web.config\" \\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp\\web.config",
 
-    "build-test1" : "npm run clean-test1 && npm run script-build1 && npm run copy-config-test1 && npm run copy-webconfig-test1",
-    "build-test2" : "npm run clean-test2 && npm run script-build2 && npm run copy-config-test2 && npm run copy-webconfig-test2",
+    "copy-webconfig-prod1": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\web.config\" \\\\VDC01-PEBKEKPN1\\c$\\TKO_Web\\TkoWebApp\\web.config",
+    "copy-webconfig-prod2": "copy \"C:\\TKO_Sources\\TKO\\TkoWebApp\\public\\web.config\" \\\\VDC01-PEBKEKPN2\\c$\\TKO_Web\\TkoWebApp\\web.config",
+
+    "build-test1" : "npm run clean-test1 && npm run script-build-test1 && npm run copy-config-test1 && npm run copy-webconfig-test1",
+    "build-test2" : "npm run clean-test2 && npm run script-build-test2 && npm run copy-config-test2 && npm run copy-webconfig-test2",
+
+    "build-prod1" : "npm run clean-prod1 && npm run script-build-prod1 && npm run copy-config-prod1 && npm run copy-webconfig-prod1",
+    "build-prod2" : "npm run clean-prod2 && npm run script-build-prod2 && npm run copy-config-prod2 && npm run copy-webconfig-prod2",
 
     "build-test-all": "npm run build-test1 && npm run build-test2",
+    "build-prod-all": "npm run build-prod1 && npm run build-prod2",
+
+    "build-everything": "npm run build-test-all && build-prod-all",
 
     "dev": "cross-env NODE_ENV=development webpack serve --mode development --open --config ./config/webpack.dev.js",
     "start": "npm run dev"

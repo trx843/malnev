@@ -54,10 +54,12 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
   };
 
   // личные отчеты
-  const userReports = userReportsList.map((report) => ({
-    ...report,
-    link: `/frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
-  }));
+  const userReports = userReportsList
+    ? userReportsList.map((report) => ({
+        ...report,
+        route: `frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
+      }))
+    : [];  
 
   const drawNav = (nav: IMenuNav, isTitle: boolean) => {
     const anotherSystemUrl = urlMapping.get(nav.linkType);
@@ -129,7 +131,7 @@ export const MenuCards: FunctionComponent<MenuCardsProps> = ({
                         <TitleWrapper>
                           <LinkStyled
                             target="_blank"
-                            to={report.link}
+                            to={report.route}
                             rel="noopener noreferrer"
                           >
                             {report.name}

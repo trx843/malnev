@@ -7,7 +7,7 @@ const BrotliPlugin = require("brotli-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-const common = require("./webpack.common-prod1.js");
+const common = require("./webpack.common-test1.js");
 
 module.exports = merge(common, {
   mode: "production",

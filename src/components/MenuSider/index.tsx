@@ -31,10 +31,14 @@ export const MenuSider: FC<MenuSiderProps> = ({
   const map = new Map(Object.entries(config.urlMapping));
 
   // личные отчеты
-  const userReportsList = currentUser.webFeaturesTypes.userReportsList.map((report) => ({
-    ...report,
-    link: `/frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
-  }));
+  const userReportsList = currentUser.webFeaturesTypes.userReportsList;
+
+  const userReports = userReportsList
+    ? currentUser.webFeaturesTypes.userReportsList.map((report) => ({
+        ...report,
+        route: `frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
+      }))
+    : [];
 
   const navs = currentUser.webFeaturesTypes.cards;
 
@@ -137,7 +141,7 @@ export const MenuSider: FC<MenuSiderProps> = ({
           </Menu.Item>
           
           {/* вывод личных отчетов */}
-          {userReportsList.length !== 0 &&
+          {userReports.length !== 0 &&
             <SubMenu
               key="userReportsList"
               icon={<PushpinFilled />}
@@ -147,11 +151,11 @@ export const MenuSider: FC<MenuSiderProps> = ({
                 key="subUserReportsList"
                 title="Построить отчет"
               >
-                {userReportsList.map((report) =>
+                {userReports.map((report) =>
                   <Menu.Item key={`user-report-${report.id}`}>
                     <AStyled
                       target="_blank"
-                      href={report.link}
+                      href={report.route}
                       rel="noopener noreferrer"
                     >
                       {report.name}

@@ -4,4 +4,4 @@ if (shell.exec('cross-env NODE_ENV=production webpack --mode production --config
   shell.exit(1);
 }
 
-shell.cp('-R', 'public/config.js', '\\\\VDC01-PEBKEKTN2\\c$\\TKO_Web\\TkoWebApp');
+shell.cp('-R', 'public/config.js', '\\\\VDC01-PEBKEKPN2\\c$\\TKO_Web\\TkoWebApp');

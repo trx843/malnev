@@ -1,6 +1,6 @@
 const shell = require('shelljs');
 
-if (shell.exec('cross-env NODE_ENV=production webpack --mode production --config ./config/webpack.prod1.js').code !== 0) {
+if (shell.exec('cross-env NODE_ENV=production webpack --mode production --config ./config/webpack.test1.js').code !== 0) {
   shell.exit(1);
 }
 
