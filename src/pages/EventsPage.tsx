@@ -210,7 +210,8 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
             </Col>
           </FilterRowStyled>
 
-          <FilterRowStyled $collapsed={collapsed}>
+          {/* Фильтрация событий по дереву */}
+          {/* <FilterRowStyled $collapsed={collapsed}>
             <Col>
               <FilterItemLabelStyled>Выберите объект в дереве</FilterItemLabelStyled>
             </Col>
@@ -228,7 +229,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
                 filterDate={endDate}
               />
             </Col>
-          </WrapperTreeRowStyled>
+          </WrapperTreeRowStyled> */}
         </SiderFilterStyled>
 
         <Content>
