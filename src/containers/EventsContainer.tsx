@@ -359,6 +359,9 @@ class EventsContainer extends Component<
               "mssEventSeverityLevels",
               "isAcknowledgedStatus",
               "extendTime",
+              "acknowledgedBy",
+              "isAcknowledged",
+              "acknowledgedTimestamp",
             ]}
             selectionCallback={this.selectionHandler}
             setApiCallback={this.setApi}
@@ -464,7 +467,7 @@ class EventsContainer extends Component<
                 comparator: () => 0,
               },
               {
-                headerName: "Тип события АИС МСС",
+                headerName: "Тип события МКО ТКО",
                 field: "mssEventTypeName",
                 sortable: true,
                 comparator: () => 0,

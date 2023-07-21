@@ -7,28 +7,40 @@ import { MssEventSecurityLevel } from "./MssEventSecurityLevel";
 export class EventItem implements IEntity {
   id: string = zeroGuid;
   siknId: Nullable<number>;
+
   @description("Риск")
   riskRatio: number = 0;
+
   @description("Начало")
   startDateTime: Date = pureDate(new Date());
+
   @description("Окончание")
   endDateTime: Nullable<Date> = pureDate(new Date());
+
   @description("СИКН")
   siknFullName: string = "";
+
   @description("ПСП")
   pspName: string = "";
+
   @description("Идентификатор технологической позиции")
   techPositionId: Nullable<number> = 0;
+
   @description("Технологическая позиция")
   techPositionName: string = "";
+
   @description("Идентификатор СИ")
   siId: String = zeroGuid;
-  @description("Идентификатор события АИС МСС")
+
+  @description("Идентификатор события МКО ТКО")
   mssEventTypeId: number = 0;
-  @description("Тип события АИС МСС")
+
+  @description("Тип события МКО ТКО")
   mssEventTypeName: string = "";
+
   @description("Критичность")
   mssEventSeverityLevelName: string = "";
+
   mssEventSeverityLevels: MssEventSecurityLevel = {
     id: 0,
     shortName: "н/д",
@@ -37,19 +49,27 @@ export class EventItem implements IEntity {
 
   @description("Достоверность")
   resultQualityID: Nullable<number> = 0;
+
   @description("Достоверность")
   resultQualityShortName: string = "";
+
   @description("Событие")
   eventName: string = "";
+
   isAcknowledged: number = 0;
+
   @description("Признак квитирования")
   isAcknowledgedStatus: string = "";
+
   @description("Комментарий")
   comment: string = "";
+
   @description("Время квитирования")
   acknowledgedTimestamp: Nullable<Date> = pureDate(new Date());
+
   @description("Кем было квитировано")
   acknowledgedBy: string = "";
+  
   mssEventSeverityLevelId: number = 0;
   afPath: string;
   attributeNameList: Array<string>;
