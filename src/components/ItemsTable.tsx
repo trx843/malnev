@@ -254,6 +254,7 @@ export function ItemsTable<T extends object>(
 
     return obj;
   });
+
   const frameworkComponents = {
     checkboxRenderer: CheckBoxCell,
     reportBtnRenderer: ReportButton,

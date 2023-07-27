@@ -43,6 +43,7 @@ import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
 import { ReloadOutlined } from "@ant-design/icons";
 import "../styles/app";
 import { ExportFilterTableButton } from "components/ExportFilterTableButton";
+
 interface EventsContainerState {
   commentModalVisible: boolean;
   levelFilter: number | null;
@@ -56,13 +57,16 @@ enum SortableFields {
   startDateTime = "StartDateTime",
   endDateTime = "EndDateTime",
   siknFullName = "SIKNRSU.FullName",
+  sikn = "SIKN",
   pspName = "SIKNRSU.PSP.FullName",
+  receivingPoint = "ReceivingPoint",
+  techPositionName = "TechPositions.FullName",
+  techposition = "Techposition",
   comment = "Comment",
   eventName = "EventName",
   isAcknowledged = "IsAcknowledged",
   acknowledgedBy = "AcknowledgedBy",
   resultQualityID = "ResultQuality.ShortName",
-  techPositionName = "TechPositions.FullName",
   mssEventTypeName = "MSSEventTypes.ShortName",
   mssEventSeverityLevelName = "MSSEventSeverityLevels.ShortName",
   acknowledgedTimestamp = "AcknowledgedTimestamp",
@@ -254,6 +258,7 @@ class EventsContainer extends Component<
             const index = this.props.items.entities.findIndex(
               (x) => x.id === item.id
             );
+
             if (index != -1) {
               // все элементы до обновлённого
               const data = this.props.items.entities.slice(0, index);
@@ -271,8 +276,10 @@ class EventsContainer extends Component<
                 pageInfo: this.props.items.pageInfo,
               });
             }
+
             this.props.select(null);
           }
+          
           this.setState({ commentModalVisible: false });
           resolve();
         })
@@ -346,6 +353,8 @@ class EventsContainer extends Component<
             isSortableDisabled
             items={entities}
             fields={new ObjectFields(EventItem).getFields()}
+
+            // скрытые столбцы
             hiddenColumns={[
               "id",
               "siknId",
@@ -362,9 +371,15 @@ class EventsContainer extends Component<
               "acknowledgedBy",
               "isAcknowledged",
               "acknowledgedTimestamp",
+              "siknFullName",
+              "pspName",
+              "techPositionName"
             ]}
+
             selectionCallback={this.selectionHandler}
+
             setApiCallback={this.setApi}
+
             actionColumns={[
               {
                 headerName: "Действия",
@@ -373,6 +388,7 @@ class EventsContainer extends Component<
                 minWidth: 100,
               },
             ]}
+
             widths={[
               {
                 key: "startDateTime",
@@ -386,8 +402,22 @@ class EventsContainer extends Component<
                 key: "siknFullName",
                 newWidth: 200,
               },
+              // СИКН
+              {
+                key: "sikn",
+                newWidth: 200,
+              },
+              // ПСП
+              {
+                key: "receivingPoint",
+                newWidth: 200,
+              },
               {
                 key: "techPositionName",
+                newWidth: 200,
+              },
+              {
+                key: "techposition",
                 newWidth: 200,
               },
               {
@@ -411,6 +441,8 @@ class EventsContainer extends Component<
                 newWidth: 175,
               },
             ]}
+
+            // фильтрация
             replaceColumns={[
               {
                 headerName: "Начало",
@@ -432,6 +464,13 @@ class EventsContainer extends Component<
                 comparator: () => 0,
               },
               {
+                headerName: "СИКН",
+                field: "sikn",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },
+              {
                 headerName: "ПСП",
                 field: "pspName",
                 filter: "customTextTableFilter",
@@ -439,8 +478,22 @@ class EventsContainer extends Component<
                 comparator: () => 0,
               },
               {
+                headerName: "ПСП",
+                field: "receivingPoint",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },              
+              {
                 headerName: "Технологическая позиция",
                 field: "techPositionName",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },
+              {
+                headerName: "Технологическая позиция",
+                field: "techposition",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,

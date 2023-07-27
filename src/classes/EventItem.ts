@@ -20,14 +20,23 @@ export class EventItem implements IEntity {
   @description("СИКН")
   siknFullName: string = "";
 
+  @description("СИКН")
+  sikn: string = "";
+
   @description("ПСП")
   pspName: string = "";
 
-  @description("Идентификатор технологической позиции")
-  techPositionId: Nullable<number> = 0;
+  @description("ПСП")
+  receivingPoint: string = "";
 
   @description("Технологическая позиция")
   techPositionName: string = "";
+
+  @description("Технологическая позиция")
+  techposition: string = "";
+
+  @description("Идентификатор технологической позиции")
+  techPositionId: Nullable<number> = 0;  
 
   @description("Идентификатор СИ")
   siId: String = zeroGuid;

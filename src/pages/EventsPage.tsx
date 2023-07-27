@@ -63,6 +63,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
   const [startDate, setStartDate] = useState<Date>(
     pageState.filterDates.startDate
   );
+
   const [endDate, setEndDate] = useState<Date>(pageState.filterDates.endDate);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [treeData, setTreeData] = useState<Array<SqlTree>>([]);
@@ -72,12 +73,14 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
     setCurrentNodeKey(change.key);
     dispatch(nodeChanged(change));
   };
+
   const ownedFilterChanged = (type: OwnedType) => {
     dispatch(eventOwnedFilter(type));
   };
 
   const onTreeChange = (checked: boolean) => {
     let viewName: string = techPosTreeConstant;
+
     if (checked) {
       viewName = siEqTreeConstant;
       setViewName(viewName);
@@ -85,6 +88,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
       viewName = techPosTreeConstant;
       setViewName(viewName);
     }
+
     dispatch(treeChanged(viewName));
   };
 
@@ -112,7 +116,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
 
   const disabledDateNow = (current: moment.Moment) => {
     return current > moment();
-  };
+  }; 
 
   return (
     <PageLayoutStyled>
