@@ -27,7 +27,8 @@ const initialState: IEventsState = {
     isSiType: false,
   },
   filterDates: {
-    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    //startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
     endDate: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
