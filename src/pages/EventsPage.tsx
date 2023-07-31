@@ -214,7 +214,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
             </Col>
           </FilterRowStyled>
 
-          {/* Фильтрация событий по дереву */}
+          {/* дерево ТП */}
           <FilterRowStyled $collapsed={collapsed}>
             <Col>
               <FilterItemLabelStyled>Выберите объект в дереве</FilterItemLabelStyled>

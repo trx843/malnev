@@ -66,6 +66,7 @@ const DefaultTitleRender: React.FC<IDefaultTitleRenderProps> = ({
     </div>
   );
 };
+
 DefaultTitleRender.defaultProps = {
   icon: <InfoCircleOutlined />,
   onClickIcon: () => {},
@@ -237,6 +238,7 @@ export class SearchTree extends Component<ISearchTreeProps, ISearchTreeState> {
 
   onChange = (e: any) => {
     const value = e.target.value?.toLowerCase();
+
     const expandedKeys = dataList
       .map((item) => {
         if (item.title.toLowerCase().indexOf(value) > -1) {
@@ -245,6 +247,7 @@ export class SearchTree extends Component<ISearchTreeProps, ISearchTreeState> {
         return "";
       })
       .filter((item, i, self) => item && self.indexOf(item) === i);
+
     if (value) {
       const hasSearchTerm = (n: string) =>
         n.toLowerCase().indexOf(value) !== -1;
@@ -374,6 +377,7 @@ export class SearchTree extends Component<ISearchTreeProps, ISearchTreeState> {
         };
       });
     };
+
     return (
       <div className={className}>
         {!withoutFilters && (
@@ -401,7 +405,9 @@ export class SearchTree extends Component<ISearchTreeProps, ISearchTreeState> {
             </Select>
           </React.Fragment>
         )}
-        {this.props.isSiEq ? (
+
+        {/* переключатель ТП/СИ (скрыт, не используется) */}
+        {/* {this.props.isSiEq ? (
           <Space>
             <Tooltip title="Технологическая позиция">
               <LabelStyled isActive={this.state.isTechPosTree}>ТП</LabelStyled>
@@ -421,7 +427,8 @@ export class SearchTree extends Component<ISearchTreeProps, ISearchTreeState> {
           </Space>
         ) : (
           <div></div>
-        )}
+        )} */}
+
         {this.props.customFieldsChildren}
         {this.state.loading ? (
           <div style={{ marginTop: 300, textAlign: "center" }}>

@@ -193,10 +193,12 @@ export const SiderFilterStyled = styled(Sider)<{ collapsed: boolean }>`
 export const FilterRowStyled = styled(Row)`
   display: ${(props: { $collapsed: boolean }) =>
     props.$collapsed ? "none" : "block"};
-  margin-top: 10px;
+  margin-top: 15px;
 `;
+
 export const FilterItemLabelStyled = styled.label`
   color: #667985;
+  margin-bottom: 10px;
 `;
 
 export const WrapperTreeRowStyled = styled(Row)`

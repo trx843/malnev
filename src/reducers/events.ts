@@ -28,7 +28,7 @@ const initialState: IEventsState = {
   },
   filterDates: {
     //startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-    startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
+    startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1), // диапазон дат по умолчанию со вчера до сегодня
     endDate: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
