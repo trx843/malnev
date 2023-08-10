@@ -14,4 +14,5 @@ export class SqlTree implements SelectedNode {
     disabled: boolean;
     enabled: boolean;
     parentNodeKey: string = '';
+    isLeaf: boolean;
 }

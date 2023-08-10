@@ -33,7 +33,16 @@ import { OwnedType, StateType } from "../types";
 import { SqlTree } from "../classes/SqlTree";
 import { RouteComponentProps } from "react-router-dom";
 import { FilterType } from "../api/params/get-events-params";
-import { FilterItemLabelStyled, FilterRowStyled, FilterSearchTreeStyled, PageLayoutStyled, SiderFilterStyled, WrapperTreeRowStyled } from "../styles/commonStyledComponents";
+import {
+  FilterItemLabelStyled,
+  FilterRowStyled,
+  FilterSearchTreeStyled,
+  PageLayoutStyled,
+  SiderFilterStyled,
+  TkoTreeStyled,
+  WrapperTreeRowStyled
+} from "../styles/commonStyledComponents";
+// import TkoTree from "components/TkoTree";
 
 const { Content } = Layout;
 
@@ -116,7 +125,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
 
   const disabledDateNow = (current: moment.Moment) => {
     return current > moment();
-  }; 
+  };
 
   return (
     <PageLayoutStyled>
@@ -222,7 +231,8 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
           </FilterRowStyled>
           <WrapperTreeRowStyled $collapsed={collapsed}>
             <Col span={24} style={{ height: "100%" }}>
-              <FilterSearchTreeStyled
+              {/* старое дерево */}
+              {/* <FilterSearchTreeStyled
                 isSiEq={true}
                 treeViewName={viewName}
                 onSelectCallback={onSelect}
@@ -231,7 +241,10 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
                 currentNodeKey={currentNodeKey}
                 ownFilterValue={pageState.ownedFilter}
                 filterDate={endDate}
-              />
+              /> */}
+
+              {/* новое дерево ТКО */}
+              <TkoTreeStyled />
             </Col>
           </WrapperTreeRowStyled>
         </SiderFilterStyled>

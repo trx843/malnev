@@ -95,30 +95,30 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 14px;
-  border-radius: 9px;
+  width: 6px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar:horizontal {
-  height: 14px;
-  border-radius: 9px;
+  height: 6px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar:vertical {
-  width: 14px;
-  border-radius: 9px;
+  width: 6px;
+  border-radius: 3px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
 /* Handle on hover */

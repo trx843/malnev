@@ -1,6 +1,16 @@
-import { Card, Collapse, Form, Layout, Tabs, Row, Menu, Spin } from "antd";
-import SubMenu from "antd/lib/menu/SubMenu";
+import {
+  Card,
+  Collapse,
+  Form,
+  Layout,
+  Tabs,
+  Row,
+  Menu,
+  // Spin
+} from "antd";
+// import SubMenu from "antd/lib/menu/SubMenu";
 import { SearchTree } from "components/SearchTree";
+import TkoTree from "components/TkoTree";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 const { Sider } = Layout;
@@ -121,6 +131,7 @@ export const FilterGroupCollapse = styled(Collapse)`
     line-height: 21px !important;
     color: #667985 !important;
   }
+
   background: #ffffff;
   border: 1px solid #dde8f0;
   border-radius: 4px;
@@ -176,17 +187,22 @@ export const PageStyledTabs = styled(Tabs)`
   }
 `;
 
+// боковая панель слева событий
 export const SiderFilterStyled = styled(Sider)<{ collapsed: boolean }>`
   background: white;
   display: flex;
   flex-direction: column;
   flex: 1;
   height: 100%;
-  padding: 20px;
+  padding: 20px 15px;
 
   .ant-layout-sider-children {
-    display: flex;
-    flex-direction: column;
+    // display: flex;
+    // flex-direction: column;
+    position: relative;
+    overflow-y: auto;
+    margin-right: -10px;
+    padding-right: 10px;
   }
 `;
 
@@ -202,7 +218,7 @@ export const FilterItemLabelStyled = styled.label`
 `;
 
 export const WrapperTreeRowStyled = styled(Row)`
-  width: 90%;
+  // width: 90%;
   overflow: hidden;
   display: ${(props: { $collapsed: boolean }) =>
     props.$collapsed ? "none" : "block"};
@@ -227,6 +243,42 @@ export const FilterSearchTreeStyled = styled(SearchTree)`
 
   .ant-tree.ant-tree-icon-hide {
     overflow-y: auto;
+  }  
+`;
+
+// дерево объектов ТКО для событий
+export const TkoTreeStyled = styled(TkoTree)`
+  // display: flex;
+  // flex-direction: column;
+  // height: 100%;
+
+  .ant-tree-list-holder-inner {
+    margin-left: -6px;
+  }
+
+  .ant-tree.ant-tree-icon-hide {
+    overflow-y: auto;
+  }
+
+  .ant-tree-switcher {
+    width: 20px;
+    line-height: 16px;
+    height: 16px;
+    align-self: unset;
+    margin-top: 4px;
+  }
+
+  .ant-tree .ant-tree-node-content-wrapper {
+    padding: 0 0 0 2px;
+  }
+
+  .ant-tree .ant-tree-treenode {
+    padding: 0 0 2px 0;
+    align-items: flex-start;
+  }  
+
+  .ant-tree-indent-unit {
+    width: 8px;
   }
 `;
 
