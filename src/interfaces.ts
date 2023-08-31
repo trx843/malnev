@@ -340,6 +340,7 @@ export interface SelectedNode {
   type: NodeType;
   owned: Nullable<boolean>;
   isSiType: boolean;
+  path?: string;
   children?: SelectedNode[];
 }
 

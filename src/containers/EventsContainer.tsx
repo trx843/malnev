@@ -67,8 +67,10 @@ enum SortableFields {
   isAcknowledged = "IsAcknowledged",
   acknowledgedBy = "AcknowledgedBy",
   resultQualityID = "ResultQuality.ShortName",
-  mssEventTypeName = "MSSEventTypes.ShortName",
-  mssEventSeverityLevelName = "MSSEventSeverityLevels.ShortName",
+  //mssEventTypeName = "MSSEventTypes.ShortName",
+  mssEventTypeName = "MssEventTypeName",
+  //mssEventSeverityLevelName = "MSSEventSeverityLevels.ShortName",
+  mssEventSeverityLevelName = "MssEventSeverityLevelName",
   acknowledgedTimestamp = "AcknowledgedTimestamp",
 }
 
@@ -132,29 +134,16 @@ class EventsContainer extends Component<
 
   getFetchUrl() {
     return this.url(0);
-  }
-
-  componentDidUpdate(
-    prevProps: Readonly<EventsContainerProps>,
-    prevState: Readonly<EventsContainerState>
-  ) {
-    if (
-      prevProps.node !== this.props.node ||
-      prevProps.filterDates !== this.props.filterDates ||
-      prevProps.viewName !== this.props.viewName ||
-      prevProps.levelFilter !== this.props.levelFilter ||
-      prevProps.ownedFilter !== this.props.ownedFilter ||
-      prevProps.eventTypesFilter !== this.props.eventTypesFilter ||
-      prevState.filterObject !== this.state.filterObject ||
-      prevState.sortedField !== this.state.sortedField
-    ) {
-      this.fetchItems(1, undefined);
-    }
-  }
+  }  
 
   getFilter(): ListFilterBase {
-    const { filterDates, ownedFilter, levelFilter, eventTypesFilter } =
-      this.props;
+    const {
+      filterDates,
+      ownedFilter,
+      levelFilter,
+      eventTypesFilter
+    } = this.props;
+
     let filtersModel: FiltersModel = {
       startTime: returnStringDate(filterDates.startDate, true),
       endTime: returnStringDate(filterDates.endDate, true, true),
@@ -178,8 +167,69 @@ class EventsContainer extends Component<
         },
       },
     };
+
     return listFilter;
   }
+
+  /*
+  // старый метод получения событий
+  async fetchItemsOld(page: number, filter: FilterType | undefined) {
+    this.props.select(null);
+
+    const listFilter = this.getFilter();
+
+    const pageInfo = {
+      pageNumber: 1,
+      pageSize: 1,
+      totalItems: 1,
+      totalPages: 1,
+    };
+
+    const pageModel: PagedModel<EventItem> = {
+      entities: [],
+      pageInfo: pageInfo,
+    };
+
+    if (source) {
+      source.cancel("Cancel previous request");
+    }
+
+    source = axios.CancelToken.source();
+
+    this.setState({ loading: true });
+
+    if (!filter) {
+      this.widgetEvents = undefined;
+
+      axios
+        .post<PagedModel<EventItem>>(this.url(page), listFilter, {
+          cancelToken: source.token,
+        })
+        .then((result) => {
+          this.props.fetched(result.data);
+          this.setState({ loading: false });
+        })
+        .catch((err) => {
+          this.props.fetched(pageModel);
+          console.log(err);
+          if (!axios.isCancel(err)) {
+            this.setState({ loading: false });
+            message.error("Ошибка загрузки данных");
+          }
+        });
+    } else {
+      if (filter.operativeMonitFilter) {
+        const response = await getOperativeMonitoringList(filter, page);
+        this.widgetEvents = response;
+        this.setState({ loading: false });
+      } else {
+        const response = await getTransitionlist(filter, page);
+        this.widgetEvents = response;
+        this.setState({ loading: false });
+      }
+    }
+  }
+  */
 
   async fetchItems(page: number, filter: FilterType | undefined) {
     this.props.select(null);
@@ -192,6 +242,7 @@ class EventsContainer extends Component<
       totalItems: 1,
       totalPages: 1,
     };
+
     const pageModel: PagedModel<EventItem> = {
       entities: [],
       pageInfo: pageInfo,
@@ -200,14 +251,36 @@ class EventsContainer extends Component<
     if (source) {
       source.cancel("Cancel previous request");
     }
+
     source = axios.CancelToken.source();
+
     this.setState({ loading: true });
+
+    // console.log('listFilter', listFilter);
+
+    const filterColumns = Object.keys(listFilter.filter)
+      .filter((key) => key !== "treeFilter" && key !== "filtersModel")
+      .map((key) => {
+        // фикс для названия столбца в sql запросе where
+        const keyName = key === "mssEventTypeName" ? "et.ShortName" : key;
+        return { [keyName]: listFilter.filter[key] };
+      });
+
+    const filterColumnsString = filterColumns.length > 0 ? JSON.stringify(filterColumns) : '';
+
+    // console.log('filterColumns', filterColumnsString);    
+
     if (!filter) {
       this.widgetEvents = undefined;
+
       axios
-        .post<PagedModel<EventItem>>(this.url(page), listFilter, {
-          cancelToken: source.token,
-        })
+        .post<PagedModel<EventItem>>(
+          `${apiBase}/events-by-path?path=${this.props.node.path}&pageNumber=${page}&sortFieldName=${listFilter.sortedField}&sortDirection=${listFilter.isSortAsc ? "asc" : "desc"}&filterColumns=${filterColumnsString}`,
+          listFilter,
+          {
+            cancelToken: source.token,
+          }
+        )
         .then((result) => {
           this.props.fetched(result.data);
           this.setState({ loading: false });
@@ -240,6 +313,7 @@ class EventsContainer extends Component<
   onTableSortChanged = (event: SortChangedEvent) => {
     const columnState = event.columnApi.getColumnState();
     const sortableColumn = columnState.find((column) => column.sort);
+
     if (sortableColumn) {
       const orderField = SortableFields[sortableColumn.colId as string];
       this.setState({ sortedField: [orderField, sortableColumn.sort] });
@@ -285,6 +359,32 @@ class EventsContainer extends Component<
         })
         .catch((err) => reject(err));
     });
+  }  
+
+  componentDidMount() {
+    this.fetchItems(this.props.items.pageInfo.pageNumber, this.props.filter);
+  }
+
+  componentWillUnmount() {
+    this.props.select(null);
+  }
+
+  componentDidUpdate(
+    prevProps: Readonly<EventsContainerProps>,
+    prevState: Readonly<EventsContainerState>
+  ) {
+    if (
+      prevProps.node !== this.props.node ||
+      prevProps.filterDates !== this.props.filterDates ||
+      prevProps.viewName !== this.props.viewName ||
+      prevProps.levelFilter !== this.props.levelFilter ||
+      prevProps.ownedFilter !== this.props.ownedFilter ||
+      prevProps.eventTypesFilter !== this.props.eventTypesFilter ||
+      prevState.filterObject !== this.state.filterObject ||
+      prevState.sortedField !== this.state.sortedField
+    ) {
+      this.fetchItems(1, undefined);
+    }
   }
 
   render() {
@@ -292,7 +392,7 @@ class EventsContainer extends Component<
 
     return (
       <TableBlockWrapperStyled>
-        <Card>
+        {/* <Card>
           <Row wrap={false} justify="space-between">
             <Col>
               <Button
@@ -345,7 +445,7 @@ class EventsContainer extends Component<
               </Row>
             </Col>
           </Row>
-        </Card>
+        </Card> */}
 
         <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
           <ItemsTable<EventItem>
@@ -373,7 +473,8 @@ class EventsContainer extends Component<
               "acknowledgedTimestamp",
               "siknFullName",
               "pspName",
-              "techPositionName"
+              "techPositionName",
+              "comment"
             ]}
 
             selectionCallback={this.selectionHandler}
@@ -381,12 +482,12 @@ class EventsContainer extends Component<
             setApiCallback={this.setApi}
 
             actionColumns={[
-              {
+              /* {
                 headerName: "Действия",
                 pinned: "right",
                 cellRenderer: "eventsActionsRenderer",
                 minWidth: 100,
-              },
+              }, */
             ]}
 
             widths={[
@@ -398,10 +499,10 @@ class EventsContainer extends Component<
                 key: "endDateTime",
                 newWidth: 150,
               },
-              {
+              /* {
                 key: "siknFullName",
                 newWidth: 200,
-              },
+              }, */
               // СИКН
               {
                 key: "sikn",
@@ -412,34 +513,38 @@ class EventsContainer extends Component<
                 key: "receivingPoint",
                 newWidth: 200,
               },
-              {
+              /* {
                 key: "techPositionName",
                 newWidth: 200,
-              },
+              }, */
               {
                 key: "techposition",
                 newWidth: 200,
-              },
-              {
-                key: "mssEventTypeName",
-                newWidth: 200,
-              },
-              {
-                key: "isAcknowledged",
-                newWidth: 150,
               },
               {
                 key: "eventName",
                 newWidth: 350,
               },
               {
-                key: "comment",
-                newWidth: 175,
+                key: "mssEventTypeName",
+                newWidth: 350,
               },
               {
+                key: "mssEventSeverityLevelName",
+                newWidth: 150,
+              },
+              /* {
+                key: "isAcknowledged",
+                newWidth: 150,
+              }, */              
+              /* {
+                key: "comment",
+                newWidth: 175,
+              }, */
+              /* {
                 key: "acknowledgedTimestamp",
                 newWidth: 175,
-              },
+              }, */
             ]}
 
             // фильтрация
@@ -456,13 +561,13 @@ class EventsContainer extends Component<
                 sortable: true,
                 comparator: () => 0,
               },
-              {
+              /* {
                 headerName: "СИКН",
                 field: "siknFullName",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
+              }, */
               {
                 headerName: "СИКН",
                 field: "sikn",
@@ -470,13 +575,13 @@ class EventsContainer extends Component<
                 sortable: true,
                 comparator: () => 0,
               },
-              {
+              /* {
                 headerName: "ПСП",
                 field: "pspName",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
+              }, */
               {
                 headerName: "ПСП",
                 field: "receivingPoint",
@@ -484,44 +589,38 @@ class EventsContainer extends Component<
                 sortable: true,
                 comparator: () => 0,
               },              
-              {
+              /* {
                 headerName: "Технологическая позиция",
                 field: "techPositionName",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
+              }, */
               {
                 headerName: "Технологическая позиция",
                 field: "techposition",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
-              {
-                headerName: "Событие",
-                field: "eventName",
-                filter: "customTextTableFilter",
-                sortable: true,
-                comparator: () => 0,
-              },
-              {
+              },              
+              /* {
                 headerName: "Комментарий",
                 field: "comment",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
-              {
+              }, */
+              /* {
                 headerName: "Кем было квитировано",
                 field: "acknowledgedBy",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
+              }, */
               {
                 headerName: "Тип события МКО ТКО",
                 field: "mssEventTypeName",
+                filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
               },
@@ -532,27 +631,34 @@ class EventsContainer extends Component<
                 comparator: () => 0,
               },
               {
+                headerName: "Событие",
+                field: "eventName",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },
+              /* {
                 headerName: "Достоверность",
                 field: "resultQualityID",
                 filter: "customTextTableFilter",
                 cellRenderer: "qualityRenderer",
                 sortable: true,
                 comparator: () => 0,
-              },
-              {
+              }, */
+              /* {
                 headerName: "Время квитирования",
                 field: "acknowledgedTimestamp",
                 sortable: true,
                 comparator: () => 0,
-              },
-              {
+              }, */
+              /* {
                 field: "isAcknowledged",
                 headerName: "Признак квитирования",
                 filter: "customFilter",
                 cellRenderer: "checkboxRenderer",
                 sortable: true,
                 comparator: () => 0,
-              },
+              }, */
             ]}
             filterChangedCallback={(filterModel) => {
               this.setState({ filterObject: filterModel });
@@ -564,7 +670,13 @@ class EventsContainer extends Component<
         <Card>
           <Row justify="space-between">
             <Col>
-              <div style={{ textAlign: "center" }}>
+              <div style={{
+                textAlign: "center",
+                position: "relative",
+                height: "100%",
+                display: "flex",
+                alignItems: "center"
+              }}>
                 <Pagination
                   disabled={this.state.loading}
                   showSizeChanger={false}
@@ -578,9 +690,45 @@ class EventsContainer extends Component<
                 />
               </div>
             </Col>
+            <Col>
+              <Row>
+                <Col>
+                  <ExportFilterTableButton
+                    init={{
+                      credentials: "include",
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        pageName: "/events",
+                        nodeTreeId: this.props.node.key,
+                        nodeTreeType: this.props.node.type,
+                        eventsListFilter: this.getFilter(),
+                      }),
+                    }}
+                  />
+                </Col>
+                <Col>
+                  <Tooltip title="Обновить таблицу">
+                    <Button
+                      type="link"
+                      icon={<ReloadOutlined />}
+                      onClick={() => {
+                        this.fetchItems(
+                          this.props.items.pageInfo.pageNumber,
+                          this.props.filter
+                        );
+                      }}
+                    />
+                  </Tooltip>
+                </Col>
+              </Row>
+            </Col>
           </Row>
         </Card>
-        <Modal
+
+        {/* <Modal
           maskClosable={false}
           visible={this.state.commentModalVisible}
           title={`Квитирование`}
@@ -596,17 +744,9 @@ class EventsContainer extends Component<
             submitCallback={this.commentHandler}
             showUseInReports={false}
           />
-        </Modal>
+        </Modal> */}
       </TableBlockWrapperStyled>
     );
-  }
-
-  componentDidMount() {
-    this.fetchItems(this.props.items.pageInfo.pageNumber, this.props.filter);
-  }
-
-  componentWillUnmount() {
-    this.props.select(null);
   }
 }
 

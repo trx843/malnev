@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { Key, useEffect, useState } from "react";
 import axios from "axios";
 import { SqlTree } from "../classes/SqlTree";
-import { Tree } from "antd";
+import { Spin, Tree } from "antd";
 import { apiBase } from "utils";
 
+/*
 interface DataNode {
   title: string;
   key: string;
   isLeaf?: boolean;
   children?: DataNode[];
+  path
 }
+*/
 
-interface ITkoTreeProps {
-  className?: string;
-}
-
+/*
 const initTreeData: DataNode[] = [
   // {
   //   title: 'Tree Node',
@@ -22,9 +22,11 @@ const initTreeData: DataNode[] = [
   //   isLeaf: true
   // },
 ];
+*/
 
-const updateTreeData = (list: DataNode[], key: React.Key, children: DataNode[]): DataNode[] =>
-  list.map((node) => {
+// функция обновления дерева
+const updateTreeData = (list: SqlTree[], key: React.Key, children: SqlTree[]): SqlTree[] => {
+  const treetData = list.map((node) => {
     if (node.key === key) {
       return {
         ...node,
@@ -42,15 +44,27 @@ const updateTreeData = (list: DataNode[], key: React.Key, children: DataNode[]):
     return node;
   });
 
+  return treetData;
+};
+
+// интерфейс пропсов TkoTree
+interface ITkoTreeProps {
+  className?: string;
+  onSelectCallback: (selectedKeys: Key[], info: any) => void;
+}
+
+// компонент дерева
 const TkoTree: React.FC<ITkoTreeProps> = (props) => {
-  const { className } = props;
+  const {
+    className,
+    onSelectCallback
+  } = props;
 
-  const [treeData, setTreeData] = useState(initTreeData);
+  const [treeData, setTreeData] = useState<SqlTree[]>([]);
 
-  const onLoadData = async ({ key, children }: any) => {
-    if (children) {
-      return;
-    }
+  // фукнция загрузки внутренних элементов пункт дерева
+  const onLoadDataCallback = async ({ key, children }: any) => {
+    if (children) return;
 
     const result = await axios.get<Array<SqlTree>>(`${apiBase}/get-tkotree?parentId=${key}`);
 
@@ -58,7 +72,7 @@ const TkoTree: React.FC<ITkoTreeProps> = (props) => {
   };  
 
   useEffect(() => {
-    // получаем первую ноду при загрузке, обращаясь к процедуре с parentId null
+    // первичная загрузка дерева
     axios
       .get<Array<SqlTree>>(`${apiBase}/get-tkotree?parentId=null`)
       .then((result) => {
@@ -76,13 +90,22 @@ const TkoTree: React.FC<ITkoTreeProps> = (props) => {
       {treeData.length
         ? (
             <Tree
-              loadData={onLoadData}
               treeData={treeData}
-              defaultExpandedKeys={defaultExpandedKeys}
+              loadData={onLoadDataCallback}
+              onSelect={onSelectCallback}
+              defaultExpandedKeys={defaultExpandedKeys} // открыты по умолчанию
+              defaultSelectedKeys={defaultExpandedKeys} // выбраны по умолчанию
             />
           )
         : (
-            'Загрузка дерева...'
+          <div style={{
+            padding: "30px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <Spin />
+          </div>
           )
       }    
     </div>

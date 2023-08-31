@@ -25,10 +25,12 @@ const initialState: IEventsState = {
     type: "all",
     owned: true,
     isSiType: false,
+    path: "\\" // путь по умолчанию
   },
   filterDates: {
     //startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-    startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1), // диапазон дат по умолчанию со вчера до сегодня
+    // диапазон дат по умолчанию со вчера до сегодня
+    startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
     endDate: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),

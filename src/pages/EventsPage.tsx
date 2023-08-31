@@ -79,6 +79,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
 
   const onSelect = (selectedKeys: React.Key[], info: InfoType) => {
     const change = info.node;
+    console.log('change', change);  
     setCurrentNodeKey(change.key);
     dispatch(nodeChanged(change));
   };
@@ -158,6 +159,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
                 })}
             </Col>
           </Row>
+
           <FilterRowStyled $collapsed={collapsed}>
             <Col >
                 <FilterItemLabelStyled>Даты</FilterItemLabelStyled>
@@ -229,6 +231,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
               <FilterItemLabelStyled>Выберите объект в дереве</FilterItemLabelStyled>
             </Col>
           </FilterRowStyled>
+          
           <WrapperTreeRowStyled $collapsed={collapsed}>
             <Col span={24} style={{ height: "100%" }}>
               {/* старое дерево */}
@@ -244,7 +247,9 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
               /> */}
 
               {/* новое дерево ТКО */}
-              <TkoTreeStyled />
+              <TkoTreeStyled
+                onSelectCallback={onSelect}
+              />
             </Col>
           </WrapperTreeRowStyled>
         </SiderFilterStyled>
