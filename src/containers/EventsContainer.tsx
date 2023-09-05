@@ -690,7 +690,7 @@ class EventsContainer extends Component<
                 />
               </div>
             </Col>
-            <Col>
+            {/* <Col>
               <Row>
                 <Col>
                   <ExportFilterTableButton
@@ -724,7 +724,7 @@ class EventsContainer extends Component<
                   </Tooltip>
                 </Col>
               </Row>
-            </Col>
+            </Col> */}
           </Row>
         </Card>
 

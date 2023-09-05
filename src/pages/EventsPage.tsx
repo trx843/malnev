@@ -182,7 +182,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
             </Col>
           </FilterRowStyled>
 
-          <FilterRowStyled $collapsed={collapsed}>
+          {/* <FilterRowStyled $collapsed={collapsed}>
             <Col >
               <FilterItemLabelStyled>Тип события</FilterItemLabelStyled>
               <TreeSelect
@@ -204,9 +204,9 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
                 defaultValue={pageState.eventTypesFilter}
               />
             </Col>
-          </FilterRowStyled>
+          </FilterRowStyled> */}
 
-          <FilterRowStyled $collapsed={collapsed}>
+          {/* <FilterRowStyled $collapsed={collapsed}>
             <Col >
               <FilterItemLabelStyled>Критичность</FilterItemLabelStyled>
               <Select
@@ -223,7 +223,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
                 }))}
               />
             </Col>
-          </FilterRowStyled>
+          </FilterRowStyled> */}
 
           {/* дерево ТП */}
           <FilterRowStyled $collapsed={collapsed}>
