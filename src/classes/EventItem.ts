@@ -8,9 +8,6 @@ export class EventItem implements IEntity {
   id: string = zeroGuid;
   siknId: Nullable<number>;
 
-  @description("Риск")
-  riskRatio: number = 0;
-
   @description("Начало")
   startDateTime: Date = pureDate(new Date());
 
@@ -18,10 +15,25 @@ export class EventItem implements IEntity {
   endDateTime: Nullable<Date> = pureDate(new Date());
 
   @description("СИКН")
-  siknFullName: string = "";
+  sikn: string = "";
+
+  @description("Тех. позиция")
+  techposition: string = "";
+
+  @description("Событие")
+  eventName: string = "";
+
+  @description("Назначение")
+  purpose: string = "";
+  
+  @description("Владелец")
+  owner: string = "";
+
+  @description("Риск")
+  riskRatio: number = 0;  
 
   @description("СИКН")
-  sikn: string = "";
+  siknFullName: string = "";  
 
   @description("ПСП")
   pspName: string = "";
@@ -30,10 +42,7 @@ export class EventItem implements IEntity {
   receivingPoint: string = "";
 
   @description("Технологическая позиция")
-  techPositionName: string = "";
-
-  @description("Технологическая позиция")
-  techposition: string = "";
+  techPositionName: string = "";  
 
   @description("Идентификатор технологической позиции")
   techPositionId: Nullable<number> = 0;  
@@ -61,9 +70,6 @@ export class EventItem implements IEntity {
 
   @description("Достоверность")
   resultQualityShortName: string = "";
-
-  @description("Событие")
-  eventName: string = "";
 
   isAcknowledged: number = 0;
 

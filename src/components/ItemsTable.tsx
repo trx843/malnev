@@ -10,6 +10,7 @@ import {
   ICellRendererComp,
   ICellRendererFunc,
   ModelUpdatedEvent,
+  RowClickedEvent,
   RowNode,
   SelectionChangedEvent,
   SortChangedEvent,
@@ -139,6 +140,7 @@ interface ItemsTableProps<T extends object> {
   filterChangedCallback?: (filterModel: any) => void;
   onSortChanged?: (event: SortChangedEvent) => void;
   isCustomFilterAndSorting?: boolean;
+  onRowClicked?: (event: RowClickedEvent) => void;
 }
 
 export function ItemsTable<T extends object>(
@@ -146,29 +148,35 @@ export function ItemsTable<T extends object>(
 ): JSX.Element {
   if (props.reducer !== undefined) {
     const key = props.reducer;
+
     const sliced = (state: StateType): ItemsState<T> =>
       state[key] as unknown as ItemsState<T>;
+
     if (props.fields === undefined) {
       props.fields = useSelector<StateType, Array<IObjectField<T>>>(
         (state) => sliced(state).fields
       );
     }
+
     if (props.hiddenColumns === undefined) {
       props.hiddenColumns = useSelector<StateType, Array<keyof T>>(
         (state) => sliced(state).hiddenProps
       );
     }
+
     if (props.itemConstructor === undefined) {
       props.itemConstructor = useSelector<StateType, IConstructor<T>>(
         (state) => sliced(state).itemConstructor
       );
     }
   }
+
   const staticCellStyle = { wordBreak: "break-word" };
 
   const firstNotHidden = props.fields?.filter(
     (x) => !props.hiddenColumns?.includes(x.field)
   )[0];
+
   let colDefs = props.fields?.map((x) => {
     const notBool = x.type !== "boolean";
     const hide = props.hiddenColumns?.includes(x.field);
@@ -203,6 +211,7 @@ export function ItemsTable<T extends object>(
         };
       }
     }
+
     if (
       props.rowIsMultiple &&
       firstNotHidden !== undefined &&
@@ -243,6 +252,7 @@ export function ItemsTable<T extends object>(
         return "";
       };
     }
+
     if (!notBool) {
       obj.tooltipField = '';
       obj.cellRenderer = "checkboxRenderer";
@@ -334,6 +344,7 @@ export function ItemsTable<T extends object>(
   }
 
   let dispatch: ReturnType<typeof useDispatch> | null = null;
+  
   if (props.reducer !== undefined) {
     dispatch = useDispatch();
   }
@@ -383,21 +394,26 @@ export function ItemsTable<T extends object>(
           overlayLoadingTemplate={
             '<span class="ag-overlay-loading-center">Пожалуйста, подождите, пока данные загружаются</span>'
           }
+          
           onSelectionChanged={(ev: SelectionChangedEvent) => {
             if (props.rowIsMultiple && props.selectionCallback !== undefined) {
               props.selectionCallback(ev.api.getSelectedRows() as T[]);
               return;
             }
+
             const item = ev.api.getSelectedRows()[0];
+
             if (item !== undefined) {
               if (dispatch !== null && props.itemConstructor !== undefined) {
                 dispatch(itemSelected(item as T, props.itemConstructor));
               }
+
               if (props.selectionCallback !== undefined) {
                 props.selectionCallback(item as T);
               }
             }
           }}
+
           onGridReady={(ev: GridReadyEvent) => {
             if (props.setApiCallback !== undefined) {
               props.setApiCallback(ev.api);
@@ -418,6 +434,7 @@ export function ItemsTable<T extends object>(
             ev.api.resetRowHeights();
             headerHeightSetter(ev);
           }}
+
           onFirstDataRendered={(ev: FirstDataRenderedEvent) => {
             const listener = function () {
               setTimeout(function () {
@@ -443,26 +460,35 @@ export function ItemsTable<T extends object>(
             listener();
             window.addEventListener("resize", listener);
           }}
+
           // https://www.ag-grid.com/javascript-grid/row-height/#example-auto-row-height
           onColumnResized={(ev) => {
             ev.api.resetRowHeights();
             headerHeightSetter(ev);
           }}
+
           onColumnVisible={(ev) => {
             ev.api.resetRowHeights();
             headerHeightSetter(ev);
           }}
+
           isFullWidthCell={props.isFullWidthCell}
           fullWidthCellRenderer={props.fullWidthCellRenderer}
           rowHeight={props.rowHeight}
           rowClassRules={props.rowClassRules}
+
           onFilterChanged={(event: FilterChangedEvent) => {
             const filterModel = event.api.getFilterModel();
             if (props.filterChangedCallback)
               props.filterChangedCallback(filterModel);
           }}
+
           onSortChanged={(event: SortChangedEvent) =>
             props.onSortChanged && props.onSortChanged(event)
+          }
+
+          onRowClicked={(event: RowClickedEvent) => 
+            props.onRowClicked && props.onRowClicked(event)
           }
         />
       </div>

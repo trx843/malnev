@@ -2,7 +2,7 @@
 import { hot } from "react-hot-loader/root";
 import { FunctionComponent, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
-import "./styles/app.css";
+import "./styles/app.scss";
 import { Layout } from "antd";
 import { Frame } from "./components/Frame";
 import { ToKmhPage } from "./pages/ToKmh";

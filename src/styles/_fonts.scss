@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/Ibmplexsans.woff") format("woff"),
+    url("../fonts/Ibmplexsans.woff2") format("woff2"),
+    url("../fonts/Ibmplexsans.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Medium";
+  src: url("../fonts/Ibmplexsansmedium.woff") format("woff"),
+    url("../fonts/Ibmplexsansmedium.woff2") format("woff2"),
+    url("../fonts/Ibmplexsansmedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/Ibmplexsansbold.woff") format("woff"),
+    url("../fonts/Ibmplexsansbold.woff2") format("woff2"),
+    url("../fonts/Ibmplexsansbold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Golos";
+  src: url("../fonts/Golostextmedium.woff") format("woff"),
+    url("../fonts/Golostextmedium.woff2") format("woff2"),
+    url("../fonts/Golostextmedium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}

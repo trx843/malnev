@@ -17,7 +17,7 @@ import { apiBase, dateToString, techPosTreeConstant } from "../utils";
 import DownOutlined from "@ant-design/icons/DownOutlined";
 import { Nullable, OwnedType } from "../types";
 import { ShowType } from "../enums";
-import "../styles/app.css";
+import "../styles/app.scss";
 // import { LabelStyled } from "../styles/commonStyledComponents";
 
 const { Search } = Input;

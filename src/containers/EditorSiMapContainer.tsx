@@ -24,7 +24,7 @@ import { Dispatch } from "redux";
 import * as actions from "../actions/editorSiMap/creators";
 import axios, { CancelTokenSource } from "axios";
 import { EditorSiMapForm } from "../components/EditorSiMapForm";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase } from "../utils";
 import "moment/locale/ru";
 import { GridApi } from "ag-grid-community";

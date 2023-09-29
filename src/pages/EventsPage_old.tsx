@@ -139,7 +139,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
       />
       <Layout>
         <SiderFilterStyled
-          width={260}
+          width={280}
           style={{ background: "white" }}
           trigger={null}
           collapsible
@@ -151,12 +151,12 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
             align="middle"
           >
             <Col style={{ display: collapsed ? "none" : "block" }}>
-              <Title level={4}>Фильтр</Title>
+                <Title level={4}>Фильтр</Title>
             </Col>
             <Col>
-              {React.createElement(collapsed ? RightOutlined : LeftOutlined, {
-                onClick: onCollapse,
-              })}
+                {React.createElement(collapsed ? RightOutlined : LeftOutlined, {
+                    onClick: onCollapse,
+                })}
             </Col>
           </Row>
 
@@ -182,6 +182,49 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
             </Col>
           </FilterRowStyled>
 
+          {/* <FilterRowStyled $collapsed={collapsed}>
+            <Col >
+              <FilterItemLabelStyled>Тип события</FilterItemLabelStyled>
+              <TreeSelect
+                allowClear
+                showSearch
+                filterTreeNode
+                treeNodeFilterProp={"title"}
+                treeCheckable
+                style={{ width: "100%", maxHeight: "25px" }}
+                dropdownStyle={{
+                  maxHeight: 400,
+                  minWidth: 500,
+                  overflow: "auto"
+                }}
+                maxTagCount={0}
+                placeholder="Выберите тип события"
+                onChange={onChange}
+                treeData={treeData}
+                defaultValue={pageState.eventTypesFilter}
+              />
+            </Col>
+          </FilterRowStyled> */}
+
+          {/* <FilterRowStyled $collapsed={collapsed}>
+            <Col >
+              <FilterItemLabelStyled>Критичность</FilterItemLabelStyled>
+              <Select
+                allowClear
+                style={{ marginTop: 4, width: "100%" }}
+                placeholder="Все"
+                notFoundContent="Нет данных"
+                onChange={onLevelChange}
+                defaultValue={pageState.levelFilter as SelectValue}
+                options={securityLevels.map(x => ({
+                  label: x.shortName,
+                  value: x.id,
+                  key: x.id
+                }))}
+              />
+            </Col>
+          </FilterRowStyled> */}
+
           {/* дерево ТП */}
           <FilterRowStyled $collapsed={collapsed}>
             <Col>
@@ -191,6 +234,18 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
           
           <WrapperTreeRowStyled $collapsed={collapsed}>
             <Col span={24} style={{ height: "100%" }}>
+              {/* старое дерево */}
+              {/* <FilterSearchTreeStyled
+                isSiEq={true}
+                treeViewName={viewName}
+                onSelectCallback={onSelect}
+                onTreeChangeCallback={onTreeChange}
+                ownedFilterChangedCallback={ownedFilterChanged}
+                currentNodeKey={currentNodeKey}
+                ownFilterValue={pageState.ownedFilter}
+                filterDate={endDate}
+              /> */}
+
               {/* новое дерево ТКО */}
               <TkoTreeStyled
                 onSelectCallback={onSelect}

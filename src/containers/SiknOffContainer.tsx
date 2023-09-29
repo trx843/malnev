@@ -34,7 +34,7 @@ import * as actions from "../actions/siknoffs/creators";
 import axios, { CancelTokenSource } from "axios";
 import UploadOutlined from "@ant-design/icons/UploadOutlined";
 import { SiknOffForm } from "../components/SiknOffForm";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase, dateToShortString, returnStringDate } from "../utils";
 import { GridApi, SortChangedEvent } from "ag-grid-community";
 import { InvestigationActForm } from "../components/InvestigationActForm";

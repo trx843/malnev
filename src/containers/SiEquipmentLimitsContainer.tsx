@@ -14,7 +14,7 @@ import { Dispatch } from "redux";
 import * as actions from "../actions/measRange/creators";
 import axios, { CancelTokenSource } from "axios";
 import { SiEquipmentLimitsForm } from "../components/SiEquipmentLimitsForm";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase } from "../utils";
 import "moment/locale/ru";
 import { GridApi } from "ag-grid-community";

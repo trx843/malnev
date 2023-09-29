@@ -22,7 +22,7 @@ import { SiEquipment } from "../classes";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import axios, { CancelTokenSource } from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase, zeroGuid } from "../utils";
 import "moment/locale/ru";
 import { GridApi } from "ag-grid-community";

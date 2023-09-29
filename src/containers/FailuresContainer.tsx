@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/failures/creators";
 import axios, { CancelTokenSource } from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { Failures } from "../classes/";
 import {
   Button,

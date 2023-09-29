@@ -2,7 +2,7 @@ import React, { Component, Key } from "react";
 import { SqlTree } from "../classes/SqlTree";
 import { Tree, Input, Spin } from "antd";
 import axios from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase } from "../utils";
 import DownOutlined from "@ant-design/icons/DownOutlined";
 import { EventrSearchTreeStyled } from "../styles/commonStyledComponents";

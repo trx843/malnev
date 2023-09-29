@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/coefs/creators";
 import axios, { CancelTokenSource } from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { CoefChangeEventSigns } from "../classes/CoefChangeEventSigns";
 import { Button, Card, Col, message, Pagination, Row, Tooltip } from "antd";
 import { apiBase, returnStringDate } from "../utils";

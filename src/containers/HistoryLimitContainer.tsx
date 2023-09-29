@@ -3,7 +3,7 @@ import { ItemsTable } from "../components/ItemsTable";
 import { ObjectFields, PagedModel, StateType } from "../types";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase, getParamFromUrl } from "../utils";
 import "moment/locale/ru";
 import { GridLoading } from "../components/GridLoading";

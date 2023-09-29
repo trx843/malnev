@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/toKmh/creators";
 import axios, { CancelTokenSource } from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { ControlMaintEvents } from "../classes/ControlMaintEvents";
 import {
   Button,

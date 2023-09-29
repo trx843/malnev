@@ -5,7 +5,7 @@ import {
   IEventsState,
   ListFilterBase,
 } from "../interfaces";
-import { apiBase, returnStringDate, dateToShortString, dateToDayTime } from "../utils";
+import { apiBase, returnStringDate } from "../utils";
 import axios, { CancelTokenSource } from "axios";
 import { EventItem } from "../classes";
 import { ItemsTable } from "../components/ItemsTable";
@@ -26,14 +26,13 @@ import {
   Row,
   Spin,
   Tooltip,
-  List,
 } from "antd";
 import { CommentForm } from "../components/CommentForm";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/events/creators";
 import "moment/locale/ru";
-import { GridApi, SortChangedEvent, RowClickedEvent } from "ag-grid-community";
+import { GridApi, SortChangedEvent } from "ag-grid-community";
 import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   getOperativeMonitoringlist as getOperativeMonitoringList,
@@ -42,19 +41,11 @@ import {
 import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
 import { ReloadOutlined } from "@ant-design/icons";
-import "../styles/app.scss";
+import "../styles/app";
 import { ExportFilterTableButton } from "components/ExportFilterTableButton";
-
-interface IEventObject {
-  key: string;
-  title: string;
-  value: string;
-}
 
 interface EventsContainerState {
   eventModalVisible: boolean;
-  eventModalData: IEventObject[];
-  eventModalTitle: string;
   commentModalVisible: boolean;
   levelFilter: number | null;
   loading: boolean;
@@ -71,6 +62,7 @@ enum SortableFields {
   purpose = "Purpose", // Назначение
   techposition = "Techposition", // Технологическая позиция
   eventName = "EventName", // Событие
+
   siknFullName = "SIKNRSU.FullName",
   pspName = "SIKNRSU.PSP.FullName",
   receivingPoint = "ReceivingPoint",
@@ -79,7 +71,9 @@ enum SortableFields {
   isAcknowledged = "IsAcknowledged",
   acknowledgedBy = "AcknowledgedBy",
   resultQualityID = "ResultQuality.ShortName",
+  //mssEventTypeName = "MSSEventTypes.ShortName",
   mssEventTypeName = "MssEventTypeName",
+  //mssEventSeverityLevelName = "MSSEventSeverityLevels.ShortName",
   mssEventSeverityLevelName = "MssEventSeverityLevelName",
   acknowledgedTimestamp = "AcknowledgedTimestamp",
 }
@@ -121,8 +115,6 @@ class EventsContainer extends Component<
     this.state = {
       levelFilter: null,
       eventModalVisible: false,
-      eventModalTitle: "",
-      eventModalData: [],
       commentModalVisible: false,
       loading: false,
       gridApi: new GridApi(),
@@ -184,7 +176,66 @@ class EventsContainer extends Component<
     return listFilter;
   }
 
-  // получение данных для общей таблицы
+  /*
+  // старый метод получения событий
+  async fetchItemsOld(page: number, filter: FilterType | undefined) {
+    this.props.select(null);
+
+    const listFilter = this.getFilter();
+
+    const pageInfo = {
+      pageNumber: 1,
+      pageSize: 1,
+      totalItems: 1,
+      totalPages: 1,
+    };
+
+    const pageModel: PagedModel<EventItem> = {
+      entities: [],
+      pageInfo: pageInfo,
+    };
+
+    if (source) {
+      source.cancel("Cancel previous request");
+    }
+
+    source = axios.CancelToken.source();
+
+    this.setState({ loading: true });
+
+    if (!filter) {
+      this.widgetEvents = undefined;
+
+      axios
+        .post<PagedModel<EventItem>>(this.url(page), listFilter, {
+          cancelToken: source.token,
+        })
+        .then((result) => {
+          this.props.fetched(result.data);
+          this.setState({ loading: false });
+        })
+        .catch((err) => {
+          this.props.fetched(pageModel);
+          console.log(err);
+          if (!axios.isCancel(err)) {
+            this.setState({ loading: false });
+            message.error("Ошибка загрузки данных");
+          }
+        });
+    } else {
+      if (filter.operativeMonitFilter) {
+        const response = await getOperativeMonitoringList(filter, page);
+        this.widgetEvents = response;
+        this.setState({ loading: false });
+      } else {
+        const response = await getTransitionlist(filter, page);
+        this.widgetEvents = response;
+        this.setState({ loading: false });
+      }
+    }
+  }
+  */
+
   async fetchItems(page: number, filter: FilterType | undefined) {
     this.props.select(null);
 
@@ -276,104 +327,6 @@ class EventsContainer extends Component<
     }
   };
 
-  // получение данных о событии для модального окна  
-  async fetchEventInfo(id: string, typeId: number) {
-    axios
-      .get<string>(`${apiBase}/event-info`, {
-        params: {
-          id: id,
-          typeId: typeId
-        }        
-      })
-      .then((result) => {
-        // console.log("result data", result.data);
-        // console.log("parse data", JSON.parse(result.data));
-
-        const resultData = JSON.parse(result.data);
-
-        const eventData:IEventObject[] = [];
-
-        resultData.forEach((item: {
-          Name: string;
-          Caption: string;
-          Value: string;
-        }) => {
-          eventData.push({
-            key: item.Name,
-            title: item.Caption,
-            value: item.Value
-          });
-        });
-
-        this.setState({
-          eventModalData: eventData
-        });
-      })
-      .catch((err) => {
-        console.log(err);        
-      });
-  }
-
-  // обработка клика по строке события
-  onRowClicked = (event: RowClickedEvent) => {
-    const { data } = event;
-
-    // console.log(data);
-
-    // console.log("id", data.id);
-    // console.log("mssEventTypeId", data.mssEventTypeId);
-
-    this.fetchEventInfo(data.id, data.mssEventTypeId);
-
-    // искомые ключи в нужном порядке
-    // const eventKeys = [
-    //   // { keyName: "id", keyTitle: "ID"},
-    //   { keyName: "eventName", keyTitle: "Событие" },
-    //   { keyName: "startDateTime", keyTitle: "Начало" },
-    //   { keyName: "endDateTime", keyTitle: "Окончание" },
-    //   // { keyName: "mssEventTypeId", keyTitle: "ID типа события" },
-    //   // { keyName: "mssEventTypeName", keyTitle: "Тип" },
-    //   { keyName: "sikn", keyTitle: "СИКН" },
-    //   { keyName: "techposition", keyTitle: "Тех. позиция" },
-    //   { keyName: "receivingPoint", keyTitle: "ПСП"},
-    //   { keyName: "owner", keyTitle: "Владелец"},
-    //   { keyName: "purpose", keyTitle: "Назначение"},
-    // ];
-
-    // const eventData:IEventObject[] = [];
-
-    // eventKeys.forEach((item) => {
-    //   let curEventValue = data[item.keyName];
-
-    //   // если есть значение по такому ключу
-    //   if (curEventValue) {
-    //     // если это дата
-    //     if (curEventValue instanceof Date) {
-    //       curEventValue = `${dateToShortString(curEventValue)} ${dateToDayTime(curEventValue)}`;
-    //     }
-
-    //     // приведение к строке
-    //     curEventValue = String(curEventValue);
-
-    //     // добавляем элемент в массив
-    //     eventData.push({
-    //       key: item.keyName,
-    //       title: item.keyTitle,
-    //       value: curEventValue
-    //     });
-    //   }
-    // });
-
-    // console.log(eventData);
-
-    // меняем состояние, добавляя данные и открываю модалку
-    this.setState({
-      eventModalTitle: `${data.eventName} (${data.sikn})`,
-      // eventModalData: eventData,
-      eventModalVisible: true
-    });
-  };
-
   commentHandler(item: EventItem) {
     return new Promise<void>((resolve, reject) => {
       axios
@@ -448,6 +401,61 @@ class EventsContainer extends Component<
 
     return (
       <TableBlockWrapperStyled>
+        {/* <Card>
+          <Row wrap={false} justify="space-between">
+            <Col>
+              <Button
+                type={"link"}
+                icon={<PlusCircleFilled />}
+                onClick={() => this.setState({ commentModalVisible: true })}
+                disabled={
+                  this.props.selected === null ||
+                  this.state.loading ||
+                  (this.props.selected != null &&
+                    this.props.selected.isAcknowledged === 1)
+                }
+              >
+                Квитирование
+              </Button>
+            </Col>
+            <Col>
+              <Row>
+                <Col>
+                  <ExportFilterTableButton
+                    init={{
+                      credentials: "include",
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        pageName: "/events",
+                        nodeTreeId: this.props.node.key,
+                        nodeTreeType: this.props.node.type,
+                        eventsListFilter: this.getFilter(),
+                      }),
+                    }}
+                  />
+                </Col>
+                <Col>
+                  <Tooltip title="Обновить таблицу">
+                    <Button
+                      type="link"
+                      icon={<ReloadOutlined />}
+                      onClick={() => {
+                        this.fetchItems(
+                          this.props.items.pageInfo.pageNumber,
+                          this.props.filter
+                        );
+                      }}
+                    />
+                  </Tooltip>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Card> */}
+
         <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
           <ItemsTable<EventItem>
             isFilterDisabled
@@ -497,37 +505,72 @@ class EventsContainer extends Component<
             widths={[
               {
                 key: "startDateTime",
-                newWidth: 190,
+                newWidth: 150,
               },
               {
                 key: "endDateTime",
-                newWidth: 190,
+                newWidth: 150,
               },
               // СИКН
               {
                 key: "sikn",
                 newWidth: 200,
               },
-              // Тех. позиция
-              {
-                key: "techposition",
-                newWidth: 160,
-              },
-              // Событие
-              {
-                key: "eventName",
-                newWidth: 430,
-              },              
-              // Назначение
-              {
-                key: "purpose",
-                newWidth: 250,
-              },
               // Владелец
               {
                 key: "owner",
                 newWidth: 250,
               },
+              // Назначение
+              {
+                key: "purpose",
+                newWidth: 250,
+              },
+              // Тех. позиция
+              {
+                key: "techposition",
+                newWidth: 200,
+              },
+              // Событие
+              {
+                key: "eventName",
+                newWidth: 430,
+              },
+              /* {
+                key: "siknFullName",
+                newWidth: 200,
+              }, */
+              // ПСП
+              /* {
+                key: "receivingPoint",
+                newWidth: 200,
+              }, */
+              /* {
+                key: "techPositionName",
+                newWidth: 200,
+              }, */
+              // Тип события МКО ТКО
+              /* {
+                key: "mssEventTypeName",
+                newWidth: 350,
+              }, */
+              // Критичность
+              /* {
+                key: "mssEventSeverityLevelName",
+                newWidth: 150,
+              }, */
+              /* {
+                key: "isAcknowledged",
+                newWidth: 150,
+              }, */              
+              /* {
+                key: "comment",
+                newWidth: 175,
+              }, */
+              /* {
+                key: "acknowledgedTimestamp",
+                newWidth: 175,
+              }, */
             ]}
 
             // фильтрация
@@ -550,7 +593,21 @@ class EventsContainer extends Component<
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },             
+              },
+              {
+                headerName: "Владелец",
+                field: "owner",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },
+              {
+                headerName: "Назначение",
+                field: "purpose",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },
               {
                 headerName: "Тех. позиция",
                 field: "techposition",
@@ -565,20 +622,83 @@ class EventsContainer extends Component<
                 sortable: true,
                 comparator: () => 0,
               },
-              {
-                headerName: "Назначение",
-                field: "purpose",
+              /* {
+                headerName: "СИКН",
+                field: "siknFullName",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
-              {
-                headerName: "Владелец",
-                field: "owner",
+              }, */
+              /* {
+                headerName: "ПСП",
+                field: "pspName",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
+              }, */
+              /* {
+                headerName: "ПСП",
+                field: "receivingPoint",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              }, */              
+              /* {
+                headerName: "Технологическая позиция",
+                field: "techPositionName",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              }, */                            
+              /* {
+                headerName: "Комментарий",
+                field: "comment",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              }, */
+              /* {
+                headerName: "Кем было квитировано",
+                field: "acknowledgedBy",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              }, */
+              /* {
+                headerName: "Тип события МКО ТКО",
+                field: "mssEventTypeName",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              }, */
+              /* {
+                headerName: "Критичность",
+                field: "mssEventSeverityLevelName",
+                sortable: true,
+                comparator: () => 0,
+              }, */             
+              /* {
+                headerName: "Достоверность",
+                field: "resultQualityID",
+                filter: "customTextTableFilter",
+                cellRenderer: "qualityRenderer",
+                sortable: true,
+                comparator: () => 0,
+              }, */
+              /* {
+                headerName: "Время квитирования",
+                field: "acknowledgedTimestamp",
+                sortable: true,
+                comparator: () => 0,
+              }, */
+              /* {
+                field: "isAcknowledged",
+                headerName: "Признак квитирования",
+                filter: "customFilter",
+                cellRenderer: "checkboxRenderer",
+                sortable: true,
+                comparator: () => 0,
+              }, */
             ]}
 
             filterChangedCallback={(filterModel) => {
@@ -586,12 +706,9 @@ class EventsContainer extends Component<
             }}
 
             onSortChanged={this.onTableSortChanged}
-
-            onRowClicked={this.onRowClicked}
           />
         </Spin>
 
-        {/* подвал */}
         <Card>
           <Row justify="space-between">
             <Col>
@@ -615,26 +732,75 @@ class EventsContainer extends Component<
                 />
               </div>
             </Col>
+            <Col>
+              <Button type="primary" onClick={() => this.setState({ eventModalVisible: true })}>Open Modal</Button>
+            </Col>
+            {/* <Col>
+              <Row>
+                <Col>
+                  <ExportFilterTableButton
+                    init={{
+                      credentials: "include",
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        pageName: "/events",
+                        nodeTreeId: this.props.node.key,
+                        nodeTreeType: this.props.node.type,
+                        eventsListFilter: this.getFilter(),
+                      }),
+                    }}
+                  />
+                </Col>
+                <Col>
+                  <Tooltip title="Обновить таблицу">
+                    <Button
+                      type="link"
+                      icon={<ReloadOutlined />}
+                      onClick={() => {
+                        this.fetchItems(
+                          this.props.items.pageInfo.pageNumber,
+                          this.props.filter
+                        );
+                      }}
+                    />
+                  </Tooltip>
+                </Col>
+              </Row>
+            </Col> */}
           </Row>
         </Card>
 
-        <Modal
-          maskClosable={true}
-          visible={this.state.eventModalVisible}
-          title={this.state.eventModalTitle}
+        {/* <Modal
+          maskClosable={false}
+          visible={this.state.commentModalVisible}
+          title={`Квитирование`}
           destroyOnClose
-          footer={<Button onClick={handleClose} type="primary">Ок</Button>}
+          footer={null}
+          onCancel={() => {
+            this.setState({ commentModalVisible: false });
+          }}
+          onOk={() => { }}
+        >
+          <CommentForm<EventItem>
+            initial={this.props.selected ?? new EventItem()}
+            submitCallback={this.commentHandler}
+            showUseInReports={false}
+          />
+        </Modal> */}
+
+        <Modal
+          maskClosable={false}
+          visible={this.state.eventModalVisible}
+          title={`Подробнее о событии`}
+          destroyOnClose
+          footer={null}
           onCancel={handleClose}
           onOk={handleClose}
-          width={720}
-          centered
         >
-          {this.state.eventModalData
-            ? <List bordered dataSource={this.state.eventModalData} renderItem={(item) => (
-                <List.Item><b>{item.title}:</b> {item.value}</List.Item>
-              )}/>
-            : "Загрузка..."
-          }          
+          <p>123</p>
         </Modal>
       </TableBlockWrapperStyled>
     );

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, Key, useEffect, useState } from "react";
 import { Tree, Input, Spin, message } from "antd";
 import axios from "axios";
-import "../styles/app.css";
+import "../styles/app.scss";
 import { apiBase } from "../utils";
 import StockOutlined from "@ant-design/icons/StockOutlined";
 import DownOutlined from "@ant-design/icons/DownOutlined";

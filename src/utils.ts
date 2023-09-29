@@ -234,6 +234,17 @@ export const dateToShortString = (date: Nullable<Date>) => {
   }
 };
 
+export const dateToDayTime = (date: Nullable<Date>) => {
+  if ((date as unknown as null) === null || date === null) {
+    return "";
+  } else {
+    const hours = twoDigits(date.getHours());
+    const minutes = twoDigits(date.getMinutes());
+    const seconds = twoDigits(date.getSeconds());
+    return `${hours}:${minutes}:${seconds}`;
+  }
+};
+
 export const endDateToLongDateString = (date: Date) => {
   if ((date as unknown as null) === null) {
     return "";
@@ -317,7 +328,7 @@ export const gridOptions = {
 };
 
 export function twoDigits(n: number): string {
-  return n.toLocaleString("en-US", {
+  return n.toLocaleString("ru-RU", {
     minimumIntegerDigits: 2,
     useGrouping: false,
   });
