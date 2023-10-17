@@ -51,9 +51,17 @@ interface IEventObject {
   value: string;
 }
 
+interface IEventExtObject {
+  Name: string;
+  Caption: string;
+  Value: string;
+}
+
 interface EventsContainerState {
+  eventModalLoading: boolean;
   eventModalVisible: boolean;
   eventModalData: IEventObject[];
+  eventModalExtData: IEventObject[];
   eventModalTitle: string;
   commentModalVisible: boolean;
   levelFilter: number | null;
@@ -118,11 +126,14 @@ class EventsContainer extends Component<
 
   constructor(props: EventsContainerProps) {
     super(props);
+
     this.state = {
       levelFilter: null,
+      eventModalLoading: true,
       eventModalVisible: false,
       eventModalTitle: "",
       eventModalData: [],
+      eventModalExtData: [],
       commentModalVisible: false,
       loading: false,
       gridApi: new GridApi(),
@@ -134,6 +145,7 @@ class EventsContainer extends Component<
       },
       sortedField: this.defaultSorting,
     };
+
     this.commentHandler = this.commentHandler.bind(this);
     this.setApi = this.setApi.bind(this);
     this.getFetchUrl = this.getFetchUrl.bind(this);
@@ -277,7 +289,25 @@ class EventsContainer extends Component<
   };
 
   // получение данных о событии для модального окна  
-  async fetchEventInfo(id: string, typeId: number) {
+  async fetchEventExtInfo(id: string, typeId: number) {
+    // для тестирования
+    // id = "15b8a5bb-8e8d-4e02-8770-9b0145509bad";
+    // typeId = 112;
+
+    // порядок полей для определенных типов отчетов
+    const typesExtKeys = {
+      "112": [
+        "Previous",
+        "Current",
+        "DeltaByPercent",
+        "Flow",
+        "Line",
+        "LineState",
+        "MeasureType",
+        "ExtKey",
+      ],
+    };
+
     axios
       .get<string>(`${apiBase}/event-info`, {
         params: {
@@ -286,31 +316,66 @@ class EventsContainer extends Component<
         }        
       })
       .then((result) => {
-        // console.log("result data", result.data);
-        // console.log("parse data", JSON.parse(result.data));
+        console.log("result extData", result.data);
 
-        const resultData = JSON.parse(result.data);
-
-        const eventData:IEventObject[] = [];
-
-        resultData.forEach((item: {
-          Name: string;
-          Caption: string;
-          Value: string;
-        }) => {
-          eventData.push({
-            key: item.Name,
-            title: item.Caption,
-            value: item.Value
+        // при отсутствии расширенных данных
+        if (!result.data) {
+          this.setState({
+            eventModalExtData: [] // обнуляем состояние
           });
-        });
+        } else { // иначе работаем с данными
+          console.log("parse extData", JSON.parse(result.data));
 
-        this.setState({
-          eventModalData: eventData
-        });
+          const resultData = JSON.parse(result.data);
+
+          const eventExtData:IEventObject[] = [];
+          
+          // если для типа есть список полей в typesExtKeys
+          if (typesExtKeys[typeId]) {
+            // идем по массиву полей
+            typesExtKeys[typeId].forEach((key: string) => {
+              // console.log(key);
+
+              // забираем данные по совпадающим полям
+              resultData.forEach((item: IEventExtObject) => {
+                if (item.Name === key) {
+                  eventExtData.push({
+                    key: item.Name,
+                    title: item.Caption,
+                    value: item.Value
+                  });
+                }
+              });
+            });
+          } else { // иначе
+            resultData.forEach((item: IEventExtObject) => {
+              // console.log(item.Name);
+    
+              // добавляем как есть
+              eventExtData.push({
+                key: item.Name,
+                title: item.Caption,
+                value: item.Value
+              });
+            });
+          }
+
+          // обновляем состояние
+          this.setState({
+            eventModalExtData: eventExtData // расширенные данные
+          });
+        }        
       })
       .catch((err) => {
-        console.log(err);        
+        console.log("Внимание!");
+        
+        console.error(err);
+
+        this.setState({
+          eventModalExtData: [] // обнуляем состояние
+        });
+
+        console.log("Обнуление завершено.");        
       });
   }
 
@@ -318,59 +383,73 @@ class EventsContainer extends Component<
   onRowClicked = (event: RowClickedEvent) => {
     const { data } = event;
 
-    // console.log(data);
+    console.log("rowdata", data);
 
     // console.log("id", data.id);
     // console.log("mssEventTypeId", data.mssEventTypeId);
 
-    this.fetchEventInfo(data.id, data.mssEventTypeId);
-
     // искомые ключи в нужном порядке
-    // const eventKeys = [
-    //   // { keyName: "id", keyTitle: "ID"},
-    //   { keyName: "eventName", keyTitle: "Событие" },
-    //   { keyName: "startDateTime", keyTitle: "Начало" },
-    //   { keyName: "endDateTime", keyTitle: "Окончание" },
-    //   // { keyName: "mssEventTypeId", keyTitle: "ID типа события" },
-    //   // { keyName: "mssEventTypeName", keyTitle: "Тип" },
-    //   { keyName: "sikn", keyTitle: "СИКН" },
-    //   { keyName: "techposition", keyTitle: "Тех. позиция" },
-    //   { keyName: "receivingPoint", keyTitle: "ПСП"},
-    //   { keyName: "owner", keyTitle: "Владелец"},
-    //   { keyName: "purpose", keyTitle: "Назначение"},
-    // ];
+    const eventKeys = [      
+      { keyName: "startDateTime", keyTitle: "Начало" },
+      { keyName: "endDateTime", keyTitle: "Окончание" },
+      { keyName: "eventName", keyTitle: "Событие" },      
+      { keyName: "mssEventTypeName", keyTitle: "Тип" },
+      { keyName: "sikn", keyTitle: "СИКН" },
+      { keyName: "techposition", keyTitle: "Тех. позиция" },
+      { keyName: "receivingPoint", keyTitle: "ПСП"},
+      { keyName: "owner", keyTitle: "Владелец"},
+      { keyName: "purpose", keyTitle: "Назначение"},
+      // { keyName: "id", keyTitle: "ID"},
+      // { keyName: "mssEventTypeId", keyTitle: "ID типа события" },
+    ];
 
-    // const eventData:IEventObject[] = [];
+    const eventData:IEventObject[] = [];
 
-    // eventKeys.forEach((item) => {
-    //   let curEventValue = data[item.keyName];
+    eventKeys.forEach((item) => {
+      let curEventValue = data[item.keyName];
 
-    //   // если есть значение по такому ключу
-    //   if (curEventValue) {
-    //     // если это дата
-    //     if (curEventValue instanceof Date) {
-    //       curEventValue = `${dateToShortString(curEventValue)} ${dateToDayTime(curEventValue)}`;
-    //     }
+      // если есть значение по такому ключу
+      if (curEventValue) {
+        // если это дата
+        if (curEventValue instanceof Date) {
+          curEventValue = `${dateToShortString(curEventValue)} ${dateToDayTime(curEventValue)}`;
+        }
 
-    //     // приведение к строке
-    //     curEventValue = String(curEventValue);
+        // приведение к строке
+        curEventValue = String(curEventValue);
 
-    //     // добавляем элемент в массив
-    //     eventData.push({
-    //       key: item.keyName,
-    //       title: item.keyTitle,
-    //       value: curEventValue
-    //     });
-    //   }
-    // });
+        // добавляем typeId к типу события
+        if (item.keyName === "mssEventTypeName") {
+          curEventValue = `${data.mssEventTypeId} ${curEventValue}`;
+        }
 
-    // console.log(eventData);
+        // добавляем элемент в массив
+        eventData.push({
+          key: item.keyName,
+          title: item.keyTitle,
+          value: curEventValue
+        });
+      } else if (item.keyName === "endDateTime") {
+        // если отсутствует значение и это "окончание"
+        eventData.push({
+          key: item.keyName,
+          title: item.keyTitle,
+          value: eventData[0].value // значение "начала"
+        });
+      }
+    });
 
-    // меняем состояние, добавляя данные и открываю модалку
+    console.log("eventData", eventData);
+
+    // получаем расширенные данные
+    this.fetchEventExtInfo(data.id, data.mssEventTypeId);
+
+    // обновляем состояние
     this.setState({
-      eventModalTitle: `${data.eventName} (${data.sikn})`,
-      // eventModalData: eventData,
-      eventModalVisible: true
+      eventModalTitle: `${data.eventName} (${data.sikn})`, // заголовок окна
+      eventModalData: eventData, // основные данные
+      eventModalVisible: true, // флаг отображения модалки
+      eventModalLoading: false // выключение лоадера
     });
   };
 
@@ -626,15 +705,29 @@ class EventsContainer extends Component<
           footer={<Button onClick={handleClose} type="primary">Ок</Button>}
           onCancel={handleClose}
           onOk={handleClose}
-          width={720}
+          width={900}
           centered
         >
-          {this.state.eventModalData
-            ? <List bordered dataSource={this.state.eventModalData} renderItem={(item) => (
-                <List.Item><b>{item.title}:</b> {item.value}</List.Item>
-              )}/>
-            : "Загрузка..."
-          }          
+          <Spin spinning={this.state.eventModalLoading}>
+            <Row gutter={16}>
+              <Col span={14} className="gutter-row">
+                {this.state.eventModalData.length > 0
+                  ? <List bordered dataSource={this.state.eventModalData} renderItem={(item) => (
+                      <List.Item><b>{item.title}:</b> {item.value}</List.Item>
+                    )}/>
+                  : <p style={{ textAlign: "center" }}>Основные данные отсутствуют.</p>
+                }
+              </Col>
+              <Col span={10} className="gutter-row">
+                {this.state.eventModalExtData.length > 0
+                  ? <List bordered dataSource={this.state.eventModalExtData} renderItem={(item) => (
+                      <List.Item><b>{item.title}:</b> {item.value}</List.Item>
+                    )}/>
+                  : <p style={{ textAlign: "center" }}>Расширенные данные отсутствуют</p>
+                }
+              </Col>
+            </Row>            
+          </Spin>
         </Modal>
       </TableBlockWrapperStyled>
     );
