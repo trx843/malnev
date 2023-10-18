@@ -60,10 +60,11 @@ interface IEventExtObject {
 interface EventsContainerState {
   eventModalLoading: boolean;
   eventModalVisible: boolean;
+  eventModalTitle: string;
   eventModalData: IEventObject[];
   eventModalExtData: IEventObject[];
-  eventModalTitle: string;
-  commentModalVisible: boolean;
+  eventModalExtError: string;
+  commentModalVisible: boolean;  
   levelFilter: number | null;
   loading: boolean;
   gridApi: GridApi;
@@ -134,6 +135,7 @@ class EventsContainer extends Component<
       eventModalTitle: "",
       eventModalData: [],
       eventModalExtData: [],
+      eventModalExtError: "",
       commentModalVisible: false,
       loading: false,
       gridApi: new GridApi(),
@@ -308,13 +310,12 @@ class EventsContainer extends Component<
       ],
     };
 
+    this.setState({
+      eventModalExtError: "" // обнуляем сообщение об
+    });
+
     axios
-      .get<string>(`${apiBase}/event-info`, {
-        params: {
-          id: id,
-          typeId: typeId
-        }        
-      })
+      .post<string>(`${apiBase}/event-ext?id=${id}&typeId=${typeId}`)
       .then((result) => {
         console.log("result extData", result.data);
 
@@ -366,13 +367,29 @@ class EventsContainer extends Component<
           });
         }        
       })
-      .catch((err) => {
-        console.log("Внимание!");
-        
-        console.error(err);
+      .catch((error) => {
+        console.warn("Внимание!");
+
+        if (error.response) {
+          console.log("error.response.data", error.response.data);
+          console.log("error.response.status", error.response.status);
+          console.log("error.response.headers", error.response.headers);
+
+          // выводим ошибку в модальное окно
+          this.setState({
+            eventModalExtError: `Ошибка ${error.response.status}: ${error.response.data.exceptionMessage}`
+          });
+        } else if (error.request) {
+          console.log("error.response.request", error.request);
+        } else {
+          console.log("error.message", error.message);
+        }
+        console.log("error.config", error.config);
+
+        console.warn("Конец ошибки!");
 
         this.setState({
-          eventModalExtData: [] // обнуляем состояние
+          eventModalExtData: [] // обнуляем расширенные данные
         });
 
         console.log("Обнуление завершено.");        
@@ -723,7 +740,9 @@ class EventsContainer extends Component<
                   ? <List bordered dataSource={this.state.eventModalExtData} renderItem={(item) => (
                       <List.Item><b>{item.title}:</b> {item.value}</List.Item>
                     )}/>
-                  : <p style={{ textAlign: "center" }}>Расширенные данные отсутствуют</p>
+                  : this.state.eventModalExtError
+                    ? <p>{this.state.eventModalExtError}</p>
+                    : <p style={{ textAlign: "center" }}>Расширенные данные отсутствуют</p>
                 }
               </Col>
             </Row>            
