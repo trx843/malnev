@@ -368,7 +368,9 @@ class EventsContainer extends Component<
         }        
       })
       .catch((error) => {
-        console.warn("Внимание!");
+        console.warn("Внимание, ошибка!");
+
+        console.log("error", error);
 
         if (error.response) {
           console.log("error.response.data", error.response.data);
@@ -380,10 +382,11 @@ class EventsContainer extends Component<
             eventModalExtError: `Ошибка ${error.response.status}: ${error.response.data.exceptionMessage}`
           });
         } else if (error.request) {
-          console.log("error.response.request", error.request);
+          console.log("error.request", error.request);
         } else {
           console.log("error.message", error.message);
         }
+
         console.log("error.config", error.config);
 
         console.warn("Конец ошибки!");
@@ -391,8 +394,6 @@ class EventsContainer extends Component<
         this.setState({
           eventModalExtData: [] // обнуляем расширенные данные
         });
-
-        console.log("Обнуление завершено.");        
       });
   }
 
@@ -740,9 +741,7 @@ class EventsContainer extends Component<
                   ? <List bordered dataSource={this.state.eventModalExtData} renderItem={(item) => (
                       <List.Item><b>{item.title}:</b> {item.value}</List.Item>
                     )}/>
-                  : this.state.eventModalExtError
-                    ? <p>{this.state.eventModalExtError}</p>
-                    : <p style={{ textAlign: "center" }}>Расширенные данные отсутствуют</p>
+                  : <p style={{ textAlign: "center" }}>{this.state.eventModalExtError || "Расширенные данные отсутствуют"}</p>
                 }
               </Col>
             </Row>            
