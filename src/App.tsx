@@ -75,6 +75,7 @@ import { ImportAttemptsHistoryCard } from "components/ImportAttemptsHistoryCard"
 import { IOTSPDPage } from "pages/IOTSPD";
 import { tspdNsiPage } from "pages/tspdNsi";
 import { CtrlNsiPage } from "pages/CtrlNsi";
+import { ReportsPage } from "pages/ReportsPage";
 
 const { Content } = Layout;
 
@@ -129,22 +130,23 @@ export const App: FunctionComponent = () => {
             <Content style={ { display: "flex" } }>
               <Layout className="site-layout" style={ { padding: "64px 0 0 0" } }>
                 {/* меню слева */ }
-                <MenuSider
+                {/* <MenuSider
                   currentUser={ user }
                   currentSelectedMenuKey={ currentSelectedMenuKey }
-                />
+                /> */}
                 <Content
                   style={ {
                     padding: 16,
                     paddingBottom: 0,
                     margin: 0,
-                    marginLeft: 80,
+                    // marginLeft: 80,
                     display: "flex",
                   } }
                 >
                   <Switch>
                     {/* грузим компонент Home на главной странице */ }
-                    <Route exact path="/" component={ Home }></Route>
+                    <Route exact path="/" component={ Home }/>
+                    <Route path="/reports" component={ ReportsPage }/>
 
                     <PrivateRoute
                       exact
@@ -290,7 +292,7 @@ export const App: FunctionComponent = () => {
                     />
                     <PrivateRoute path="/iotspd" component={ IOTSPDPage }/>
                     <PrivateRoute path="/ctrl-nsi" component={ CtrlNsiPage }/>
-                    <PrivateRoute path="/tspd-nsi" component={ tspdNsiPage }/>
+                    <PrivateRoute path="/tspd-nsi" component={ tspdNsiPage }/>                    
                   </Switch>
                 </Content>
               </Layout>

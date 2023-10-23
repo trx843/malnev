@@ -10,10 +10,6 @@ interface ITitleWrapperProps {
   isTitle?: boolean;
 }
 
-
-
-
-
 export const CardColumnsWrapper = styled.div`
   height: calc(100vh - 98px);
   overflow-y: auto;

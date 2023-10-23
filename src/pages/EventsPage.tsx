@@ -192,9 +192,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
           <WrapperTreeRowStyled $collapsed={collapsed}>
             <Col span={24} style={{ height: "100%" }}>
               {/* новое дерево ТКО */}
-              <TkoTreeStyled
-                onSelectCallback={onSelect}
-              />
+              <TkoTreeStyled onSelectCallback={onSelect}/>
             </Col>
           </WrapperTreeRowStyled>
         </SiderFilterStyled>

@@ -1,6 +1,6 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Alert, Col, Dropdown, Menu, Row, Tooltip } from "antd";
 import { FC, useCallback, useEffect, useState } from "react";
+import { DownOutlined } from "@ant-design/icons";
+import { Alert, Col, Dropdown, Menu, Row, Tooltip, Button } from "antd";
 import { Link } from "react-router-dom";
 import { User } from "../../classes";
 import { HeaderStyled, NodeColorDot, TypographyText } from "./styledComponents";
@@ -12,6 +12,7 @@ import { getNotification } from "api/requests/notificationMessage";
 import { useLongPolling } from "customHooks/useLongPolling";
 import { NotificationModel } from "components/NotificationMessageModal/types";
 import { config } from "utils";
+import { history } from "../../history/history";
 
 interface HeaderProps {
   currentUser: User;
@@ -102,10 +103,10 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "start",
-                paddingLeft: 15,
+                // flexDirection: "column",
+                // justifyContent: "center",
+                alignItems: "center",
+                padding: "0 15",
                 height: 64,
                 background: "#1F4664",
               }}
@@ -119,8 +120,21 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
                   alignItems: "center",
                 }}
               >
-                <img src={logo} alt={"Logo small"} id={"squaredLogo"} />
+                <img
+                  src={logo}
+                  alt=""
+                  title="Портал МКО ТКО"
+                  id={"squaredLogo"}
+                />
               </Link>
+
+              <Button
+                type="primary"
+                onClick={() => history.push("/reports")}
+                style={{
+                  marginLeft: 20
+                }}
+              >Отчеты</Button>
             </div>
           </Col>
           <Col

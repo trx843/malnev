@@ -42,7 +42,7 @@ import {
 import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
 import { ReloadOutlined } from "@ant-design/icons";
-import "../styles/app.scss";
+// import "../styles/app.scss";
 import { ExportFilterTableButton } from "components/ExportFilterTableButton";
 
 interface IEventObject {
