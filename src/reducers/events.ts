@@ -6,6 +6,7 @@ import { techPosTreeConstant, zeroGuid } from "../utils";
 
 const date = new Date();
 
+// состояние фильтров и дерева событий по-умолчанию
 const initialState: IEventsState = {
   items: {
     entities: [],

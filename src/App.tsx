@@ -144,9 +144,14 @@ export const App: FunctionComponent = () => {
                   } }
                 >
                   <Switch>
-                    {/* грузим компонент Home на главной странице */ }
+                    {/* компонент Home на главной странице */ }
                     <Route exact path="/" component={ Home }/>
+
+                    {/* отчеты на своей странице */}
                     <Route path="/reports" component={ ReportsPage }/>
+
+                    {/* события */}
+                    <PrivateRoute path="/events" component={ EventsPage }/>
 
                     <PrivateRoute
                       exact
@@ -205,7 +210,6 @@ export const App: FunctionComponent = () => {
                       path="/datasi/:siId"
                       component={ EventsCharts }
                     />
-                    <PrivateRoute path="/events" component={ EventsPage }/>
                     <PrivateRoute
                       path="/settings/events"
                       component={ EventsSettingsPage }

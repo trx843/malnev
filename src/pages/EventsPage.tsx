@@ -1,3 +1,6 @@
+import React, { FunctionComponent, useState, useEffect, Key } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { history } from "../history/history";
 import {
   Col,
   DatePicker,
@@ -7,10 +10,12 @@ import {
   Select,
   TreeSelect
 } from "antd";
-import React, { FunctionComponent, useState, useEffect, Key } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { FilterDates, IEventsState, SelectedNode } from "../interfaces";
-import { history } from "../history/history";
+import {
+  FilterDates,
+  IEventsState,
+  SelectedNode,
+  InfoType
+} from "../interfaces";
 import {
   dateChanged,
   eventLevelFilter,
@@ -48,14 +53,16 @@ const { Content } = Layout;
 
 const { RangePicker } = DatePicker;
 
-type InfoType = {
-  node: SelectedNode;
-};
+export const EventsPage: FunctionComponent<RouteComponentProps> = (props) => {
+  //console.log("props", props);
 
-export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
   if (props.history.action !== "PUSH" && props.location.state) {
     props.history.push("/events", undefined);
   }
+
+  // получение всех параметров из адресной строки
+  const searchParams = new URLSearchParams(props.location.search); 
+
   const dispatch = useDispatch();
 
   const pageState = useSelector<StateType, IEventsState>(
@@ -64,6 +71,12 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
 
   const [viewName, setViewName] = useState<string>(pageState.viewName);
   const [currentNodeKey, setCurrentNodeKey] = useState<Key>(pageState.node.key);
+
+  // получение ключа объекта из адресной строки
+  const keyParam = searchParams.get("key"); 
+
+  // создание парамерта для передачи в props дерева
+  const urlKey = keyParam ? keyParam : "";
 
   const [securityLevels, setSecurityLevels] = useState<
     Array<MssEventSecurityLevel>
@@ -78,8 +91,18 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
   const [treeData, setTreeData] = useState<Array<SqlTree>>([]);
 
   const onSelect = (selectedKeys: React.Key[], info: InfoType) => {
+    console.log("selectedKeys", selectedKeys);    
+
     const change = info.node;
-    console.log('change', change);  
+    console.log("change.key", change.key);
+
+    /*
+    ТН-Восток
+    d194b42f-5ccb-11ec-8125-005056b4fde6
+    */
+
+    console.log("change", change);
+
     setCurrentNodeKey(change.key);
     dispatch(nodeChanged(change));
   };
@@ -137,6 +160,7 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
         title="События"
         subTitle=""
       />
+
       <Layout>
         <SiderFilterStyled
           width={260}
@@ -146,22 +170,10 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
           collapsed={collapsed}
           onCollapse={onCollapse}
         >
-          <Row
-            justify={collapsed ? "center" : "space-between"}
-            align="middle"
-          >
-            <Col style={{ display: collapsed ? "none" : "block" }}>
-              <Title level={4}>Фильтр</Title>
-            </Col>
-            <Col>
-              {React.createElement(collapsed ? RightOutlined : LeftOutlined, {
-                onClick: onCollapse,
-              })}
-            </Col>
-          </Row>
+          <Title level={4}>Фильтр</Title>
 
           <FilterRowStyled $collapsed={collapsed}>
-            <Col >
+            <Col>
                 <FilterItemLabelStyled>Даты</FilterItemLabelStyled>
                 <RangePicker
                   locale={locale}
@@ -180,27 +192,19 @@ export const EventsPage: FunctionComponent<RouteComponentProps> = props => {
                   }}
                 />
             </Col>
-          </FilterRowStyled>
-
-          {/* дерево ТП */}
-          <FilterRowStyled $collapsed={collapsed}>
-            <Col>
-              <FilterItemLabelStyled>Выберите объект в дереве</FilterItemLabelStyled>
-            </Col>
-          </FilterRowStyled>
+          </FilterRowStyled>          
           
           <WrapperTreeRowStyled $collapsed={collapsed}>
             <Col span={24} style={{ height: "100%" }}>
+              <FilterItemLabelStyled>Выберите объект в дереве</FilterItemLabelStyled>
               {/* новое дерево ТКО */}
-              <TkoTreeStyled onSelectCallback={onSelect}/>
+              <TkoTreeStyled urlKey={urlKey} onSelectCallback={onSelect}/>
             </Col>
           </WrapperTreeRowStyled>
         </SiderFilterStyled>
 
         <Content>
-          <EventsContainer
-            filter={props.location.state as FilterType}
-          />
+          <EventsContainer filter={props.location.state as FilterType}/>
         </Content>
       </Layout>
     </PageLayoutStyled>

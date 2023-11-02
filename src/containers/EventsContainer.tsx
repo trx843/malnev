@@ -5,7 +5,12 @@ import {
   IEventsState,
   ListFilterBase,
 } from "../interfaces";
-import { apiBase, returnStringDate, dateToShortString, dateToDayTime } from "../utils";
+import {
+  apiBase,
+  returnStringDate,
+  dateToShortString,
+  dateToDayTime
+} from "../utils";
 import axios, { CancelTokenSource } from "axios";
 import { EventItem } from "../classes";
 import { ItemsTable } from "../components/ItemsTable";
@@ -42,7 +47,6 @@ import {
 import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
 import { ReloadOutlined } from "@ant-design/icons";
-// import "../styles/app.scss";
 import { ExportFilterTableButton } from "components/ExportFilterTableButton";
 
 interface IEventObject {
@@ -240,6 +244,8 @@ class EventsContainer extends Component<
 
     if (!filter) {
       this.widgetEvents = undefined;
+
+      // console.warn("path", this.props.node.path);      
 
       axios
         .post<PagedModel<EventItem>>(

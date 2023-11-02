@@ -204,12 +204,14 @@ export const SiderFilterStyled = styled(Sider)<{ collapsed: boolean }>`
     margin-right: -10px;
     padding-right: 10px;
   }
+
+  .ant-row + .ant-row {
+    margin-top: 15px;
+  }
 `;
 
 export const FilterRowStyled = styled(Row)`
-  display: ${(props: { $collapsed: boolean }) =>
-    props.$collapsed ? "none" : "block"};
-  margin-top: 15px;
+  display: ${(props: { $collapsed: boolean }) => props.$collapsed ? "none" : "block"};
 `;
 
 export const FilterItemLabelStyled = styled.label`

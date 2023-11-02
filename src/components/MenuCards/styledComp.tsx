@@ -20,7 +20,7 @@ export const CardColumnsWrapper = styled.div`
     }
   }
 
-  @media (min-width: 1440px) {
+  @media (min-width: 1024px) {
     .card-columns {
       column-count: 2;
     }

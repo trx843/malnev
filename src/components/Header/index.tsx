@@ -13,12 +13,15 @@ import { useLongPolling } from "customHooks/useLongPolling";
 import { NotificationModel } from "components/NotificationMessageModal/types";
 import { config } from "utils";
 import { history } from "../../history/history";
+import useGroup from "pages/Home/group";
 
 interface HeaderProps {
   currentUser: User;
 }
 
 export const Header: FC<HeaderProps> = ({ currentUser }) => {
+  // состояние группы пользователя
+  const [isUIB, setIsUIB] = useState<boolean>(false);
   const [isNotificatonModalOpened, setisNotificatonModalOpened] =
     useState(false);
 
@@ -51,6 +54,7 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
         break;
     }
   };
+
   const menuList = (
     <Menu>
       {currentUser && currentUser.webFeaturesTypes.underUserNameList.map((wf) => {
@@ -82,6 +86,10 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
       })}
     </Menu>
   );
+
+  useEffect(() => {
+    setIsUIB(useGroup());
+  }, []);
   
   return (
     <>
@@ -128,15 +136,20 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
                 />
               </Link>
 
-              <Button
-                type="primary"
-                onClick={() => history.push("/reports")}
-                style={{
-                  marginLeft: 20
-                }}
-              >Отчеты</Button>
+              {!isUIB &&
+                <Button
+                  type="primary"
+                  onClick={() => history.push("/reports")}
+                  style={{
+                    marginLeft: 20
+                  }}
+                >
+                  Отчеты
+                </Button>
+              }
             </div>
           </Col>
+          
           <Col
             style={{
               display: "flex",

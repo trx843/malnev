@@ -1002,3 +1002,7 @@ export interface ListFilterBase {
 export interface RowClassRules {
   [cssClassName: string]: string | ((params: any) => boolean);
 }
+
+export type InfoType = {
+  node: SelectedNode;
+};

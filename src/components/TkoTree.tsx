@@ -4,26 +4,6 @@ import { SqlTree } from "../classes/SqlTree";
 import { Spin, Tree } from "antd";
 import { apiBase } from "utils";
 
-/*
-interface DataNode {
-  title: string;
-  key: string;
-  isLeaf?: boolean;
-  children?: DataNode[];
-  path
-}
-*/
-
-/*
-const initTreeData: DataNode[] = [
-  // {
-  //   title: 'Tree Node',
-  //   key: '0',
-  //   isLeaf: true
-  // },
-];
-*/
-
 // функция обновления дерева
 const updateTreeData = (list: SqlTree[], key: React.Key, children: SqlTree[]): SqlTree[] => {
   const treetData = list.map((node) => {
@@ -49,6 +29,7 @@ const updateTreeData = (list: SqlTree[], key: React.Key, children: SqlTree[]): S
 
 // интерфейс пропсов TkoTree
 interface ITkoTreeProps {
+  urlKey?: string;
   className?: string;
   onSelectCallback: (selectedKeys: Key[], info: any) => void;
 }
@@ -56,6 +37,7 @@ interface ITkoTreeProps {
 // компонент дерева
 const TkoTree: React.FC<ITkoTreeProps> = (props) => {
   const {
+    urlKey,
     className,
     onSelectCallback
   } = props;
@@ -80,11 +62,24 @@ const TkoTree: React.FC<ITkoTreeProps> = (props) => {
       });
   }, []);
 
-  // ключи открытых нод по умолчанию
-  const defaultExpandedKeys = [
-    "00000000-0000-0000-0000-000000000001" // ID "Все"
-  ];
+  const allKey = "00000000-0000-0000-0000-000000000001";  // ID "Все"
 
+  // const expandedKeys:string[] = [ allKey ];
+
+  // const selectedKeys:string[] = [];
+
+  if (urlKey) {
+    // expandedKeys.push(urlKey);
+    // selectedKeys.push(urlKey);
+  }
+
+  /* const loadedKeys = [
+    "00000000-0000-0000-0000-000000000001", // Все
+    "d194b42f-5ccb-11ec-8125-005056b4fde6", // ТН-Восток
+    "33b608ef-648a-11ec-8129-005056b4db5d" // СИКН 101
+  ]; */
+
+  /* !!! todo сделать выбор пункта меню с родителями + раскрытие */
   return (
     <div className={className}>
       {treeData.length
@@ -93,8 +88,8 @@ const TkoTree: React.FC<ITkoTreeProps> = (props) => {
               treeData={treeData}
               loadData={onLoadDataCallback}
               onSelect={onSelectCallback}
-              defaultExpandedKeys={defaultExpandedKeys} // открыты по умолчанию
-              defaultSelectedKeys={defaultExpandedKeys} // выбраны по умолчанию
+              defaultExpandedKeys={[ allKey ]} // открыты по умолчанию
+              defaultSelectedKeys={[ allKey ]} // выбраны по умолчанию
             />
           )
         : (
