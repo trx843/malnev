@@ -43,6 +43,9 @@ export class Frame extends Component<
       const myReportRoute = "/frame/" + frameName;
       const myReportUrl = frameMap.get("report" as string) + `Reports/report/TKO/${login}/${frameTitle}?rs:embed=true`;
 
+      console.log("myReportRoute", myReportRoute);
+      console.log("myReportUrl", myReportUrl);      
+
       this.frameRoating.set(myReportRoute, myReportUrl);
 
       this.setState({ mapping: this.frameRoating });

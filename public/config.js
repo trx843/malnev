@@ -26,7 +26,7 @@ const config = {
   */
   frame: {
     // Для отчетов
-    //report: "http://ndc01-pebkekt01.dc-prod.tn.corp:59448/",
+    // report: "http://ndc01-pebkekt01.dc-prod.tn.corp:59448/",
     report: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/",
     // Для ГИС
     gis: "https://gis.tn.corp/",

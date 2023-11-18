@@ -1,5 +1,5 @@
-import { FC, useCallback, useEffect, useState } from "react";
-import { DownOutlined } from "@ant-design/icons";
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { BookOutlined, DownOutlined } from "@ant-design/icons";
 import { Alert, Col, Dropdown, Menu, Row, Tooltip, Button } from "antd";
 import { Link } from "react-router-dom";
 import { User } from "../../classes";
@@ -13,15 +13,13 @@ import { useLongPolling } from "customHooks/useLongPolling";
 import { NotificationModel } from "components/NotificationMessageModal/types";
 import { config } from "utils";
 import { history } from "../../history/history";
-import useGroup from "pages/Home/group";
+import { IndexContext, IndexContextType } from "../../hooks/useIndex"
 
 interface HeaderProps {
   currentUser: User;
 }
 
 export const Header: FC<HeaderProps> = ({ currentUser }) => {
-  // состояние группы пользователя
-  const [isUIB, setIsUIB] = useState<boolean>(false);
   const [isNotificatonModalOpened, setisNotificatonModalOpened] =
     useState(false);
 
@@ -87,10 +85,12 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
     </Menu>
   );
 
-  useEffect(() => {
-    setIsUIB(useGroup());
-  }, []);
-  
+  // получение функционала из контекста стартовой страницы
+  const {
+    isUIB, // флаг куратора
+    goToState // метод изменения состояния
+  } = React.useContext(IndexContext) as IndexContextType;
+
   return (
     <>
       <HeaderStyled
@@ -127,6 +127,7 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+                onClick={() => goToState("index")}
               >
                 <img
                   src={logo}
@@ -137,12 +138,14 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
               </Link>
 
               {!isUIB &&
+                // кнопка на страницу отчетов
                 <Button
                   type="primary"
                   onClick={() => history.push("/reports")}
                   style={{
                     marginLeft: 20
                   }}
+                  icon={<BookOutlined/>}
                 >
                   Отчеты
                 </Button>

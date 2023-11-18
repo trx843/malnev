@@ -3,10 +3,13 @@ import usePresenter from "./Home/presenter";
 import { PageLayoutStyled } from "../styles/commonStyledComponents";
 import {
   Layout,
-  PageHeader
+  PageHeader,
 } from "antd";
-import { MenuCards } from "components/MenuCards";
 import { history } from "../history/history";
+import { MenuCards } from "components/MenuCards";
+import { ReportsContainer } from "containers/ReportsContainer";
+
+const { Content } = Layout;
 
 export const ReportsPage: FunctionComponent = () => {
   const {
@@ -27,14 +30,17 @@ export const ReportsPage: FunctionComponent = () => {
         subTitle=""
       />
       <Layout>
-        <MenuCards
-          isEventsCountLoading={isEventsCountLoading}
-          userReportsList={userReportsList}
-          navs={navs}
-          onWidgetClick={onWidgetClick}
-          urlMapping={urlMapping}
-        />
+        <Content className="content">
+          <ReportsContainer/>
+          {/* <MenuCards
+            isEventsCountLoading={isEventsCountLoading}
+            userReportsList={userReportsList}
+            navs={navs}
+            onWidgetClick={onWidgetClick}
+            urlMapping={urlMapping}
+          /> */}
+        </Content>        
       </Layout>
-    </PageLayoutStyled>    
+    </PageLayoutStyled>
   );
 };

@@ -30,24 +30,19 @@ import {
   Pagination,
   Row,
   Spin,
-  Tooltip,
   List,
 } from "antd";
-import { CommentForm } from "../components/CommentForm";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/events/creators";
 import "moment/locale/ru";
 import { GridApi, SortChangedEvent, RowClickedEvent } from "ag-grid-community";
-import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 import {
   getOperativeMonitoringlist as getOperativeMonitoringList,
   getTransitionlist,
 } from "../api/requests/eventsPage";
 import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
-import { ReloadOutlined } from "@ant-design/icons";
-import { ExportFilterTableButton } from "components/ExportFilterTableButton";
 
 interface IEventObject {
   key: string;
@@ -84,6 +79,7 @@ enum SortableFields {
   purpose = "Purpose", // Назначение
   techposition = "Techposition", // Технологическая позиция
   eventName = "EventName", // Событие
+  isWarning = "IsWarning",
   siknFullName = "SIKNRSU.FullName",
   pspName = "SIKNRSU.PSP.FullName",
   receivingPoint = "ReceivingPoint",
@@ -314,10 +310,18 @@ class EventsContainer extends Component<
         "MeasureType",
         "ExtKey",
       ],
+      "184": [
+        "Previous",
+        "Current",
+        "Offset",
+        "Consumption",
+        "Element",
+        "ESDUCode",
+      ]
     };
 
     this.setState({
-      eventModalExtError: "" // обнуляем сообщение об
+      eventModalExtError: "" // обнуляем сообщение об ошибке
     });
 
     axios
@@ -432,15 +436,21 @@ class EventsContainer extends Component<
     eventKeys.forEach((item) => {
       let curEventValue = data[item.keyName];
 
-      // если есть значение по такому ключу
-      if (curEventValue) {
+      // если отсутствует значение и это "окончание"
+      if (!curEventValue && item.keyName === "endDateTime") {
+        eventData.push({
+          key: item.keyName,
+          title: item.keyTitle,
+          value: eventData[0].value // значение "начала"
+        });
+      } else {
         // если это дата
         if (curEventValue instanceof Date) {
           curEventValue = `${dateToShortString(curEventValue)} ${dateToDayTime(curEventValue)}`;
         }
 
         // приведение к строке
-        curEventValue = String(curEventValue);
+        curEventValue = curEventValue ? String(curEventValue) : "";
 
         // добавляем typeId к типу события
         if (item.keyName === "mssEventTypeName") {
@@ -452,13 +462,6 @@ class EventsContainer extends Component<
           key: item.keyName,
           title: item.keyTitle,
           value: curEventValue
-        });
-      } else if (item.keyName === "endDateTime") {
-        // если отсутствует значение и это "окончание"
-        eventData.push({
-          key: item.keyName,
-          title: item.keyTitle,
-          value: eventData[0].value // значение "начала"
         });
       }
     });
@@ -549,6 +552,8 @@ class EventsContainer extends Component<
       this.setState({ eventModalVisible: false });
     };
 
+    // console.log("entities", entities);
+
     return (
       <TableBlockWrapperStyled>
         <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
@@ -582,6 +587,7 @@ class EventsContainer extends Component<
               "receivingPoint", // ПСП
               "mssEventTypeName", // Тип события МКО ТКО
               "mssEventSeverityLevelName", // Критичность
+              "isWarning"
             ]}
 
             selectionCallback={this.selectionHandler}
@@ -631,6 +637,10 @@ class EventsContainer extends Component<
                 key: "owner",
                 newWidth: 250,
               },
+              {
+                key: "isWarning",
+                newWidth: 150,
+              },
             ]}
 
             // фильтрация
@@ -661,13 +671,13 @@ class EventsContainer extends Component<
                 sortable: true,
                 comparator: () => 0,
               },
-              {
+              /*{
                 headerName: "Событие",
                 field: "eventName",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },
+              },*/
               {
                 headerName: "Назначение",
                 field: "purpose",
@@ -678,6 +688,13 @@ class EventsContainer extends Component<
               {
                 headerName: "Владелец",
                 field: "owner",
+                filter: "customTextTableFilter",
+                sortable: true,
+                comparator: () => 0,
+              },
+              {
+                headerName: "isWarning",
+                field: "isWarning",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
@@ -734,7 +751,7 @@ class EventsContainer extends Component<
         >
           <Spin spinning={this.state.eventModalLoading}>
             <Row gutter={16}>
-              <Col span={14} className="gutter-row">
+              <Col span={13} className="gutter-row">
                 {this.state.eventModalData.length > 0
                   ? <List bordered dataSource={this.state.eventModalData} renderItem={(item) => (
                       <List.Item><b>{item.title}:</b> {item.value}</List.Item>
@@ -742,7 +759,7 @@ class EventsContainer extends Component<
                   : <p style={{ textAlign: "center" }}>Основные данные отсутствуют.</p>
                 }
               </Col>
-              <Col span={10} className="gutter-row">
+              <Col span={11} className="gutter-row">
                 {this.state.eventModalExtData.length > 0
                   ? <List bordered dataSource={this.state.eventModalExtData} renderItem={(item) => (
                       <List.Item><b>{item.title}:</b> {item.value}</List.Item>

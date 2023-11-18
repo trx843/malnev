@@ -367,6 +367,11 @@ export function ItemsTable<T extends object>(
     ev.api.setHeaderHeight(height);
   };
 
+  // console.log("props.items", props.items);
+
+  // метод, добавляющий warning класс при наличии такого флага в записи
+  const getRowClass = (params) => (params.node.data.isWarning ? "ag-row-warning" : "");
+
   return (
     <div
       style={{ height: props.height, width: "100%" }}
@@ -378,8 +383,9 @@ export function ItemsTable<T extends object>(
         className="ag-theme-material"
       >
         <AgGridReact
-          columnDefs={colDefs}
+          getRowClass={getRowClass} // ссылка на метод класса warning
           getRowStyle={props.rowStyle}
+          columnDefs={colDefs}          
           rowData={props.items}
           immutableData={true}
           getRowNodeId={(data) => data.id}

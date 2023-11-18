@@ -14,6 +14,9 @@ export class EventItem implements IEntity {
   @description("Окончание")
   endDateTime: Nullable<Date> = pureDate(new Date());
 
+  @description("isWarning")
+  isWarning: boolean = false;
+
   @description("СИКН")
   sikn: string = "";
 
@@ -24,7 +27,7 @@ export class EventItem implements IEntity {
   eventName: string = "";
 
   @description("Назначение")
-  purpose: string = "";
+  purpose: string = "";  
   
   @description("Владелец")
   owner: string = "";

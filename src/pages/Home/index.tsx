@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import {
   Col,
   Layout,
@@ -6,9 +6,10 @@ import {
   Divider,
   PageHeader,
   DatePicker,
-  Spin,
-  Row
+  Row,
+  Typography
 } from "antd";
+import { DatabaseOutlined, ExportOutlined } from "@ant-design/icons";
 import {
   FilterItemLabelStyled,
   FilterRowStyled,
@@ -34,15 +35,13 @@ import locale from "antd/es/date-picker/locale/ru_RU";
 import { StateType } from "types";
 import { MenuCards } from "components/MenuCards";
 import usePresenter from "./presenter";
-import useGroup from "./group";
+import { IndexContext, IndexContextType } from "../../hooks/useIndex";
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
+const { Title } = Typography;
 
 export const Home: FunctionComponent = () => {
-  // состояние группы пользователя
-  const [isUIB, setIsUIB] = useState<boolean>(false);
-
   const {
     urlMapping,
     isEventsCountLoading,
@@ -55,7 +54,12 @@ export const Home: FunctionComponent = () => {
 
   const pageState = useSelector<StateType, IEventsState>((state) => state.eventsReducer);
 
-  const [indexState, setIndexState] = useState<string>("index");
+  // получение функционала из контекста стартовой страницы
+  const {
+    isUIB, // флаг куратора
+    indexState, // состояние стартовой страницы
+    goToState // метод изменения состояния
+  } = React.useContext(IndexContext) as IndexContextType;
 
   const [startDate, setStartDate] = useState<Date>(pageState.filterDates.startDate);
   const [endDate, setEndDate] = useState<Date>(pageState.filterDates.endDate);
@@ -69,18 +73,15 @@ export const Home: FunctionComponent = () => {
     dispatch(nodeChanged(change));
   }
 
+  // обработка показа событий
   const handleShowEvents = () => {
-    setIndexState("events");
+    goToState("events");
   }
 
+  // обработка показа главной
   const handleShowIndex = () => {
-    setIndexState("index");
-    // dispatch(nodeChanged({}));
+    goToState("index");
   }
-
-  useEffect(() => {
-    setIsUIB(useGroup());
-  }, []);
 
   return (
     <PageLayoutStyled>      
@@ -111,7 +112,7 @@ export const Home: FunctionComponent = () => {
             <Layout>
               {/* колонка слева */}
               <SiderFilterStyled
-                width={260}
+                width={270}
                 collapsed={false}
               >
                 {/* фильтр дат */}
@@ -152,13 +153,42 @@ export const Home: FunctionComponent = () => {
               <Content className="content">
                 {/* если это стартовая страница */}
                 {indexState === "index"
-                  ? <>
-                      <Button size="large">Баланс ОСУ и РСУ</Button>
-                      <Divider />
-                      <Button size="large" type="primary" onClick={handleShowEvents}>События</Button>
-                      <Divider />
-                      <Button size="large">Баланс с учетом КМХ</Button>
-                    </>
+                  ? <Row gutter={16}>
+                      <Col span={14}>
+                        <Button
+                          type="primary"
+                          size="large"
+                          onClick={handleShowEvents}
+                          icon={<DatabaseOutlined/>}
+                        >
+                          События
+                        </Button>
+
+                        <Divider />
+
+                        <Button
+                          size="large"
+                          href="frame/report_dynamics_masses_volumes"
+                          target="_blank"
+                          icon={<ExportOutlined/>}
+                        >
+                          Баланс ОСУ и РСУ
+                        </Button>
+                        
+                        <Divider />
+                        
+                        <Button
+                          disabled
+                          size="large"
+                        >
+                          Баланс с учетом КМХ
+                        </Button>
+                      </Col>
+                      
+                      <Col span={10}>
+                        <Title level={3}>Сводка МКИ</Title>
+                      </Col>
+                    </Row>
                   : <>
                       {/* иначе выводим события */}
                       <EventsContainer/>

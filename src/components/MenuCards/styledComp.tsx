@@ -10,7 +10,8 @@ interface ITitleWrapperProps {
   isTitle?: boolean;
 }
 
-export const CardColumnsWrapper = styled.div`
+export const CardColumnsWrapper = styled.div``;
+/*`
   height: calc(100vh - 98px);
   overflow-y: auto;
 
@@ -31,6 +32,14 @@ export const CardColumnsWrapper = styled.div`
       column-count: 3;
     }
   }
+`;*/
+
+export const MenuCardColumns = styled(CardColumns)`  
+  column-count: auto;
+  column-gap: normal;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
 `;
 
 export const MainTitleWrapper = styled.div`
@@ -136,8 +145,6 @@ export const MenuStyled = styled(Menu)`
   /*  */
 `;
 
-export const MenuCardColumns = styled(CardColumns)``;
-
 export const MenuCard = styled(Card)`
   max-width: 584px;
   min-width: 584px;
@@ -145,7 +152,8 @@ export const MenuCard = styled(Card)`
   background: #ffffff;
   border-radius: 6px;
   padding: 24px;
-  margin-bottom: 16px;
+  margin: 0 !important;
+
   .card-body {
     padding: 0;
   }
@@ -173,9 +181,7 @@ export const ReportsMenuStyled = styled(Menu)`
     .ant-menu-submenu-title {
       font-size: 20px;
       font-weight: bold;
-
       color: #424242;
-
       min-height: 64px;
       margin: 0;
       vertical-align: middle;
@@ -196,6 +202,7 @@ export const ReportsMenuStyled = styled(Menu)`
     .ant-menu-item:first-child {
       margin-top: 8px;
     }
+
     .ant-menu-item:last-child {
       margin-bottom: 24px !important;
     }

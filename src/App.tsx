@@ -76,14 +76,20 @@ import { IOTSPDPage } from "pages/IOTSPD";
 import { tspdNsiPage } from "pages/tspdNsi";
 import { CtrlNsiPage } from "pages/CtrlNsi";
 import { ReportsPage } from "pages/ReportsPage";
+import { IndexProvider } from "./hooks/useIndex";
 
 const { Content } = Layout;
 
 export const App: FunctionComponent = () => {
   const dispatch = useDispatch();
 
-  const { isLoading, user, resultStatusType, error, currentSelectedMenuKey } =
-    useSelector<StateType, HomeStateType>((state) => state.home);
+  const {
+    isLoading,
+    user,
+    resultStatusType,
+    error,
+    currentSelectedMenuKey
+  } = useSelector<StateType, HomeStateType>((state) => state.home);
 
   useEffect(() => {
     // вызываем метод авторизации на бэке
@@ -125,182 +131,187 @@ export const App: FunctionComponent = () => {
 
       { !isLoading && !error && user.featuresList && (
         <AbilityContext.Provider value={ defineAbilityFor(user) }>
-          <Layout style={ { minHeight: "100vh", height: "100vh" } }>
-            <Header currentUser={ user }/>
-            <Content style={ { display: "flex" } }>
-              <Layout className="site-layout" style={ { padding: "64px 0 0 0" } }>
-                {/* меню слева */ }
-                {/* <MenuSider
-                  currentUser={ user }
-                  currentSelectedMenuKey={ currentSelectedMenuKey }
-                /> */}
-                <Content
-                  style={ {
-                    padding: 16,
-                    paddingBottom: 0,
-                    margin: 0,
-                    // marginLeft: 80,
-                    display: "flex",
-                  } }
-                >
-                  <Switch>
-                    {/* компонент Home на главной странице */ }
-                    <Route exact path="/" component={ Home }/>
+          <Layout style={{
+            minHeight: "100vh",
+            // height: "100vh"
+          }}>
+            <IndexProvider>
+              <Header currentUser={ user }/>
+              <Content style={ { display: "flex" } }>
+                <Layout className="site-layout" style={ { padding: "64px 0 0 0" } }>
+                  {/* меню слева */ }
+                  {/* <MenuSider
+                    currentUser={ user }
+                    currentSelectedMenuKey={ currentSelectedMenuKey }
+                  /> */}
+                  <Content
+                    style={ {
+                      padding: 16,
+                      paddingBottom: 0,
+                      margin: 0,
+                      // marginLeft: 80,
+                      display: "flex",
+                    } }
+                  >
+                    <Switch>
+                      {/* компонент Home на главной странице */ }
+                      <Route exact path="/" component={ Home }/>
 
-                    {/* отчеты на своей странице */}
-                    <Route path="/reports" component={ ReportsPage }/>
+                      {/* отчеты на своей странице */}
+                      <Route path="/reports" component={ ReportsPage }/>
 
-                    {/* события */}
-                    <PrivateRoute path="/events" component={ EventsPage }/>
+                      {/* события */}
+                      <PrivateRoute path="/events" component={ EventsPage }/>
 
-                    <PrivateRoute
-                      exact
-                      path="/risk-settings"
-                      component={ RiskSettings }
-                    />
-                    <PrivateRoute path="/frame/:frameName" component={ Frame }/>
-                    <PrivateRoute
-                      path="/orgstructure/:frameName"
-                      component={ OrgStructureFrame }
-                    />
-                    <PrivateRoute path="/catalogues" component={ NsiPage }/>
-                    <PrivateRoute path={ SiknOffRoute } component={ SiknOffPage }/>
-                    <PrivateRoute path={ ToKmhRoute } component={ ToKmhPage }/>
-                    <PrivateRoute path={ CoefsRoute } component={ CoefsPage }/>
-                    <PrivateRoute
-                      exact
-                      path="/import"
-                      component={ ImportAttemptsHistory }
-                    />
-                    <PrivateRoute
-                      path="/import/:attemptId"
-                      component={ ImportAttemptsHistoryCard }
-                    />
-                    <PrivateRoute
-                      path={ FailuresRoute }
-                      component={ FailuresPage }
-                    />
-                    <PrivateRoute
-                      path={ EditorSiRoute }
-                      component={ EditorSiPage }
-                    />
-                    <PrivateRoute
-                      path={ SiEquipmentLimitsRoute }
-                      component={ SiEquipmentLimitsPage }
-                    />
-                    <PrivateRoute
-                      path="/groupeventssettings"
-                      component={ AdminEventsSettingsPage }
-                    />
-                    <PrivateRoute
-                      path="/operativesikn"
-                      component={ OperativeMonitoringSiknPage }
-                    />
-                    <PrivateRoute
-                      path="/riskrating"
-                      component={ RiskRatingPage }
-                    />
-                    <PrivateRoute
-                      path="/riskratinginfo/:siknId"
-                      component={ RiskRatingDetailedInfoPage }
-                    />
-                    <PrivateRoute exact path="/datasi" component={ DataSiPage }/>
-                    <PrivateRoute
-                      exact
-                      path="/datasi/:siId"
-                      component={ EventsCharts }
-                    />
-                    <PrivateRoute
-                      path="/settings/events"
-                      component={ EventsSettingsPage }
-                    />
-                    <PrivateRoute
-                      path="/operativesikn"
-                      component={ OperativeMonitoringSiknPage }
-                    />
-                    <Route path="/historylimit" component={ HistoryLimitPage }/>
-                    <PrivateRoute
-                      path={ CheckingObjectsRoute }
-                      exact
-                      component={ CheckingObjectsPage }
-                    />
-                    <PrivateRoute
-                      path="/pspcontrol/checkingobjects/:pspId"
-                      component={ PspPage }
-                    />
-                    <PrivateRoute
-                      exact
-                      path={ VerificationScheduleRoute }
-                      component={ VerificationSchedulePage }
-                    />
-                    <PrivateRoute
-                      exact
-                      path="/pspcontrol/verification-schedule/:scheduleId"
-                      component={ VerificationScheduleCardPage }
-                    />
-                    <PrivateRoute
-                      path={ VerificationActsRoute }
-                      exact
-                      component={ VerificationActsPage }
-                    />
-                    <PrivateRoute
-                      path="/pspcontrol/verification-acts/:actId"
-                      exact
-                      component={ VerificationActPage }
-                    />
-                    <PrivateRoute
-                      exact
-                      path={ ActionPlansRoute }
-                      component={ ActionPlansPage }
-                    />
-                    <PrivateRoute
-                      exact
-                      path="/pspcontrol/action-plans/cards/:planId"
-                      component={ PlanCardPage }
-                    />
-                    <PrivateRoute
-                      exact
-                      path="/pspcontrol/action-plans/typical-violations/"
-                      component={ EliminationOfTypicalViolationsPage }
-                    />
-                    <PrivateRoute
-                      path={ AlgorithmStatusRoute }
-                      component={ AlgorithmStatus }
-                    />
-                    <PrivateRoute exact path={ FAQRoute } component={ FAQPage }/>
-                    <PrivateRoute path="/casl-demo" component={ CaslDemoPage }/>
-                    <PrivateRoute
-                      path={ EliminationOfViolationsRoute }
-                      component={ EliminationOfViolationsPage }
-                    />
-                    <PrivateRoute
-                      path="/role-settings"
-                      component={ RoleSettingsPage }
-                    />
-                    <PrivateRoute
-                      path={ AcquaintanceRoute }
-                      exact
-                      component={ AcquaintancePage }
-                    />
-                    <PrivateRoute
-                      path={ KsPpILProgramsRoute }
-                      component={ KsPpILProgramsPage }
-                    />
-                    <PrivateRoute
-                      path="/pspcontrol/elimination-of-typical-violations/:pspId"
-                      component={ EliminationOfTypicalViolations }
-                    />
-                    <PrivateRoute
-                      path="/pspcontrol/ctrlevents"
-                      component={ CtrlEventsPage }
-                    />
-                    <PrivateRoute path="/iotspd" component={ IOTSPDPage }/>
-                    <PrivateRoute path="/ctrl-nsi" component={ CtrlNsiPage }/>
-                    <PrivateRoute path="/tspd-nsi" component={ tspdNsiPage }/>                    
-                  </Switch>
-                </Content>
-              </Layout>
-            </Content>
+                      <PrivateRoute
+                        exact
+                        path="/risk-settings"
+                        component={ RiskSettings }
+                      />
+                      <PrivateRoute path="/frame/:frameName" component={ Frame }/>
+                      <PrivateRoute
+                        path="/orgstructure/:frameName"
+                        component={ OrgStructureFrame }
+                      />
+                      <PrivateRoute path="/catalogues" component={ NsiPage }/>
+                      <PrivateRoute path={ SiknOffRoute } component={ SiknOffPage }/>
+                      <PrivateRoute path={ ToKmhRoute } component={ ToKmhPage }/>
+                      <PrivateRoute path={ CoefsRoute } component={ CoefsPage }/>
+                      <PrivateRoute
+                        exact
+                        path="/import"
+                        component={ ImportAttemptsHistory }
+                      />
+                      <PrivateRoute
+                        path="/import/:attemptId"
+                        component={ ImportAttemptsHistoryCard }
+                      />
+                      <PrivateRoute
+                        path={ FailuresRoute }
+                        component={ FailuresPage }
+                      />
+                      <PrivateRoute
+                        path={ EditorSiRoute }
+                        component={ EditorSiPage }
+                      />
+                      <PrivateRoute
+                        path={ SiEquipmentLimitsRoute }
+                        component={ SiEquipmentLimitsPage }
+                      />
+                      <PrivateRoute
+                        path="/groupeventssettings"
+                        component={ AdminEventsSettingsPage }
+                      />
+                      <PrivateRoute
+                        path="/operativesikn"
+                        component={ OperativeMonitoringSiknPage }
+                      />
+                      <PrivateRoute
+                        path="/riskrating"
+                        component={ RiskRatingPage }
+                      />
+                      <PrivateRoute
+                        path="/riskratinginfo/:siknId"
+                        component={ RiskRatingDetailedInfoPage }
+                      />
+                      <PrivateRoute exact path="/datasi" component={ DataSiPage }/>
+                      <PrivateRoute
+                        exact
+                        path="/datasi/:siId"
+                        component={ EventsCharts }
+                      />
+                      <PrivateRoute
+                        path="/settings/events"
+                        component={ EventsSettingsPage }
+                      />
+                      <PrivateRoute
+                        path="/operativesikn"
+                        component={ OperativeMonitoringSiknPage }
+                      />
+                      <Route path="/historylimit" component={ HistoryLimitPage }/>
+                      <PrivateRoute
+                        path={ CheckingObjectsRoute }
+                        exact
+                        component={ CheckingObjectsPage }
+                      />
+                      <PrivateRoute
+                        path="/pspcontrol/checkingobjects/:pspId"
+                        component={ PspPage }
+                      />
+                      <PrivateRoute
+                        exact
+                        path={ VerificationScheduleRoute }
+                        component={ VerificationSchedulePage }
+                      />
+                      <PrivateRoute
+                        exact
+                        path="/pspcontrol/verification-schedule/:scheduleId"
+                        component={ VerificationScheduleCardPage }
+                      />
+                      <PrivateRoute
+                        path={ VerificationActsRoute }
+                        exact
+                        component={ VerificationActsPage }
+                      />
+                      <PrivateRoute
+                        path="/pspcontrol/verification-acts/:actId"
+                        exact
+                        component={ VerificationActPage }
+                      />
+                      <PrivateRoute
+                        exact
+                        path={ ActionPlansRoute }
+                        component={ ActionPlansPage }
+                      />
+                      <PrivateRoute
+                        exact
+                        path="/pspcontrol/action-plans/cards/:planId"
+                        component={ PlanCardPage }
+                      />
+                      <PrivateRoute
+                        exact
+                        path="/pspcontrol/action-plans/typical-violations/"
+                        component={ EliminationOfTypicalViolationsPage }
+                      />
+                      <PrivateRoute
+                        path={ AlgorithmStatusRoute }
+                        component={ AlgorithmStatus }
+                      />
+                      <PrivateRoute exact path={ FAQRoute } component={ FAQPage }/>
+                      <PrivateRoute path="/casl-demo" component={ CaslDemoPage }/>
+                      <PrivateRoute
+                        path={ EliminationOfViolationsRoute }
+                        component={ EliminationOfViolationsPage }
+                      />
+                      <PrivateRoute
+                        path="/role-settings"
+                        component={ RoleSettingsPage }
+                      />
+                      <PrivateRoute
+                        path={ AcquaintanceRoute }
+                        exact
+                        component={ AcquaintancePage }
+                      />
+                      <PrivateRoute
+                        path={ KsPpILProgramsRoute }
+                        component={ KsPpILProgramsPage }
+                      />
+                      <PrivateRoute
+                        path="/pspcontrol/elimination-of-typical-violations/:pspId"
+                        component={ EliminationOfTypicalViolations }
+                      />
+                      <PrivateRoute
+                        path="/pspcontrol/ctrlevents"
+                        component={ CtrlEventsPage }
+                      />
+                      <PrivateRoute path="/iotspd" component={ IOTSPDPage }/>
+                      <PrivateRoute path="/ctrl-nsi" component={ CtrlNsiPage }/>
+                      <PrivateRoute path="/tspd-nsi" component={ tspdNsiPage }/>                    
+                    </Switch>
+                  </Content>
+                </Layout>
+              </Content>
+            </IndexProvider>
           </Layout>
           <OstRnuInfoModal/>
         </AbilityContext.Provider>

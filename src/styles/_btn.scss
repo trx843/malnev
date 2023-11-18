@@ -1,0 +1,54 @@
+@import "__vars";
+
+.ant-btn {
+  &.btn-blue {
+    &-1,
+    &-2 {
+      &:hover {
+        color: $black;
+      }
+    }
+
+    &-1 {
+      background-color: $blue-1;
+      border-color: $blue-1;
+
+      &:hover {
+        background-color: $blue-2;
+        border-color: $blue-2;
+      }
+    }
+
+    &-2 {
+      background-color: $blue-2;
+      border-color: $blue-2;
+
+      &:hover {
+        background-color: $blue-3;
+        border-color: $blue-3;
+      }
+    }
+  }
+
+  &.btn-geekblue {
+    &-1 {
+      background-color: $geekblue-1;
+    }
+  
+    &-2 {
+      background-color: $geekblue-2;
+    }
+  
+    &-3 {
+      background-color: $geekblue-3;
+    }
+  
+    &-4 {
+      background-color: $geekblue-4;
+    }
+  
+    &-5 {
+      background-color: $geekblue-5;
+    }
+  }
+}
