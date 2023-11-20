@@ -6,19 +6,19 @@ import {
   PageHeader,
 } from "antd";
 import { history } from "../history/history";
-import { MenuCards } from "components/MenuCards";
+// import { MenuCards } from "components/MenuCards";
 import { ReportsContainer } from "containers/ReportsContainer";
 
 const { Content } = Layout;
 
 export const ReportsPage: FunctionComponent = () => {
-  const {
+  /* const {
     urlMapping,
     isEventsCountLoading,
     userReportsList,
     navs,
     onWidgetClick
-  } = usePresenter();
+  } = usePresenter(); */
 
   return (
     <PageLayoutStyled>

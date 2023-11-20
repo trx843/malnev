@@ -7,7 +7,8 @@ import {
   PageHeader,
   DatePicker,
   Row,
-  Typography
+  Typography,
+  Skeleton
 } from "antd";
 import { DatabaseOutlined, ExportOutlined } from "@ant-design/icons";
 import {
@@ -18,7 +19,7 @@ import {
   TkoTreeStyled,
   WrapperTreeRowStyled
 } from "../../styles/commonStyledComponents";
-import { history } from "../../history/history";
+// import { history } from "../../history/history";
 import {
   InfoType,
   IEventsState,
@@ -33,8 +34,8 @@ import EventsContainer from "containers/EventsContainer";
 import moment, { Moment } from "moment";
 import locale from "antd/es/date-picker/locale/ru_RU";
 import { StateType } from "types";
-import { MenuCards } from "components/MenuCards";
-import usePresenter from "./presenter";
+// import { MenuCards } from "components/MenuCards";
+// import usePresenter from "./presenter";
 import { IndexContext, IndexContextType } from "../../hooks/useIndex";
 import { ReportsContainer } from "containers/ReportsContainer";
 
@@ -43,13 +44,13 @@ const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
 export const Home: FunctionComponent = () => {
-  const {
+  /* const {
     urlMapping,
     isEventsCountLoading,
     userReportsList,
     navs,
     onWidgetClick
-  } = usePresenter();
+  } = usePresenter(); */
 
   const dispatch = useDispatch();
 
@@ -193,6 +194,7 @@ export const Home: FunctionComponent = () => {
                       
                       <Col span={10}>
                         <Title level={3}>Сводка МКИ</Title>
+                        <Skeleton />
                       </Col>
                     </Row>
                   : <>
