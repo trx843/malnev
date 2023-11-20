@@ -45,8 +45,12 @@ interface UserReport {
 };
 
 export const ReportsContainer: FunctionComponent = () => {
-  // текущий пользователь из контекта
-  const { currentUser } = useContext(IndexContext) as IndexContextType;
+  // получение функционала из контекста стартовой страницы
+  const { isUIB, currentUser } = useContext(IndexContext) as IndexContextType;
+
+  // выбранные группы отчетов по умолчанию
+  // если куратор, то группа 5
+  const defaultSelectedGroupsIds = isUIB ? [5] : undefined;
 
   // личные отчеты
   const [userReports, setUserReports] = useState<UserReport[]>([]);
@@ -61,6 +65,8 @@ export const ReportsContainer: FunctionComponent = () => {
 
   // выбранные группы
   const [selectedGroupsIds, setSelectedGroupsIds] = useState<number[]>([]);
+
+  /* -------------------------- */
 
   // метод возвращения отчетов вместе с группами
   const getReportsWithGroups = (data: ReportsData, selectedGroupsIds: number[] = []) => {
@@ -135,27 +141,10 @@ export const ReportsContainer: FunctionComponent = () => {
     */
   };
 
+  /* -------------------------- */
+
   // первичный useEffect
   useEffect(() => {
-    // асинхронный метод получения личных отчетов
-    const getUserReports = async (login: string) => {
-      try {
-        const userReports = await axios.get<UserReport[]>(`${apiBase}/get-user-reports?login=${login}`).then((result) => {
-          return result.data.map((report) => ({
-            ...report,
-            route: `frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
-          }));
-        });
-        setUserReports(userReports);
-        setUserReportsLoading(false);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
-
-    // вызов метода личных отчетов
-    getUserReports(currentUser.login);
-    
     // асинхронный метод получения основных отчетов
     const getReports = async () => {
       try {
@@ -178,7 +167,7 @@ export const ReportsContainer: FunctionComponent = () => {
           setSelectedGroupsIds(groups.map((group) => group.id));
           
           // получаем отчеты вместе с группами, в которых они состоят
-          const reportsWithGroups = getReportsWithGroups(reportsData);
+          const reportsWithGroups = getReportsWithGroups(reportsData, defaultSelectedGroupsIds);
           // обновляем состояние отчетов с группами
           setReportsWithGroups(reportsWithGroups);         
 
@@ -191,9 +180,29 @@ export const ReportsContainer: FunctionComponent = () => {
     };
 
     // вызов метода основных отчетов
-    getReports();    
+    getReports();
+
+    // асинхронный метод получения личных отчетов
+    const getUserReports = async (login: string) => {
+      try {
+        const userReports = await axios.get<UserReport[]>(`${apiBase}/get-user-reports?login=${login}`).then((result) => {
+          return result.data.map((report) => ({
+            ...report,
+            route: `frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
+          }));
+        });
+        setUserReports(userReports);
+        setUserReportsLoading(false);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+
+    // вызов метода личных отчетов
+    getUserReports(currentUser.login);
   }, []); 
-  
+
+  /* -------------------------- */
 
   // метод обработки выбора группы
   const handleChange = (groupId: number, checked: boolean) => {
@@ -224,6 +233,8 @@ export const ReportsContainer: FunctionComponent = () => {
     setReportsWithGroups(filteredReportsWithGroups);
   };
 
+  /* -------------------------- */
+
   return (
     <Row gutter={16}>
       <Col span={18}>
@@ -233,7 +244,7 @@ export const ReportsContainer: FunctionComponent = () => {
           <List
             size="small"
             bordered
-            header={
+            header={!isUIB && // если не куратор, то выводим группы              
               <div style={{ display: "flex", alignItems: "flex-start" }}>
                 <div style={{
                   marginRight: 8,
@@ -263,7 +274,7 @@ export const ReportsContainer: FunctionComponent = () => {
                     );
                   })}
                 </div>
-              </div>
+              </div>                
             }
             dataSource={reportsWithGroups}
             renderItem={(report) => (
@@ -271,7 +282,7 @@ export const ReportsContainer: FunctionComponent = () => {
                 <Link to={report.route} target="_blank">{report.name}</Link>
 
                 {/* вывод групп отчета */}
-                {report.groups && (
+                {!isUIB && report.groups && (
                   <div style={{ display: "flex" }}>
                     {report.groups.map((group) => (
                       <Tag
@@ -296,20 +307,22 @@ export const ReportsContainer: FunctionComponent = () => {
       </Col>
 
       <Col span={6}>
-        <Title level={3}>Мои отчеты</Title>
-
-        <Spin spinning={userReportsLoading}>
-          <List
-            size="small"
-            bordered
-            dataSource={userReports}
-            renderItem={(report) => (
-              <List.Item key={report.id}>
-                <Link to={report.route} target="_blank" rel="noopener noreferrer">{report.name}</Link>
-              </List.Item>
-            )}
-          />           
-        </Spin>
+        {userReports.length !== 0 && 
+          <Spin spinning={userReportsLoading}>          
+            <Title level={3}>Мои отчеты</Title>
+          
+            <List
+              size="small"
+              bordered
+              dataSource={userReports}
+              renderItem={(report) => (
+                <List.Item key={report.id}>
+                  <Link to={report.route} target="_blank" rel="noopener noreferrer">{report.name}</Link>
+                </List.Item>
+              )}
+            />
+          </Spin>
+        }
       </Col>
     </Row>
   );

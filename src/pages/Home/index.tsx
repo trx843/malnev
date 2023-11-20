@@ -36,6 +36,7 @@ import { StateType } from "types";
 import { MenuCards } from "components/MenuCards";
 import usePresenter from "./presenter";
 import { IndexContext, IndexContextType } from "../../hooks/useIndex";
+import { ReportsContainer } from "containers/ReportsContainer";
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
@@ -89,13 +90,18 @@ export const Home: FunctionComponent = () => {
       {isUIB
         ? <>
             {/* выводим карточки отчетов */}
-            <MenuCards
+            <Layout>
+              <Content className="content">
+                <ReportsContainer/>
+              </Content>
+            </Layout>
+            {/* <MenuCards
               isEventsCountLoading={isEventsCountLoading}
               userReportsList={userReportsList}
               navs={navs}
               onWidgetClick={onWidgetClick}
               urlMapping={urlMapping}
-            />
+            /> */}
           </>
         : <> {/* иначе */}
             {/* заголовок с кнопкой "назад" */}

@@ -29,6 +29,9 @@ export const IndexProvider: React.FC<React.ReactNode> = ({ children }) => {
     isUIB = true; // поднимаем флаг куратора
   }
 
+  // для проверки интерфейса куратора
+  // isUIB = true;
+
   // состояние стартовой страницы
   const [indexState, setIndexState] = useState<string>("index");
 
