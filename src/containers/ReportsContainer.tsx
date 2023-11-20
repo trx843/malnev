@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiBase } from "utils";
 import { IndexContext, IndexContextType } from "../hooks/useIndex";
-import { Col, Row, Typography, List, Spin, Tag } from "antd";
+import { Col, Row, Typography, List, Spin, Tag, Tooltip } from "antd";
 import { CheckSquareOutlined, CloseSquareOutlined } from "@ant-design/icons";
 import _ from "lodash";
 
@@ -283,20 +283,23 @@ export const ReportsContainer: FunctionComponent = () => {
 
                 {/* вывод групп отчета */}
                 {!isUIB && report.groups && (
-                  <div style={{ display: "flex" }}>
+                  <div style={{ display: "flex", gap: 6 }}>
                     {report.groups.map((group) => (
-                      <Tag
-                        key={`${report.id}-${group.id}`}
-                        color={`#${group.color}`}
+                      <Tooltip
                         title={group.name}
-                        style={{
-                          borderRadius: "50%",
-                          height: 16,
-                          width: 16,
-                          display: "block",
-                          margin: "0 0 0 6px"
-                        }}
-                      />
+                        color={`#${group.color}`}
+                        key={`${report.id}-${group.id}`}
+                      >
+                        <Tag                          
+                          color={`#${group.color}`}
+                          style={{
+                            borderRadius: "50%",
+                            height: 16,
+                            width: 16,
+                            display: "block"
+                          }}
+                        />
+                      </Tooltip>
                     ))}
                   </div>
                 )}
