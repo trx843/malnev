@@ -1,57 +1,22 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import {
-  Col,
-  Layout,
-  Button,
-  Divider,
-  PageHeader,
-  DatePicker,
-  Row,
-  Typography,
-  Skeleton
-} from "antd";
+import { Col, Layout, Button, Divider, PageHeader, DatePicker, Row, Typography, Skeleton } from "antd";
 import { DatabaseOutlined, ExportOutlined } from "@ant-design/icons";
-import {
-  FilterItemLabelStyled,
-  FilterRowStyled,
-  PageLayoutStyled,
-  SiderFilterStyled,
-  TkoTreeStyled,
-  WrapperTreeRowStyled
-} from "../../styles/commonStyledComponents";
-// import { history } from "../../history/history";
-import {
-  InfoType,
-  IEventsState,
-  FilterDates
-} from "../../interfaces";
-import {
-  nodeChanged,
-  dateChanged
-} from "../../actions/events/creators";
+import { FilterItemLabelStyled, FilterRowStyled, PageLayoutStyled, SiderFilterStyled, TkoTreeStyled,  WrapperTreeRowStyled } from "../../styles/commonStyledComponents";
+import { InfoType, IEventsState, FilterDates } from "../../interfaces";
+import { nodeChanged, dateChanged } from "../../actions/events/creators";
 import { useDispatch, useSelector } from "react-redux";
 import EventsContainer from "containers/EventsContainer";
 import moment, { Moment } from "moment";
 import locale from "antd/es/date-picker/locale/ru_RU";
 import { StateType } from "types";
-// import { MenuCards } from "components/MenuCards";
-// import usePresenter from "./presenter";
-import { IndexContext, IndexContextType } from "../../hooks/useIndex";
 import { ReportsContainer } from "containers/ReportsContainer";
+import { IndexContext, IndexContextType } from "../../hooks/useIndex";
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
 export const Home: FunctionComponent = () => {
-  /* const {
-    urlMapping,
-    isEventsCountLoading,
-    userReportsList,
-    navs,
-    onWidgetClick
-  } = usePresenter(); */
-
   const dispatch = useDispatch();
 
   const pageState = useSelector<StateType, IEventsState>((state) => state.eventsReducer);
@@ -96,13 +61,6 @@ export const Home: FunctionComponent = () => {
                 <ReportsContainer/>
               </Content>
             </Layout>
-            {/* <MenuCards
-              isEventsCountLoading={isEventsCountLoading}
-              userReportsList={userReportsList}
-              navs={navs}
-              onWidgetClick={onWidgetClick}
-              urlMapping={urlMapping}
-            /> */}
           </>
         : <> {/* иначе */}
             {/* заголовок с кнопкой "назад" */}
