@@ -37,13 +37,13 @@ export type StateType = ReturnType<typeof store.getState>;
  * Дело в том, что будут возвращаться не сами данные, а коллбек с обращением к стору.
  * Пример: https://github.com/Stepami/reduxtodoapp/blob/master/src/services/todos.ts
  */
-export type ThunkResult<R, S, A> = ThunkAction<R, S, undefined, ActionTypes<A>>;
+export type ThunkResult<R, S, A extends { [key: string]: any; }> = ThunkAction<R, S, undefined, ActionTypes<A>>;
 
 /**
  * Тип функции, отправляющей экшн в стор.
  * Пример: https://github.com/Stepami/reduxtodoapp/blob/master/src/services/todos.ts
  */
-export type RestThunkDispatch<S, A> = ThunkDispatch<
+export type RestThunkDispatch<S, A extends { [key: string]: any; }> = ThunkDispatch<
   S,
   undefined,
   ActionTypes<A>
@@ -215,6 +215,11 @@ export type NotificationStatus = {
 export type OwnedType = Nullable<boolean>;
 
 /**
+ * Недостоверные события
+ */
+export type WarningType = Nullable<boolean>;
+
+/**
  * Информация о странице
  */
 export type PageInfo = {
@@ -283,10 +288,16 @@ export type FiltersModel = {
    * Дата начала диапазона запрашиваемых данных
    */
   endTime?: Nullable<Date> | string;
+
   /**
    * Сторонний\собственный СИКН
    */
   owned?: Nullable<boolean>;
+
+  /**
+   * Недостоверные события
+   */
+  isWarning?: Nullable<boolean>;
 
   /**
    * Фильтр на актах отключения

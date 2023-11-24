@@ -1,6 +1,6 @@
 import { Event } from "../../classes";
 import { FilterDates, IAction, SelectedNode } from "../../interfaces";
-import { Nullable, OwnedType } from "../../types";
+import { Nullable, OwnedType, WarningType } from "../../types";
 import { PagedModel } from "../../types";
 import EventsConstants from './constants';
 
@@ -10,7 +10,6 @@ export function eventsFetched(items: PagedModel<Event>): IAction<EventsConstants
         payload: items
     };
 }
-
 
 export function eventsFiltered(items: Array<Event>): IAction<EventsConstants.EVENTS_FILTERED, Array<Event>> {
     return {
@@ -47,7 +46,7 @@ export function eventSelected(item: Event | null): IAction<EventsConstants.EVENT
     }
 }
 
-export function eventLevelFilter(level: Nullable<number> | undefined ): IAction<EventsConstants.EVENT_LEVEL_FILTER, Nullable<number> | undefined> {
+export function eventLevelFilter(level: Nullable<number> | undefined): IAction<EventsConstants.EVENT_LEVEL_FILTER, Nullable<number> | undefined> {
     return {
         type: EventsConstants.EVENT_LEVEL_FILTER,
         payload: level
@@ -57,6 +56,14 @@ export function eventLevelFilter(level: Nullable<number> | undefined ): IAction<
 export function eventOwnedFilter(type: OwnedType): IAction<EventsConstants.EVENT_OWNED_TYPE_FILTER, OwnedType> {
     return {
         type: EventsConstants.EVENT_OWNED_TYPE_FILTER,
+        payload: type
+    }
+}
+
+// Недостоверные события
+export function eventWarningFilter(type: WarningType): IAction<EventsConstants.EVENT_WARNING_TYPE_FILTER, WarningType> {
+    return {
+        type: EventsConstants.EVENT_WARNING_TYPE_FILTER,
         payload: type
     }
 }

@@ -1,48 +1,21 @@
 import { Component } from "react";
-import {
-  FilterDates,
-  FilterObject,
-  IEventsState,
-  ListFilterBase,
-} from "../interfaces";
-import {
-  apiBase,
-  returnStringDate,
-  dateToShortString,
-  dateToDayTime
-} from "../utils";
+import { FilterDates, FilterObject, IEventsState, ListFilterBase } from "../interfaces";
+import { apiBase, returnStringDate, dateToShortString, dateToDayTime } from "../utils";
 import axios, { CancelTokenSource } from "axios";
 import { EventItem } from "../classes";
 import { ItemsTable } from "../components/ItemsTable";
-import {
-  ActionTypes,
-  FiltersModel,
-  ObjectFields,
-  PagedModel,
-  StateType,
-} from "../types";
-import {
-  Button,
-  Card,
-  Col,
-  message,
-  Modal,
-  Pagination,
-  Row,
-  Spin,
-  List,
-} from "antd";
+import { ActionTypes, FiltersModel, ObjectFields, PagedModel, StateType } from "../types";
+import { Button, Card, Col, message, Modal, Pagination, Row, Spin, List } from "antd";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/events/creators";
 import "moment/locale/ru";
 import { GridApi, SortChangedEvent, RowClickedEvent } from "ag-grid-community";
-import {
-  getOperativeMonitoringlist as getOperativeMonitoringList,
-  getTransitionlist,
-} from "../api/requests/eventsPage";
+import { getOperativeMonitoringlist as getOperativeMonitoringList, getTransitionlist } from "../api/requests/eventsPage";
 import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
+import { ReloadOutlined } from "@ant-design/icons";
+import { ExportFilterTableButton } from "components/ExportFilterTableButton";
 
 interface IEventObject {
   key: string;
@@ -63,7 +36,7 @@ interface EventsContainerState {
   eventModalData: IEventObject[];
   eventModalExtData: IEventObject[];
   eventModalExtError: string;
-  commentModalVisible: boolean;  
+  commentModalVisible: boolean;
   levelFilter: number | null;
   loading: boolean;
   gridApi: GridApi;
@@ -79,7 +52,7 @@ enum SortableFields {
   purpose = "Purpose", // Назначение
   techposition = "Techposition", // Технологическая позиция
   eventName = "EventName", // Событие
-  isWarning = "IsWarning",
+  isWarning = "IsWarning", // Недостоверные события
   siknFullName = "SIKNRSU.FullName",
   pspName = "SIKNRSU.PSP.FullName",
   receivingPoint = "ReceivingPoint",
@@ -161,11 +134,12 @@ class EventsContainer extends Component<
 
   getFetchUrl() {
     return this.url(0);
-  }  
+  }
 
   getFilter(): ListFilterBase {
     const {
       filterDates,
+      warningFilter, // Недостоверные события
       ownedFilter,
       levelFilter,
       eventTypesFilter
@@ -174,6 +148,7 @@ class EventsContainer extends Component<
     let filtersModel: FiltersModel = {
       startTime: returnStringDate(filterDates.startDate, true),
       endTime: returnStringDate(filterDates.endDate, true, true),
+      isWarning: warningFilter, // Недостоверные события
       owned: ownedFilter,
       eventsFilter: {
         levelFilter: levelFilter,
@@ -339,8 +314,8 @@ class EventsContainer extends Component<
 
           const resultData = JSON.parse(result.data);
 
-          const eventExtData:IEventObject[] = [];
-          
+          const eventExtData: IEventObject[] = [];
+
           // если для типа есть список полей в typesExtKeys
           if (typesExtKeys[typeId]) {
             // идем по массиву полей
@@ -361,7 +336,7 @@ class EventsContainer extends Component<
           } else { // иначе
             resultData.forEach((item: IEventExtObject) => {
               // console.log(item.Name);
-    
+
               // добавляем как есть
               eventExtData.push({
                 key: item.Name,
@@ -375,7 +350,7 @@ class EventsContainer extends Component<
           this.setState({
             eventModalExtData: eventExtData // расширенные данные
           });
-        }        
+        }
       })
       .catch((error) => {
         console.warn("Внимание, ошибка!");
@@ -417,21 +392,21 @@ class EventsContainer extends Component<
     // console.log("mssEventTypeId", data.mssEventTypeId);
 
     // искомые ключи в нужном порядке
-    const eventKeys = [      
+    const eventKeys = [
       { keyName: "startDateTime", keyTitle: "Начало" },
       { keyName: "endDateTime", keyTitle: "Окончание" },
-      { keyName: "eventName", keyTitle: "Событие" },      
+      { keyName: "eventName", keyTitle: "Событие" },
       { keyName: "mssEventTypeName", keyTitle: "Тип" },
       { keyName: "sikn", keyTitle: "СИКН" },
       { keyName: "techposition", keyTitle: "Тех. позиция" },
-      { keyName: "receivingPoint", keyTitle: "ПСП"},
-      { keyName: "owner", keyTitle: "Владелец"},
-      { keyName: "purpose", keyTitle: "Назначение"},
+      { keyName: "receivingPoint", keyTitle: "ПСП" },
+      { keyName: "owner", keyTitle: "Владелец" },
+      { keyName: "purpose", keyTitle: "Назначение" },
       // { keyName: "id", keyTitle: "ID"},
       // { keyName: "mssEventTypeId", keyTitle: "ID типа события" },
     ];
 
-    const eventData:IEventObject[] = [];
+    const eventData: IEventObject[] = [];
 
     eventKeys.forEach((item) => {
       let curEventValue = data[item.keyName];
@@ -511,13 +486,13 @@ class EventsContainer extends Component<
 
             this.props.select(null);
           }
-          
+
           this.setState({ commentModalVisible: false });
           resolve();
         })
         .catch((err) => reject(err));
     });
-  }  
+  }
 
   componentDidMount() {
     this.fetchItems(this.props.items.pageInfo.pageNumber, this.props.filter);
@@ -537,6 +512,7 @@ class EventsContainer extends Component<
       prevProps.viewName !== this.props.viewName ||
       prevProps.levelFilter !== this.props.levelFilter ||
       prevProps.ownedFilter !== this.props.ownedFilter ||
+      prevProps.warningFilter !== this.props.warningFilter || // Недостоверные события
       prevProps.eventTypesFilter !== this.props.eventTypesFilter ||
       prevState.filterObject !== this.state.filterObject ||
       prevState.sortedField !== this.state.sortedField
@@ -556,6 +532,44 @@ class EventsContainer extends Component<
 
     return (
       <TableBlockWrapperStyled>
+        {/* шапка */}
+        <Card>
+          <Row>
+            <Col>
+              <Button
+                type="link"
+                icon={<ReloadOutlined />}
+                onClick={() => {
+                  this.fetchItems(
+                    this.props.items.pageInfo.pageNumber,
+                    this.props.filter
+                  );
+                }}
+              >
+                Обновить таблицу
+              </Button>
+            </Col>
+            <Col>
+              <ExportFilterTableButton
+                init={{
+                  credentials: "include",
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    pageName: "/events",
+                    nodeTreeId: this.props.node.key,
+                    nodeTreeType: this.props.node.type,
+                    eventsListFilter: this.getFilter(),
+                  }),
+                }}
+              />
+            </Col>
+          </Row>
+        </Card>
+
+        {/* таблица с данными */}
         <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
           <ItemsTable<EventItem>
             isFilterDisabled
@@ -587,7 +601,7 @@ class EventsContainer extends Component<
               "receivingPoint", // ПСП
               "mssEventTypeName", // Тип события МКО ТКО
               "mssEventSeverityLevelName", // Критичность
-              "isWarning"
+              "isWarning" // Недостоверные события
             ]}
 
             selectionCallback={this.selectionHandler}
@@ -595,12 +609,12 @@ class EventsContainer extends Component<
             setApiCallback={this.setApi}
 
             actionColumns={[
-              /* {
+              {
                 headerName: "Действия",
                 pinned: "right",
                 cellRenderer: "eventsActionsRenderer",
                 minWidth: 100,
-              }, */
+              },
             ]}
 
             widths={[
@@ -626,7 +640,7 @@ class EventsContainer extends Component<
               {
                 key: "eventName",
                 newWidth: 430,
-              },              
+              },
               // Назначение
               {
                 key: "purpose",
@@ -637,6 +651,7 @@ class EventsContainer extends Component<
                 key: "owner",
                 newWidth: 250,
               },
+              // Недостоверные события
               {
                 key: "isWarning",
                 newWidth: 150,
@@ -656,14 +671,14 @@ class EventsContainer extends Component<
                 field: "endDateTime",
                 sortable: true,
                 comparator: () => 0,
-              },              
+              },
               {
                 headerName: "СИКН",
                 field: "sikn",
                 filter: "customTextTableFilter",
                 sortable: true,
                 comparator: () => 0,
-              },             
+              },
               {
                 headerName: "Тех. позиция",
                 field: "techposition",
@@ -693,7 +708,7 @@ class EventsContainer extends Component<
                 comparator: () => 0,
               },
               {
-                headerName: "isWarning",
+                headerName: "Недостоверные события",
                 field: "isWarning",
                 filter: "customTextTableFilter",
                 sortable: true,
@@ -754,23 +769,23 @@ class EventsContainer extends Component<
               <Col span={13} className="gutter-row">
                 {this.state.eventModalData.length > 0
                   ? <List bordered dataSource={this.state.eventModalData} renderItem={(item) => (
-                      <List.Item><b>{item.title}:</b> {item.value}</List.Item>
-                    )}/>
+                    <List.Item><b>{item.title}:</b> {item.value}</List.Item>
+                  )} />
                   : <p style={{ textAlign: "center" }}>Основные данные отсутствуют.</p>
                 }
               </Col>
               <Col span={11} className="gutter-row">
                 {this.state.eventModalExtData.length > 0
                   ? <List bordered dataSource={this.state.eventModalExtData} renderItem={(item) => (
-                      <List.Item><b>{item.title}:</b> {item.value}</List.Item>
-                    )}/>
+                    <List.Item><b>{item.title}:</b> {item.value}</List.Item>
+                  )} />
                   : <p style={{ textAlign: "center" }}>{this.state.eventModalExtError || "Расширенные данные отсутствуют"}</p>
                 }
               </Col>
-            </Row>            
+            </Row>
           </Spin>
         </Modal>
-      </TableBlockWrapperStyled>
+      </TableBlockWrapperStyled >
     );
   }
 }

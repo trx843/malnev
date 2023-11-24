@@ -9,7 +9,6 @@ interface IExportTableButtonProps {
   init: RequestInit;
 }
 
-
 export const ExportFilterTableButton: FC<IExportTableButtonProps> = ({
   init,
 }) => {

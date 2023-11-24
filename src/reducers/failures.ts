@@ -38,6 +38,7 @@ const initialState: IFailuresState = {
   viewName: techPosTreeConstant,
   selected: null,
   ownedFilter: null,
+  warningFilter: null, // Недостоверные события
   failureTypeFilter: [],
   failureConsequenceFilter: [],
 };
@@ -81,6 +82,11 @@ export function failuresReducer(
       return {
         ...state,
         ownedFilter: action.payload ?? null,
+      };
+    case FailuresConstants.FAILURE_WARNING_TYPE_FILTER: // Недостоверные события
+      return {
+        ...state,
+        warningFilter: action.payload ?? null
       };
     case FailuresConstants.FAILURE_TYPE_CHANGED:
       return {

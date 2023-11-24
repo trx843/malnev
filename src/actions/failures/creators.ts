@@ -1,6 +1,6 @@
 import { Failures } from '../../classes';
 import { FilterDates, IAction, IWrittenItem, SelectedNode } from '../../interfaces';
-import { OwnedType } from '../../types';
+import { OwnedType, WarningType } from '../../types';
 import { PagedModel } from '../../types';
 import FailuresConstants from './constants';
 
@@ -53,7 +53,13 @@ export function failureOwnedFilter(type: OwnedType): IAction<FailuresConstants.F
     }
 }
 
-
+// Недостоверные события
+export function failureWarningFilter(type: WarningType): IAction<FailuresConstants.FAILURE_WARNING_TYPE_FILTER, WarningType> {
+    return {
+        type: FailuresConstants.FAILURE_WARNING_TYPE_FILTER,
+        payload: type
+    }
+}
 
 export function failuresInserted(item: Failures | null): IAction<FailuresConstants.FAILURES_INSERTED, Failures | null> {
     return {

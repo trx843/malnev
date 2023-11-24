@@ -14,7 +14,7 @@ export class EventItem implements IEntity {
   @description("Окончание")
   endDateTime: Nullable<Date> = pureDate(new Date());
 
-  @description("isWarning")
+  @description("Недостоверные события")
   isWarning: boolean = false;
 
   @description("СИКН")
@@ -27,16 +27,16 @@ export class EventItem implements IEntity {
   eventName: string = "";
 
   @description("Назначение")
-  purpose: string = "";  
-  
+  purpose: string = "";
+
   @description("Владелец")
   owner: string = "";
 
   @description("Риск")
-  riskRatio: number = 0;  
+  riskRatio: number = 0;
 
   @description("СИКН")
-  siknFullName: string = "";  
+  siknFullName: string = "";
 
   @description("ПСП")
   pspName: string = "";
@@ -45,10 +45,10 @@ export class EventItem implements IEntity {
   receivingPoint: string = "";
 
   @description("Технологическая позиция")
-  techPositionName: string = "";  
+  techPositionName: string = "";
 
   @description("Идентификатор технологической позиции")
-  techPositionId: Nullable<number> = 0;  
+  techPositionId: Nullable<number> = 0;
 
   @description("Идентификатор СИ")
   siId: String = zeroGuid;
@@ -87,7 +87,7 @@ export class EventItem implements IEntity {
 
   @description("Кем было квитировано")
   acknowledgedBy: string = "";
-  
+
   mssEventSeverityLevelId: number = 0;
   afPath: string;
   attributeNameList: Array<string>;

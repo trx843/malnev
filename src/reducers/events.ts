@@ -41,6 +41,7 @@ const initialState: IEventsState = {
   viewName: techPosTreeConstant,
   selected: null,
   ownedFilter: null,
+  warningFilter: null, // Недостоверные события
   levelFilter: null,
   eventTypesFilter: [],
 };
@@ -89,6 +90,11 @@ export function eventsReducer(
       return {
         ...state,
         ownedFilter: action.payload ?? null,
+      };
+    case EventsConstants.EVENT_WARNING_TYPE_FILTER: // Недостоверные события
+      return {
+        ...state,
+        warningFilter: action.payload ?? null,
       };
     case EventsConstants.EVENT_TYPE_CHANGED:
       return {

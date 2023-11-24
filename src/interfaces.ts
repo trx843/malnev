@@ -25,6 +25,7 @@ import {
   OwnedType,
   PagedModel,
   String,
+  WarningType,
 } from "./types";
 import { RowSpanParams } from "ag-grid-community";
 import { EventGroupCountType } from "api/responses/home-page.response";
@@ -487,6 +488,10 @@ export interface IFailuresState {
    */
   ownedFilter: OwnedType;
   /**
+   * Фильтр по недостоверным событиям
+   */
+  warningFilter: WarningType;
+  /**
    * Вводимый отказ
    */
   writtenItem: IWrittenItem<Failures> | null;
@@ -537,6 +542,10 @@ export interface IEventsState {
    * Фильтр по собственным.сторонним СИКН
    */
   ownedFilter: OwnedType;
+  /**
+   * Фильтр по недостоверным событиям
+   */
+  warningFilter: WarningType;
   /**
    * Фильтр по типам события
    */
