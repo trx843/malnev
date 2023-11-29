@@ -5,7 +5,7 @@ import axios, { CancelTokenSource } from "axios";
 import { EventItem } from "../classes";
 import { ItemsTable } from "../components/ItemsTable";
 import { ActionTypes, FiltersModel, ObjectFields, PagedModel, StateType } from "../types";
-import { Button, Card, Col, message, Modal, Pagination, Row, Spin, List } from "antd";
+import { Button, Card, Col, message, Modal, Pagination, Row, Spin, List, Typography } from "antd";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as actions from "../actions/events/creators";
@@ -16,6 +16,8 @@ import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
 import { ReloadOutlined } from "@ant-design/icons";
 import { ExportFilterTableButton } from "components/ExportFilterTableButton";
+
+const { Text } = Typography;
 
 interface IEventObject {
   key: string;
@@ -42,6 +44,7 @@ interface EventsContainerState {
   gridApi: GridApi;
   filterObject: FilterObject;
   sortedField: [string, string | null | undefined];
+  eventsCount: number;
 }
 
 enum SortableFields {
@@ -119,6 +122,7 @@ class EventsContainer extends Component<
         },
       },
       sortedField: this.defaultSorting,
+      eventsCount: 0
     };
 
     this.commentHandler = this.commentHandler.bind(this);
@@ -171,6 +175,61 @@ class EventsContainer extends Component<
     };
 
     return listFilter;
+  }
+
+  selectionHandler(item: EventItem) {
+    this.props.select(item);
+  }
+
+  onTableSortChanged = (event: SortChangedEvent) => {
+    const columnState = event.columnApi.getColumnState();
+    const sortableColumn = columnState.find((column) => column.sort);
+
+    if (sortableColumn) {
+      const orderField = SortableFields[sortableColumn.colId as string];
+      this.setState({ sortedField: [orderField, sortableColumn.sort] });
+    } else {
+      this.setState({ sortedField: this.defaultSorting });
+    }
+  };
+
+  commentHandler(item: EventItem) {
+    return new Promise<void>((resolve, reject) => {
+      axios
+        .put(`${apiBase}/events/${item.id}`, item)
+        .then((result) => {
+          console.log(result);
+          if (result.data.success && this.props.selected !== null) {
+            const index = this.props.items.entities.findIndex(
+              (x) => x.id === item.id
+            );
+
+            if (index != -1) {
+              // все элементы до обновлённого
+              const data = this.props.items.entities.slice(0, index);
+              // обновлённый элемент
+              data.push(result.data.result);
+              // все элементы после обновлённого элемента
+              data.push(
+                ...this.props.items.entities.slice(
+                  index + 1,
+                  this.props.items.entities.length
+                )
+              );
+              this.props.fetched({
+                entities: data,
+                pageInfo: this.props.items.pageInfo,
+              });
+            }
+
+            this.props.select(null);
+          }
+
+          this.setState({ commentModalVisible: false });
+          resolve();
+        })
+        .catch((err) => reject(err));
+    });
   }
 
   // получение данных для общей таблицы
@@ -228,7 +287,11 @@ class EventsContainer extends Component<
         )
         .then((result) => {
           this.props.fetched(result.data);
-          this.setState({ loading: false });
+          console.log(result);
+          this.setState({
+            eventsCount: result.data.pageInfo.totalItems,
+            loading: false
+          });
         })
         .catch((err) => {
           this.props.fetched(pageModel);
@@ -251,20 +314,77 @@ class EventsContainer extends Component<
     }
   }
 
-  selectionHandler(item: EventItem) {
-    this.props.select(item);
-  }
+  // обработка клика по строке события
+  onRowClicked = (event: RowClickedEvent) => {
+    const { data } = event;
 
-  onTableSortChanged = (event: SortChangedEvent) => {
-    const columnState = event.columnApi.getColumnState();
-    const sortableColumn = columnState.find((column) => column.sort);
+    console.log("rowdata", data);
 
-    if (sortableColumn) {
-      const orderField = SortableFields[sortableColumn.colId as string];
-      this.setState({ sortedField: [orderField, sortableColumn.sort] });
-    } else {
-      this.setState({ sortedField: this.defaultSorting });
-    }
+    // console.log("id", data.id);
+    // console.log("mssEventTypeId", data.mssEventTypeId);
+
+    // искомые ключи в нужном порядке
+    const eventKeys = [
+      { keyName: "startDateTime", keyTitle: "Начало" },
+      { keyName: "endDateTime", keyTitle: "Окончание" },
+      { keyName: "eventName", keyTitle: "Событие" },
+      { keyName: "mssEventTypeName", keyTitle: "Тип" },
+      { keyName: "sikn", keyTitle: "СИКН" },
+      { keyName: "techposition", keyTitle: "Тех. позиция" },
+      { keyName: "receivingPoint", keyTitle: "ПСП" },
+      { keyName: "owner", keyTitle: "Владелец" },
+      { keyName: "purpose", keyTitle: "Назначение" },
+      // { keyName: "id", keyTitle: "ID"},
+      // { keyName: "mssEventTypeId", keyTitle: "ID типа события" },
+    ];
+
+    const eventData: IEventObject[] = [];
+
+    eventKeys.forEach((item) => {
+      let curEventValue = data[item.keyName];
+
+      // если отсутствует значение и это "окончание"
+      if (!curEventValue && item.keyName === "endDateTime") {
+        eventData.push({
+          key: item.keyName,
+          title: item.keyTitle,
+          value: eventData[0].value // значение "начала"
+        });
+      } else {
+        // если это дата
+        if (curEventValue instanceof Date) {
+          curEventValue = `${dateToShortString(curEventValue)} ${dateToDayTime(curEventValue)}`;
+        }
+
+        // приведение к строке
+        curEventValue = curEventValue ? String(curEventValue) : "";
+
+        // добавляем typeId к типу события
+        if (item.keyName === "mssEventTypeName") {
+          curEventValue = `${data.mssEventTypeId} ${curEventValue}`;
+        }
+
+        // добавляем элемент в массив
+        eventData.push({
+          key: item.keyName,
+          title: item.keyTitle,
+          value: curEventValue
+        });
+      }
+    });
+
+    console.log("eventData", eventData);
+
+    // получаем расширенные данные
+    this.fetchEventExtInfo(data.id, data.mssEventTypeId);
+
+    // обновляем состояние
+    this.setState({
+      eventModalTitle: `${data.eventName} (${data.sikn})`, // заголовок окна
+      eventModalData: eventData, // основные данные
+      eventModalVisible: true, // флаг отображения модалки
+      eventModalLoading: false // выключение лоадера
+    });
   };
 
   // получение данных о событии для модального окна  
@@ -382,118 +502,6 @@ class EventsContainer extends Component<
       });
   }
 
-  // обработка клика по строке события
-  onRowClicked = (event: RowClickedEvent) => {
-    const { data } = event;
-
-    console.log("rowdata", data);
-
-    // console.log("id", data.id);
-    // console.log("mssEventTypeId", data.mssEventTypeId);
-
-    // искомые ключи в нужном порядке
-    const eventKeys = [
-      { keyName: "startDateTime", keyTitle: "Начало" },
-      { keyName: "endDateTime", keyTitle: "Окончание" },
-      { keyName: "eventName", keyTitle: "Событие" },
-      { keyName: "mssEventTypeName", keyTitle: "Тип" },
-      { keyName: "sikn", keyTitle: "СИКН" },
-      { keyName: "techposition", keyTitle: "Тех. позиция" },
-      { keyName: "receivingPoint", keyTitle: "ПСП" },
-      { keyName: "owner", keyTitle: "Владелец" },
-      { keyName: "purpose", keyTitle: "Назначение" },
-      // { keyName: "id", keyTitle: "ID"},
-      // { keyName: "mssEventTypeId", keyTitle: "ID типа события" },
-    ];
-
-    const eventData: IEventObject[] = [];
-
-    eventKeys.forEach((item) => {
-      let curEventValue = data[item.keyName];
-
-      // если отсутствует значение и это "окончание"
-      if (!curEventValue && item.keyName === "endDateTime") {
-        eventData.push({
-          key: item.keyName,
-          title: item.keyTitle,
-          value: eventData[0].value // значение "начала"
-        });
-      } else {
-        // если это дата
-        if (curEventValue instanceof Date) {
-          curEventValue = `${dateToShortString(curEventValue)} ${dateToDayTime(curEventValue)}`;
-        }
-
-        // приведение к строке
-        curEventValue = curEventValue ? String(curEventValue) : "";
-
-        // добавляем typeId к типу события
-        if (item.keyName === "mssEventTypeName") {
-          curEventValue = `${data.mssEventTypeId} ${curEventValue}`;
-        }
-
-        // добавляем элемент в массив
-        eventData.push({
-          key: item.keyName,
-          title: item.keyTitle,
-          value: curEventValue
-        });
-      }
-    });
-
-    console.log("eventData", eventData);
-
-    // получаем расширенные данные
-    this.fetchEventExtInfo(data.id, data.mssEventTypeId);
-
-    // обновляем состояние
-    this.setState({
-      eventModalTitle: `${data.eventName} (${data.sikn})`, // заголовок окна
-      eventModalData: eventData, // основные данные
-      eventModalVisible: true, // флаг отображения модалки
-      eventModalLoading: false // выключение лоадера
-    });
-  };
-
-  commentHandler(item: EventItem) {
-    return new Promise<void>((resolve, reject) => {
-      axios
-        .put(`${apiBase}/events/${item.id}`, item)
-        .then((result) => {
-          console.log(result);
-          if (result.data.success && this.props.selected !== null) {
-            const index = this.props.items.entities.findIndex(
-              (x) => x.id === item.id
-            );
-
-            if (index != -1) {
-              // все элементы до обновлённого
-              const data = this.props.items.entities.slice(0, index);
-              // обновлённый элемент
-              data.push(result.data.result);
-              // все элементы после обновлённого элемента
-              data.push(
-                ...this.props.items.entities.slice(
-                  index + 1,
-                  this.props.items.entities.length
-                )
-              );
-              this.props.fetched({
-                entities: data,
-                pageInfo: this.props.items.pageInfo,
-              });
-            }
-
-            this.props.select(null);
-          }
-
-          this.setState({ commentModalVisible: false });
-          resolve();
-        })
-        .catch((err) => reject(err));
-    });
-  }
-
   componentDidMount() {
     this.fetchItems(this.props.items.pageInfo.pageNumber, this.props.filter);
   }
@@ -532,45 +540,52 @@ class EventsContainer extends Component<
 
     return (
       <TableBlockWrapperStyled>
-        {/* шапка */}
-        <Card>
-          <Row>
-            <Col>
-              <Button
-                type="link"
-                icon={<ReloadOutlined />}
-                onClick={() => {
-                  this.fetchItems(
-                    this.props.items.pageInfo.pageNumber,
-                    this.props.filter
-                  );
-                }}
-              >
-                Обновить таблицу
-              </Button>
-            </Col>
-            <Col>
-              <ExportFilterTableButton
-                init={{
-                  credentials: "include",
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    pageName: "/events",
-                    nodeTreeId: this.props.node.key,
-                    nodeTreeType: this.props.node.type,
-                    eventsListFilter: this.getFilter(),
-                  }),
-                }}
-              />
-            </Col>
-          </Row>
-        </Card>
-
-        {/* таблица с данными */}
         <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
+          {/* шапка */}
+          <Card>
+            <Row justify="space-between" gutter={16}>
+              <Col>
+                <Row align="middle" gutter={16}>
+                  <Col>
+                    <Text strong>Всего событий: {this.state.eventsCount}</Text>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="link"
+                      icon={<ReloadOutlined />}
+                      onClick={() => {
+                        this.fetchItems(
+                          this.props.items.pageInfo.pageNumber,
+                          this.props.filter
+                        );
+                      }}
+                    >
+                      Обновить таблицу
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
+              <Col>
+                {/* <ExportFilterTableButton
+                  init={{
+                    credentials: "include",
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      pageName: "/events",
+                      nodeTreeId: this.props.node.key,
+                      nodeTreeType: this.props.node.type,
+                      eventsListFilter: this.getFilter(),
+                    }),
+                  }}
+                /> */}
+              </Col>
+            </Row>
+          </Card>
+
+          {/* таблица с данными */}
           <ItemsTable<EventItem>
             isFilterDisabled
             isSortableDisabled
@@ -614,6 +629,7 @@ class EventsContainer extends Component<
                 pinned: "right",
                 cellRenderer: "eventsActionsRenderer",
                 minWidth: 100,
+                flex: 1
               },
             ]}
 
@@ -724,34 +740,34 @@ class EventsContainer extends Component<
 
             onRowClicked={this.onRowClicked}
           />
-        </Spin>
 
-        {/* подвал */}
-        <Card>
-          <Row justify="space-between">
-            <Col>
-              <div style={{
-                textAlign: "center",
-                position: "relative",
-                height: "100%",
-                display: "flex",
-                alignItems: "center"
-              }}>
-                <Pagination
-                  disabled={this.state.loading}
-                  showSizeChanger={false}
-                  size="small"
-                  current={pageInfo.pageNumber}
-                  defaultPageSize={1}
-                  total={pageInfo.totalPages}
-                  onChange={(page) => {
-                    this.fetchItems(page, this.props.filter);
-                  }}
-                />
-              </div>
-            </Col>
-          </Row>
-        </Card>
+          {/* подвал */}
+          <Card>
+            <Row justify="space-between">
+              <Col>
+                <div style={{
+                  textAlign: "center",
+                  position: "relative",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center"
+                }}>
+                  <Pagination
+                    disabled={this.state.loading}
+                    showSizeChanger={false}
+                    size="small"
+                    current={pageInfo.pageNumber}
+                    defaultPageSize={1}
+                    total={pageInfo.totalPages}
+                    onChange={(page) => {
+                      this.fetchItems(page, this.props.filter);
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
+          </Card>
+        </Spin>
 
         <Modal
           maskClosable={true}

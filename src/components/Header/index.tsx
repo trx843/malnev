@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { BookOutlined, DownOutlined } from "@ant-design/icons";
+import { BookOutlined, DownOutlined, LineChartOutlined } from "@ant-design/icons";
 import { Alert, Col, Dropdown, Menu, Row, Tooltip, Button } from "antd";
 import { Link } from "react-router-dom";
 import { User } from "../../classes";
@@ -126,6 +126,7 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  marginRight: 30
                 }}
                 onClick={() => goToState("index")}
               >
@@ -138,21 +139,66 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
               </Link>
 
               {!isUIB &&
-                // кнопка на страницу отчетов
-                <Button
-                  type="primary"
-                  onClick={() => history.push("/reports")}
-                  style={{
-                    marginLeft: 20
-                  }}
-                  icon={<BookOutlined/>}
-                >
-                  Отчеты
-                </Button>
+                // меню
+                <Menu mode="horizontal" theme="dark" multiple={true}>
+                  <Menu.SubMenu title="Сервисы" key="services">
+                    <Menu.Item className="top-menu-flex">
+                      <Link to="/reports">
+                        <BookOutlined />
+                        <span>Журналы/Отчеты</span>
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item className="top-menu-flex">
+                      <LineChartOutlined />
+                      <span>Тренды</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>МКИ</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>Схема СИКН</span>
+                    </Menu.Item>
+                  </Menu.SubMenu>
+                  <Menu.SubMenu title="Документы" key="documents">
+                    <Menu.Item>
+                      <span>РЭ</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>ТР ИВИ</span>
+                    </Menu.Item>
+                  </Menu.SubMenu>
+                  <Menu.SubMenu title="Мониторинг" key="monitoring">
+                    <Menu.Item>
+                      <span>СИКН</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>Баланс ОСТ</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>Нефть и нефтепродукты</span>
+                    </Menu.Item>
+                  </Menu.SubMenu>
+                  <Menu.SubMenu title="Справочник" key="dictionary">
+                    <Menu.Item>
+                      <span>СИКН</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>ПСП</span>
+                    </Menu.Item>
+                  </Menu.SubMenu>
+                  <Menu.SubMenu title="База знаний" key="knowledge-base">
+                    <Menu.Item>
+                      <span>Методика анализа</span>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <span>Программы контроля СИКН по линии ДБ/УИБ</span>
+                    </Menu.Item>
+                  </Menu.SubMenu>
+                </Menu>
               }
             </div>
           </Col>
-          
+
           <Col
             style={{
               display: "flex",
@@ -187,18 +233,18 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
               <Col>
                 {menuList.props.children.length === 0
                   ? <div style={{
-                      color: "white",
-                      float: "right",
-                      fontWeight: 500,
-                      fontFamily: "Golos"
-                    }}>
-                      {currentUser.domain}\{currentUser.login}
-                    </div>
+                    color: "white",
+                    float: "right",
+                    fontWeight: 500,
+                    fontFamily: "Golos"
+                  }}>
+                    {currentUser.domain}\{currentUser.login}
+                  </div>
                   : <Dropdown overlay={menuList}>
-                      <div style={{ color: "white", float: "right" }}>
-                        {currentUser.domain}\{currentUser.login} <DownOutlined />
-                      </div>
-                    </Dropdown>
+                    <div style={{ color: "white", float: "right" }}>
+                      {currentUser.domain}\{currentUser.login} <DownOutlined />
+                    </div>
+                  </Dropdown>
                 }
               </Col>
               <Col>

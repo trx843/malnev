@@ -226,3 +226,10 @@ body {
     background-color: transparent !important;
   }
 }
+
+.top-menu-flex {
+  .ant-menu-title-content {
+    display: flex;
+    align-items: center;
+  }
+}

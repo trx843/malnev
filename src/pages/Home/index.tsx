@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Col, Layout, Button, Divider, PageHeader, DatePicker, Row, Typography, Skeleton, Checkbox } from "antd";
-import { DatabaseOutlined, ExportOutlined } from "@ant-design/icons";
+import { CompassOutlined, DatabaseOutlined, ExportOutlined } from "@ant-design/icons";
 import { FilterItemLabelStyled, FilterRowStyled, PageLayoutStyled, SiderFilterStyled, TkoTreeStyled, WrapperTreeRowStyled } from "../../styles/commonStyledComponents";
 import { InfoType, IEventsState, FilterDates } from "../../interfaces";
 import { nodeChanged, dateChanged, eventWarningFilter } from "../../actions/events/creators";
@@ -107,7 +107,6 @@ export const Home: FunctionComponent = () => {
                   <FilterRowStyled $collapsed={false}>
                     <Checkbox onChange={(e: CheckboxChangeEvent) => {
                       const checked = e.target.checked;
-                      // console.log(`checked = ${checked}`);
                       dispatch(eventWarningFilter(checked));
                     }}>
                       Недостоверные события
@@ -138,6 +137,18 @@ export const Home: FunctionComponent = () => {
                       icon={<DatabaseOutlined />}
                     >
                       События
+                    </Button>
+
+                    <Divider />
+
+                    <Button
+                      size="large"
+                      href="frame/gis"
+                      target="_blank"
+                      icon={<CompassOutlined />}
+                      danger
+                    >
+                      ГИС
                     </Button>
 
                     <Divider />
