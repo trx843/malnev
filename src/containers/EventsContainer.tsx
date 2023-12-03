@@ -564,7 +564,7 @@ class EventsContainer extends Component<
               </Row>
             </Col>
             <Col>
-              <ExportFilterTableButton
+              {/* <ExportFilterTableButton
                 init={{
                   credentials: "include",
                   method: "POST",
@@ -578,7 +578,7 @@ class EventsContainer extends Component<
                     eventsListFilter: this.getFilter(),
                   }),
                 }}
-              />
+              /> */}
             </Col>
           </Row>
         </Card>
@@ -586,6 +586,7 @@ class EventsContainer extends Component<
         <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
           {/* таблица с данными */}
           <ItemsTable<EventItem>
+            className="events-table"
             isFilterDisabled
             isSortableDisabled
             items={entities}
@@ -627,7 +628,7 @@ class EventsContainer extends Component<
                 headerName: "Действия",
                 pinned: "right",
                 cellRenderer: "eventsActionsRenderer",
-                minWidth: 100,
+                minWidth: 200,
                 flex: 1
               },
             ]}
@@ -667,10 +668,10 @@ class EventsContainer extends Component<
                 newWidth: 250,
               },
               // Недостоверные события
-              {
-                key: "isWarning",
-                newWidth: 150,
-              },
+              // {
+              //   key: "isWarning",
+              //   newWidth: 150,
+              // },
             ]}
 
             // фильтрация
