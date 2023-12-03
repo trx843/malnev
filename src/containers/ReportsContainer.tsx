@@ -76,7 +76,7 @@ export const ReportsContainer: FunctionComponent = () => {
 
     const reportsWithGroups = reports.map((report: Report) => {
       const currentGroups = groups.reduce((acc: ReportGroup[], group: ReportGroup) => {
-        if (reportsToGroups.some(({ reportId, groupId }) => (reportId === report.id && groupId === group.id))) {          
+        if (reportsToGroups.some(({ reportId, groupId }) => (reportId === report.id && groupId === group.id))) {
           acc.push(group);
         }
 
@@ -154,6 +154,11 @@ export const ReportsContainer: FunctionComponent = () => {
           let groups = result.data["item2"];
           const reportsToGroups = result.data["item3"];
 
+          reports = reports.map((report) => ({
+            ...report,
+            route: "/frame/" + report.route
+          }));
+
           // сортируем отчеты и группы по полю sortOrder
           reports = _.sortBy(reports, ["sortOrder"]);
           groups = _.sortBy(groups, ["sortOrder"]);
@@ -165,11 +170,11 @@ export const ReportsContainer: FunctionComponent = () => {
 
           // обновляем состояние выбранных групп
           setSelectedGroupsIds(groups.map((group) => group.id));
-          
+
           // получаем отчеты вместе с группами, в которых они состоят
           const reportsWithGroups = getReportsWithGroups(reportsData, defaultSelectedGroupsIds);
           // обновляем состояние отчетов с группами
-          setReportsWithGroups(reportsWithGroups);         
+          setReportsWithGroups(reportsWithGroups);
 
           // выключаем анимацию загрузки
           setReportsLoading(false);
@@ -200,7 +205,7 @@ export const ReportsContainer: FunctionComponent = () => {
 
     // вызов метода личных отчетов
     getUserReports(currentUser.login);
-  }, []); 
+  }, []);
 
   /* -------------------------- */
 
@@ -208,7 +213,7 @@ export const ReportsContainer: FunctionComponent = () => {
   const handleChange = (groupId: number, checked: boolean) => {
     const nextSelectedGroupsIds = (checked)
       ?
-        [...selectedGroupsIds, groupId]
+      [...selectedGroupsIds, groupId]
       :
       selectedGroupsIds.filter((g) => g !== groupId);
 
@@ -268,13 +273,13 @@ export const ReportsContainer: FunctionComponent = () => {
                           gap: 4
                         }}
                       >
-                        {checkedTag ? <CheckSquareOutlined/> : <CloseSquareOutlined/>}
+                        {checkedTag ? <CheckSquareOutlined /> : <CloseSquareOutlined />}
                         {group.name}
                       </CheckableTag>
                     );
                   })}
                 </div>
-              </div>                
+              </div>
             }
             dataSource={reportsWithGroups}
             renderItem={(report) => (
@@ -290,7 +295,7 @@ export const ReportsContainer: FunctionComponent = () => {
                         color={`#${group.color}`}
                         key={`${report.id}-${group.id}`}
                       >
-                        <Tag                          
+                        <Tag
                           color={`#${group.color}`}
                           style={{
                             borderRadius: "50%",
@@ -310,10 +315,10 @@ export const ReportsContainer: FunctionComponent = () => {
       </Col>
 
       <Col span={6}>
-        {userReports.length !== 0 && 
-          <Spin spinning={userReportsLoading}>          
+        {userReports.length !== 0 &&
+          <Spin spinning={userReportsLoading}>
             <Title level={3}>Мои отчеты</Title>
-          
+
             <List
               size="small"
               bordered

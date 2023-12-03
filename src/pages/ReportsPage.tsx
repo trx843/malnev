@@ -13,17 +13,15 @@ export const ReportsPage: FunctionComponent = () => {
   return (
     <PageLayoutStyled>
       <PageHeader
-        style={{ paddingTop: 0 }}
+        title="Отчеты"
         className="site-page-header"
         onBack={() => history.push("/")}
-        title="Отчеты"
-        subTitle=""
       />
 
       <Layout>
         <Content className="content">
-          <ReportsContainer/>
-        </Content>        
+          <ReportsContainer />
+        </Content>
       </Layout>
     </PageLayoutStyled>
   );

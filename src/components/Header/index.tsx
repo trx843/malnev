@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { BookOutlined, DownOutlined, LineChartOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, BarsOutlined, BookOutlined, BranchesOutlined, DashboardOutlined, DownOutlined, FolderOutlined, GlobalOutlined, LineChartOutlined, TableOutlined } from "@ant-design/icons";
 import { Alert, Col, Dropdown, Menu, Row, Tooltip, Button } from "antd";
 import { Link } from "react-router-dom";
 import { User } from "../../classes";
@@ -140,60 +140,80 @@ export const Header: FC<HeaderProps> = ({ currentUser }) => {
 
               {!isUIB &&
                 // меню
-                <Menu mode="horizontal" theme="dark" multiple={true}>
-                  <Menu.SubMenu title="Сервисы" key="services">
-                    <Menu.Item className="top-menu-flex">
+                <Menu
+                  mode="horizontal"
+                  theme="dark"
+                  multiple={true}
+                >
+                  <Menu.SubMenu
+                    title="Сервисы"
+                    key="services"
+                    icon={<AppstoreOutlined />}
+                  >
+                    <Menu.Item key="reports">
                       <Link to="/reports">
                         <BookOutlined />
                         <span>Журналы/Отчеты</span>
                       </Link>
                     </Menu.Item>
-                    <Menu.Item className="top-menu-flex">
+                    <Menu.Item key="trends">
                       <LineChartOutlined />
                       <span>Тренды</span>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="mki">
+                      <DashboardOutlined />
                       <span>МКИ</span>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="sikn">
+                      <BranchesOutlined />
                       <span>Схема СИКН</span>
                     </Menu.Item>
                   </Menu.SubMenu>
-                  <Menu.SubMenu title="Документы" key="documents">
-                    <Menu.Item>
+                  <Menu.SubMenu
+                    title="Документы"
+                    key="documents"
+                    icon={<FolderOutlined />}
+                  >
+                    <Menu.Item key="re">
                       <span>РЭ</span>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="trivi">
                       <span>ТР ИВИ</span>
                     </Menu.Item>
                   </Menu.SubMenu>
-                  <Menu.SubMenu title="Мониторинг" key="monitoring">
-                    <Menu.Item>
+                  <Menu.SubMenu
+                    title="Мониторинг"
+                    key="monitoring"
+                    icon={<TableOutlined />}
+                  >
+                    <Menu.Item key="sikn-monitoring">
                       <span>СИКН</span>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="balance">
                       <span>Баланс ОСТ</span>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="neft">
                       <span>Нефть и нефтепродукты</span>
                     </Menu.Item>
                   </Menu.SubMenu>
-                  <Menu.SubMenu title="Справочник" key="dictionary">
-                    <Menu.Item>
+                  <Menu.SubMenu
+                    title="Справочник"
+                    key="dictionary"
+                    icon={<BarsOutlined />}
+                  >
+                    <Menu.Item key="sikn-dictionary">
                       <span>СИКН</span>
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="psp">
                       <span>ПСП</span>
                     </Menu.Item>
                   </Menu.SubMenu>
-                  <Menu.SubMenu title="База знаний" key="knowledge-base">
-                    <Menu.Item>
-                      <span>Методика анализа</span>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <span>Программы контроля СИКН по линии ДБ/УИБ</span>
-                    </Menu.Item>
-                  </Menu.SubMenu>
+                  <Menu.Item key="knowledge-base">
+                    <Link to="/knowledge">
+                      <GlobalOutlined />
+                      <span>База знаний</span>
+                    </Link>
+                  </Menu.Item>
                 </Menu>
               }
             </div>

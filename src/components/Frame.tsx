@@ -1,9 +1,9 @@
-import axios from "axios";
-import React, { Component } from "react";
+import { Component } from "react";
 import { RouteComponentProps } from "react-router";
 import { IFrameParams, IFrameState, IMenuNav } from "../interfaces";
 import { apiBase, config } from "../utils";
 import { User } from "classes";
+import axios from "axios";
 
 const frameMap = new Map(Object.entries(config.frame));
 
@@ -22,12 +22,12 @@ export class Frame extends Component<
   }
 
   componentDidMount() {
-    const userJsonStr = localStorage.getItem("userContext");   
+    const userJsonStr = localStorage.getItem("userContext");
 
     // заголовок отчета из query
     const urlParams = new URLSearchParams(this.props.location.search);
     let frameTitle = urlParams.get('title');
-    
+
     const { frameName } = this.props.match.params;
 
     // если это личный отчет
@@ -44,7 +44,7 @@ export class Frame extends Component<
       const myReportUrl = frameMap.get("report" as string) + `Reports/report/TKO/${login}/${frameTitle}?rs:embed=true`;
 
       console.log("myReportRoute", myReportRoute);
-      console.log("myReportUrl", myReportUrl);      
+      console.log("myReportUrl", myReportUrl);
 
       this.frameRoating.set(myReportRoute, myReportUrl);
 
@@ -54,16 +54,16 @@ export class Frame extends Component<
       axios.get<Array<IMenuNav>>(`${apiBase}/frame`).then((result) => {
         result.data.map((frame) => {
           let url = `${frameMap.get(frame.linkType as string)}${frame.link}`;
-          
+
           switch (frame.linkType) {
             case "report":
               url += "?rs:embed=true";
               break;
-  
+
             case "piVision":
               url += "?hidesidebar";
               break;
-  
+
             default:
               break;
           }
@@ -71,7 +71,7 @@ export class Frame extends Component<
           this.frameRoating.set(
             frame.route,
             url
-  
+
             // frame.route,
             // frame.linkType == "report"
             //   ? `${frameMap.get(frame.linkType as string)}${
@@ -82,10 +82,12 @@ export class Frame extends Component<
             //     }?hidetoolbar&hidesidebar`
           );
         });
-        
+
         this.setState({ mapping: this.frameRoating });
+
+        console.log(this.state);
       });
-    }    
+    }
   }
 
   render(): JSX.Element {

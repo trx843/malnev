@@ -147,6 +147,8 @@ export const FilterGroupPanel = styled(FilterGroupCollapse.Panel)`
 `;
 
 export const PageLayoutStyled = styled(Layout)`
+  flex: 1 0 0;
+
   .ant-layout {
     height: 100%;
   }
@@ -157,7 +159,7 @@ export const PageSiderStyled = styled(PageLayoutStyled.Sider)`
   border-right: 1px solid #dde8f0;
 `;
 
-export const PageFormStyled = styled(Form)<{ collapsed: boolean }>`
+export const PageFormStyled = styled(Form) <{ collapsed: boolean }>`
   overflow-y: auto;
   height: 100%;
   display: ${(props) => (props.collapsed ? "none" : "block")};
@@ -188,7 +190,7 @@ export const PageStyledTabs = styled(Tabs)`
 `;
 
 // боковая панель слева событий
-export const SiderFilterStyled = styled(Sider)<{ collapsed: boolean }>`
+export const SiderFilterStyled = styled(Sider) <{ collapsed: boolean }>`
   background: white;
   display: flex;
   flex-direction: column;
@@ -231,7 +233,7 @@ export const SiderTitleStyled = styled.h6<{ collapsed: boolean }>`
   display: ${(props) => (props.collapsed ? "none" : "block")};
 `;
 
-export const SiderMenuStyled = styled(Menu)<{ collapsed: boolean }>`
+export const SiderMenuStyled = styled(Menu) <{ collapsed: boolean }>`
   height: 100%;
   overflow-y: auto;
   margin-top: 15px;

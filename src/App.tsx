@@ -77,6 +77,8 @@ import { tspdNsiPage } from "pages/tspdNsi";
 import { CtrlNsiPage } from "pages/CtrlNsi";
 import { ReportsPage } from "pages/ReportsPage";
 import { IndexProvider } from "./hooks/useIndex";
+import { KnowledgePage } from "pages/KnowledgePage";
+import { ReportFramePage } from "pages/ReportFramePage";
 
 const { Content } = Layout;
 
@@ -133,12 +135,16 @@ export const App: FunctionComponent = () => {
         <AbilityContext.Provider value={defineAbilityFor(user)}>
           <Layout style={{
             minHeight: "100vh",
-            // height: "100vh"
+            height: "100vh"
           }}>
             <IndexProvider>
               <Header currentUser={user} />
-              <Content style={{ display: "flex" }}>
-                <Layout className="site-layout" style={{ padding: "64px 0 0 0" }}>
+              <Content style={{
+                display: "flex"
+              }}>
+                <Layout className="site-layout" style={{
+                  padding: "64px 0 0 0"
+                }}>
                   {/* меню слева */}
                   {/* <MenuSider
                     currentUser={ user }
@@ -160,6 +166,16 @@ export const App: FunctionComponent = () => {
                       {/* отчеты на своей странице */}
                       <Route path="/reports" component={ReportsPage} />
 
+                      {/* страница отчета */}
+                      <Route path="/frame/:frameName" component={ReportFramePage} />
+
+                      {/* страница база знаний из confluence */}
+                      <Route path="/knowledge" component={KnowledgePage} />
+
+
+                      {/* <PrivateRoute path="/frame/:frameName" component={Frame} /> */}
+
+
                       {/* события */}
                       <PrivateRoute path="/events" component={EventsPage} />
 
@@ -168,7 +184,6 @@ export const App: FunctionComponent = () => {
                         path="/risk-settings"
                         component={RiskSettings}
                       />
-                      <PrivateRoute path="/frame/:frameName" component={Frame} />
                       <PrivateRoute
                         path="/orgstructure/:frameName"
                         component={OrgStructureFrame}

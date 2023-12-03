@@ -287,7 +287,6 @@ class EventsContainer extends Component<
         )
         .then((result) => {
           this.props.fetched(result.data);
-          console.log(result);
           this.setState({
             eventsCount: result.data.pageInfo.totalItems,
             loading: false
@@ -540,51 +539,51 @@ class EventsContainer extends Component<
 
     return (
       <TableBlockWrapperStyled>
-        <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
-          {/* шапка */}
-          <Card>
-            <Row justify="space-between" gutter={16}>
-              <Col>
-                <Row align="middle" gutter={16}>
-                  <Col>
-                    <Text strong>Всего событий: {this.state.eventsCount}</Text>
-                  </Col>
-                  <Col>
-                    <Button
-                      type="link"
-                      icon={<ReloadOutlined />}
-                      onClick={() => {
-                        this.fetchItems(
-                          this.props.items.pageInfo.pageNumber,
-                          this.props.filter
-                        );
-                      }}
-                    >
-                      Обновить таблицу
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-              <Col>
-                {/* <ExportFilterTableButton
-                  init={{
-                    credentials: "include",
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      pageName: "/events",
-                      nodeTreeId: this.props.node.key,
-                      nodeTreeType: this.props.node.type,
-                      eventsListFilter: this.getFilter(),
-                    }),
-                  }}
-                /> */}
-              </Col>
-            </Row>
-          </Card>
+        {/* шапка */}
+        <Card>
+          <Row justify="space-between" gutter={16}>
+            <Col>
+              <Row align="middle" gutter={16}>
+                <Col>
+                  <Text strong>Всего событий: {this.state.eventsCount}</Text>
+                </Col>
+                <Col>
+                  <Button
+                    type="link"
+                    icon={<ReloadOutlined />}
+                    onClick={() => {
+                      this.fetchItems(
+                        this.props.items.pageInfo.pageNumber,
+                        this.props.filter
+                      );
+                    }}
+                  >
+                    Обновить таблицу
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+            <Col>
+              <ExportFilterTableButton
+                init={{
+                  credentials: "include",
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    pageName: "/events",
+                    nodeTreeId: this.props.node.key,
+                    nodeTreeType: this.props.node.type,
+                    eventsListFilter: this.getFilter(),
+                  }),
+                }}
+              />
+            </Col>
+          </Row>
+        </Card>
 
+        <Spin spinning={this.state.loading} wrapperClassName={"spinnerStyled"}>
           {/* таблица с данными */}
           <ItemsTable<EventItem>
             isFilterDisabled
@@ -740,34 +739,34 @@ class EventsContainer extends Component<
 
             onRowClicked={this.onRowClicked}
           />
-
-          {/* подвал */}
-          <Card>
-            <Row justify="space-between">
-              <Col>
-                <div style={{
-                  textAlign: "center",
-                  position: "relative",
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center"
-                }}>
-                  <Pagination
-                    disabled={this.state.loading}
-                    showSizeChanger={false}
-                    size="small"
-                    current={pageInfo.pageNumber}
-                    defaultPageSize={1}
-                    total={pageInfo.totalPages}
-                    onChange={(page) => {
-                      this.fetchItems(page, this.props.filter);
-                    }}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </Card>
         </Spin>
+
+        {/* подвал */}
+        <Card>
+          <Row justify="space-between">
+            <Col>
+              <div style={{
+                textAlign: "center",
+                position: "relative",
+                height: "100%",
+                display: "flex",
+                alignItems: "center"
+              }}>
+                <Pagination
+                  disabled={this.state.loading}
+                  showSizeChanger={false}
+                  size="small"
+                  current={pageInfo.pageNumber}
+                  defaultPageSize={1}
+                  total={pageInfo.totalPages}
+                  onChange={(page) => {
+                    this.fetchItems(page, this.props.filter);
+                  }}
+                />
+              </div>
+            </Col>
+          </Row>
+        </Card>
 
         <Modal
           maskClosable={true}
