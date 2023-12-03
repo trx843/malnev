@@ -38,39 +38,39 @@ export const ReportFramePage: FunctionComponent = (props) => {
       const reportInfo = await axios
         .get(`${apiBase}/get-report-info?route=${route}`)
         .then((result) => result.data[0]);
-      console.log("reportInfo", reportInfo);
+      // console.warn("reportInfo", reportInfo);
 
       setReportInfo(reportInfo);
       setReportLoading(false);
     } catch (error) {
-      console.log("Error", error);
+      console.error("Error", error);
     }
   }
 
   useEffect(() => {
-    // console.log("props", props);
-    // console.log("cur user", currentUser);
-    // console.log("fr name", frameName);
+    // console.warn("props", props);
+    // console.warn("cur user", currentUser);
+    // console.warn("fr name", frameName);
 
     // заголовок отчета из query
     // const urlParams = new URLSearchParams(props["location"].search);
     const urlParams = new URLSearchParams(props["location"].search);
     const frameTitle = urlParams.get('title');
-    // console.log("fr title", frameTitle);
 
     // если это личный отчет
     if (frameName.indexOf("myreport") === 0 && frameTitle) {
+      // console.warn("fr title", frameTitle);
       const pathname = props["location"].pathname;
-      const pathnamelastIndex = pathname.length - 1;
+      const pathnameLastIndex = pathname.length - 1;
 
       const myReportInfo = {
-        id: pathname.substr(16, pathnamelastIndex),
+        id: pathname.substr(16, pathnameLastIndex),
         sortOrder: 0,
-        route: pathname.substr(7, pathnamelastIndex),
+        route: pathname.substr(7, pathnameLastIndex),
         name: frameTitle,
         link: `Reports/report/TKO/${currentUser.login}/${encodeURIComponent(frameTitle)}`
       };
-      // console.log("myReportInfo", myReportInfo);
+      // console.warn("myReportInfo", myReportInfo);
 
       setReportInfo(myReportInfo);
       setReportLoading(false);
