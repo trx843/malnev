@@ -1,9 +1,9 @@
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Layout, PageHeader, Spin } from "antd";
+import { Layout, PageHeader } from "antd";
 import { PageLayoutStyled } from "../styles/commonStyledComponents";
 import { history } from "../history/history";
-import { apiBase, config } from "utils";
+import { apiBase } from "utils";
 import axios from "axios";
 import { IndexContext, IndexContextType } from "../hooks/useIndex";
 
@@ -93,7 +93,7 @@ export const ReportFramePage: FunctionComponent = (props) => {
           <Layout>
             <Content className="content">
               <iframe
-                className="frame-report"
+                className="frame"
                 src={reportsEndPoint + reportInfo?.link + "?rs:embed=true"}
               ></iframe>
             </Content>

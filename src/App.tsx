@@ -37,7 +37,7 @@ import { CaslDemoPage } from "./pages/CaslDemoPage";
 import defineAbilityFor, { AbilityContext, ActionsEnum } from "./casl";
 import { SiknOffPage } from "./pages/SiknOff";
 import Result from "antd/lib/result";
-import { MenuSider } from "./components/MenuSider";
+// import { MenuSider } from "./components/MenuSider";
 import { Header } from "./components/Header";
 import { Preloader } from "./components/Preloader";
 import { EliminationOfViolationsPage } from "./pages/PspControl/EliminationOfViolations";
@@ -79,6 +79,7 @@ import { ReportsPage } from "pages/ReportsPage";
 import { IndexProvider } from "./hooks/useIndex";
 import { KnowledgePage } from "pages/KnowledgePage";
 import { ReportFramePage } from "pages/ReportFramePage";
+import { GisPage } from "pages/GisPage";
 
 const { Content } = Layout;
 
@@ -162,13 +163,12 @@ export const App: FunctionComponent = () => {
                     <Switch>
                       {/* компонент Home на главной странице */}
                       <Route exact path="/" component={Home} />
-
                       {/* отчеты на своей странице */}
                       <Route path="/reports" component={ReportsPage} />
-
                       {/* страница отчета */}
                       <Route path="/frame_report/:frameName" component={ReportFramePage} />
-
+                      {/* страница гис */}
+                      <Route path="/gis" component={GisPage} />
                       {/* страница база знаний из confluence */}
                       <Route path="/knowledge" component={KnowledgePage} />
 

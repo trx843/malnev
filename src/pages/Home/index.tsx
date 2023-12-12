@@ -143,8 +143,7 @@ export const Home: FunctionComponent = () => {
 
                     <Button
                       size="large"
-                      href="frame/gis"
-                      target="_blank"
+                      href="gis"
                       icon={<CompassOutlined />}
                       danger
                     >

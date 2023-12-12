@@ -1,5 +1,5 @@
 let config = {
-	/*
+  /*
   / Настройки API 
   */
   api: {
@@ -22,20 +22,20 @@ let config = {
     Префикс ссылок для разных систем в iframe
   */
   frame: {
-	  // Для отчетов
+    // Для отчетов
     // report: "http://ndc01-pebkekt01.dc-prod.tn.corp:59448/",
-  	report: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/",
-	  // Для ГИС
-	  gis: "https://gis.tn.corp/",
-	  // Для PiVision
-	  //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
+    report: "https://ndc01-pebkekp01.dc-prod.tn.corp:59448/",
+    // Для ГИС
+    gis: "https://gis.tn.corp/",
+    // Для PiVision
+    //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
     piVision: "https://ndc01-pebkekp01.dc-prod.tn.corp:8443/PIVision/#/Displays/",
   },
-   /*
-  / Соответствие внешнийх ссылок с БД (внешние- котрые открываются в новой вкадке)
-  */
+  /*
+ / Соответствие внешних ссылок с БД (внешние- котрые открываются в новой вкадке)
+ */
   urlMapping: {
-	  // Для PiVision
+    // Для PiVision
     //piVision: "https://ndc01-pebkekt01.dc-prod.tn.corp:8443/PIVision/#/",
     piVision: "https://ndc01-pebkekp01.dc-prod.tn.corp:8443/PIVision/#/",
     // Для grafana
@@ -68,9 +68,9 @@ let config = {
   / максимальное число минут за которое увеличиться диапазон с двух сторон для перехода на тренды
   */
   fixDeltaMinutes: 30,
-   /*
-  / Параметры обновления в секундах
-  */
+  /*
+ / Параметры обновления в секундах
+ */
   longPollingSeconds: {
     events: 120,
     operativeMonitoring: 120,
