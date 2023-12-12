@@ -44,6 +44,8 @@ interface UserReport {
   route: string;
 };
 
+const frameReportEndPoint = "frame_report";
+
 export const ReportsContainer: FunctionComponent = () => {
   // получение функционала из контекста стартовой страницы
   const { isUIB, currentUser } = useContext(IndexContext) as IndexContextType;
@@ -156,7 +158,7 @@ export const ReportsContainer: FunctionComponent = () => {
 
           reports = reports.map((report) => ({
             ...report,
-            route: "/frame/" + report.route
+            route: `/${frameReportEndPoint}/${report.route}`
           }));
 
           // сортируем отчеты и группы по полю sortOrder
@@ -193,7 +195,7 @@ export const ReportsContainer: FunctionComponent = () => {
         const userReports = await axios.get<UserReport[]>(`${apiBase}/get-user-reports?login=${login}`).then((result) => {
           return result.data.map((report) => ({
             ...report,
-            route: `frame/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
+            route: `${frameReportEndPoint}/myreport_${report.id}?title=${encodeURIComponent(report.name)}`
           }));
         });
         setUserReports(userReports);
@@ -284,7 +286,7 @@ export const ReportsContainer: FunctionComponent = () => {
             dataSource={reportsWithGroups}
             renderItem={(report) => (
               <List.Item key={report.id}>
-                <Link to={report.route} target="_blank">{report.name}</Link>
+                <Link to={report.route}>{report.name}</Link>
 
                 {/* вывод групп отчета */}
                 {!isUIB && report.groups && (
@@ -325,7 +327,7 @@ export const ReportsContainer: FunctionComponent = () => {
               dataSource={userReports}
               renderItem={(report) => (
                 <List.Item key={report.id}>
-                  <Link to={report.route} target="_blank" rel="noopener noreferrer">{report.name}</Link>
+                  <Link to={report.route}>{report.name}</Link>
                 </List.Item>
               )}
             />

@@ -167,14 +167,13 @@ export const App: FunctionComponent = () => {
                       <Route path="/reports" component={ReportsPage} />
 
                       {/* страница отчета */}
-                      <Route path="/frame/:frameName" component={ReportFramePage} />
+                      <Route path="/frame_report/:frameName" component={ReportFramePage} />
 
                       {/* страница база знаний из confluence */}
                       <Route path="/knowledge" component={KnowledgePage} />
 
-
-                      {/* <PrivateRoute path="/frame/:frameName" component={Frame} /> */}
-
+                      {/* фреймы */}
+                      <PrivateRoute path="/frame/:frameName" component={Frame} />
 
                       {/* события */}
                       <PrivateRoute path="/events" component={EventsPage} />
