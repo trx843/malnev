@@ -16,6 +16,7 @@ import { FilterType } from "../api/params/get-events-params";
 import { TableBlockWrapperStyled } from "../styles/commonStyledComponents";
 import { ReloadOutlined } from "@ant-design/icons";
 import { ExportFilterTableButton } from "components/ExportFilterTableButton";
+import { ExportEventsButton } from "../components/ExportEventsButton";
 
 const { Text } = Typography;
 
@@ -29,22 +30,6 @@ interface IEventExtObject {
   Name: string;
   Caption: string;
   Value: string;
-}
-
-interface EventsContainerState {
-  eventModalLoading: boolean;
-  eventModalVisible: boolean;
-  eventModalTitle: string;
-  eventModalData: IEventObject[];
-  eventModalExtData: IEventObject[];
-  eventModalExtError: string;
-  commentModalVisible: boolean;
-  levelFilter: number | null;
-  loading: boolean;
-  gridApi: GridApi;
-  filterObject: FilterObject;
-  sortedField: [string, string | null | undefined];
-  eventsCount: number;
 }
 
 enum SortableFields {
@@ -82,6 +67,33 @@ type EventsContainerProps = IEventsState &
   };
 
 let source: CancelTokenSource;
+
+interface EventsContainerState {
+  eventModalLoading: boolean;
+  eventModalVisible: boolean;
+  eventModalTitle: string;
+  eventModalData: IEventObject[];
+  eventModalExtData: IEventObject[];
+  eventModalExtError: string;
+  commentModalVisible: boolean;
+  levelFilter: number | null;
+  loading: boolean;
+  gridApi: GridApi;
+  filterObject: FilterObject;
+  sortedField: [string, string | null | undefined];
+  eventsCount: number;
+  eventsFilter: IEventsFilter;
+}
+
+export interface IEventsFilter {
+  path: string;
+  startDate: string;
+  endDate: string;
+  sortFieldName: string;
+  sortDirection: string;
+  filterColumns: string;
+  isWarning: boolean;
+}
 
 class EventsContainer extends Component<
   EventsContainerProps,
@@ -122,7 +134,16 @@ class EventsContainer extends Component<
         },
       },
       sortedField: this.defaultSorting,
-      eventsCount: 0
+      eventsCount: 0,
+      eventsFilter: {
+        path: "\\",
+        startDate: "",
+        endDate: "",
+        sortFieldName: "StartDateTime",
+        sortDirection: "desc",
+        filterColumns: "",
+        isWarning: false
+      }
     };
 
     this.commentHandler = this.commentHandler.bind(this);
@@ -270,12 +291,33 @@ class EventsContainer extends Component<
 
     const filterColumnsString = filterColumns.length > 0 ? JSON.stringify(filterColumns) : '';
 
-    // console.log('filterColumns', filterColumnsString);    
+    // console.log('filterColumns', filterColumnsString);
+
+    // console.log("path", this.props.node.path);
+
+    // собираем данные фильтра
+    const eventsFilterData = {
+      path: String(this.props.node.path),
+      startDate: listFilter.filter.filtersModel.startTime,
+      endDate: listFilter.filter.filtersModel.endTime,
+      sortFieldName: listFilter.sortedField,
+      sortDirection: listFilter.isSortAsc ? "asc" : "desc",
+      filterColumns: filterColumnsString,
+      isWarning: Boolean(listFilter.filter.filtersModel.isWarning)
+    };
+
+    // console.warn("eventsFilterData", eventsFilterData);
+
+    // обновляем состояние фильтра
+    this.setState((prevState) => ({
+      eventsFilter: {
+        ...prevState.eventsFilter,
+        ...eventsFilterData
+      }
+    }));
 
     if (!filter) {
       this.widgetEvents = undefined;
-
-      // console.warn("path", this.props.node.path);      
 
       axios
         .post<PagedModel<EventItem>>(
@@ -526,6 +568,8 @@ class EventsContainer extends Component<
     ) {
       this.fetchItems(1, undefined);
     }
+
+    // console.warn("componentDidUpdate", this.state.eventsFilter);
   }
 
   render() {
@@ -557,6 +601,7 @@ class EventsContainer extends Component<
                         this.props.filter
                       );
                     }}
+                    loading={this.state.loading}
                   >
                     Обновить таблицу
                   </Button>
@@ -564,21 +609,8 @@ class EventsContainer extends Component<
               </Row>
             </Col>
             <Col>
-              {/* <ExportFilterTableButton
-                init={{
-                  credentials: "include",
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    pageName: "/events",
-                    nodeTreeId: this.props.node.key,
-                    nodeTreeType: this.props.node.type,
-                    eventsListFilter: this.getFilter(),
-                  }),
-                }}
-              /> */}
+              {/* кнопка экспорта */}
+              <ExportEventsButton eventsFilter={this.state.eventsFilter} />
             </Col>
           </Row>
         </Card>

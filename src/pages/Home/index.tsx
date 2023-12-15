@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Col, Layout, Button, Divider, PageHeader, DatePicker, Row, Typography, Skeleton, Checkbox } from "antd";
-import { CompassOutlined, DatabaseOutlined, ExportOutlined } from "@ant-design/icons";
+import { CompassOutlined, DatabaseOutlined, ExportOutlined, WarningTwoTone } from "@ant-design/icons";
 import { FilterItemLabelStyled, FilterRowStyled, PageLayoutStyled, SiderFilterStyled, TkoTreeStyled, WrapperTreeRowStyled } from "../../styles/commonStyledComponents";
 import { InfoType, IEventsState, FilterDates } from "../../interfaces";
 import { nodeChanged, dateChanged, eventWarningFilter } from "../../actions/events/creators";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import EventsContainer from "containers/EventsContainer";
 import moment, { Moment } from "moment";
 import locale from "antd/es/date-picker/locale/ru_RU";
-import { StateType, WarningType } from "types";
+import { StateType } from "types";
 import { ReportsContainer } from "containers/ReportsContainer";
 import { IndexContext, IndexContextType } from "../../hooks/useIndex";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
@@ -109,7 +109,7 @@ export const Home: FunctionComponent = () => {
                       const checked = e.target.checked;
                       dispatch(eventWarningFilter(checked));
                     }}>
-                      Недостоверные события
+                      Недостоверные события <WarningTwoTone twoToneColor="#faad14" />
                     </Checkbox>
                   </FilterRowStyled>
                 </>
