@@ -2,7 +2,6 @@ import { FunctionComponent, useState } from "react";
 import { Button } from "antd";
 import { VerticalAlignBottomOutlined } from "@ant-design/icons";
 import { apiBase, asciiToUint8Array } from "utils";
-import axios from "axios";
 import { IEventsFilter } from "containers/EventsContainer";
 
 interface IExportEventsButton {
@@ -16,33 +15,6 @@ export const ExportEventsButton: FunctionComponent<IExportEventsButton> = ({ eve
 
   const handleClick = async () => {
     setLoading(true);
-
-    // console.warn(eventsFilter);
-
-    /*  await axios.post<string>(
-       exportEndPoint,
-       eventsFilter
-     ).then((response) => {
-       console.log(response);
- 
-       let fileNameHeader = response.headers.get("FileName");
- 
-       if (fileNameHeader !== null && fileNameHeader !== undefined) {
-         let headerSplit = fileNameHeader.split(";");
- 
-         if (headerSplit.length > 0) {
-           let asciiFile = headerSplit[0];
-           let code = asciiToUint8Array(asciiFile);
-           let fileName = new TextDecoder().decode(code);
-         }
-       }
- 
-       return response.blob();     
-     }).catch((error) => {
-       console.error(error);
-     }).finally(() => {
-       setLoading(false);
-     }); */
 
     let fileName: string = "download.xlsx";
 
