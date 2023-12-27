@@ -138,7 +138,7 @@
     "less-loader": "^10.1.0",
     "less-plugin-clean-css": "^1.5.1",
     "mini-css-extract-plugin": "^2.4.2",
-    "postcss": "^8.3.6",
+    "postcss": "^8.4.31",
     "postcss-loader": "^6.2.0",
     "postcss-nested": "^5.0.6",
     "postcss-preset-env": "^6.7.0",
